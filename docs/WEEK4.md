@@ -7,12 +7,15 @@
 내보내며 UTC 시간·위키별 집계도 만든다.
 
 **구현·정적 검사와 GitHub Actions의 실제 Docker 통합 검증을 완료했다.**
-[통합 테스트 실행](https://github.com/parkjoohyung0826/wikipedia-streaming-analytics/actions/runs/40460684533)에서
+[통합 테스트 실행](https://github.com/parkjoohyung0826/wikipedia-streaming-analytics/actions/runs/40466607879)에서
 Spark 변환 11건, DB commit 직후 강제 실패 복구, checkpoint 재시작, 입력 재전송,
-DB·Parquet 일치를 확인했다. [검증 결과](../evidence/week4/ci_verification.json)는
-격리된 합성 데이터 테스트이며 실제 Wikimedia 데이터 처리와 구분한다.
+DB·Parquet의 전체 레코드와 집계 일치를 확인했다.
+[검증 결과](../evidence/week4/ci_verification.json)는 격리된 합성 테스트와
+실제 Wikimedia 수집 샘플 테스트를 구분해서 기록한다.
 복구·재시작 후 정상 3행/오류 3행, 새 offset으로 재전송 후 정상 3행/오류 6행을 확인했다.
-사용자 Codespaces에서 실제 수집 샘플을 처리하는 `demo`는 아직 실행하지 않았다.
+실제 수집 샘플은 **20건 입력 → 정상 DB 20행 → Parquet 20행**, 오류 0건이며
+원본의 ID·발생 시각·문서명·위키·봇 여부·편집 크기와 대조했다. 기존 단위 테스트 7개도 통과했다.
+이 결과는 Linux Docker CI 실행 결과이며 사용자 컴퓨터에서 실행한 결과로 표현하지 않는다.
 아래 `demo`와 `verify`가 성공하면 해당 환경의 실제 결과 파일이 생성된다.
 3회차의 3,846건 전송 기록을 4회차 실행 결과로 사용하지 않는다.
 
@@ -42,26 +45,30 @@ Kafka를 쓰는 이유와 3회차 전송 확인은 [3회차 보고서](WEEK3.md)
 [상세 README](README_DETAILED.md)에 있다. 이번 회차는 Spark를 컨테이너의 `local[2]`로 실행한다.
 분산 클러스터의 성능이나 고가용성을 검증하는 작업은 아니다.
 
-## 2. Codespaces 실행 방법
+## 2. Docker가 설치된 컴퓨터에서 실행
 
-Codespaces 프로젝트 루트의 bash 터미널에서 실행한다. 로컬 PC의 Java·Spark·Docker Desktop은 필요 없다.
-Codespaces Docker는 실행 중이어야 한다. `docker-compose.yml`은 기존 Kafka 설정을 유지하고,
-`compose.week4.yml`로 PostgreSQL과 Spark만 추가한다.
+필요 환경은 Docker Engine 또는 Docker Desktop(Linux 컨테이너 모드), Docker Compose v2,
+Python 3.9 이상이다. 메모리는 Docker에 4GB 이상을 배정하는 것을 권장한다.
+Java·Spark·PostgreSQL과 Python 패키지는 컨테이너에 포함하므로 호스트에 별도로 설치하지 않는다.
+Windows PowerShell, Linux, macOS 터미널에서 같은 Python 실행 도구를 사용한다.
+Linux/macOS에서 명령 이름이 `python3`라면 아래의 `python`을 `python3`로 바꾼다.
+`docker-compose.yml`은 기존 Kafka 설정을 유지하고 `compose.week4.yml`로 나머지 서비스를 추가한다.
 
 ```bash
-git pull --ff-only origin master
-source .venv/bin/activate
-# 3회차 패키지를 아직 설치하지 않았다면:
-pip install -r requirements.txt
+git clone https://github.com/parkjoohyung0826/wikipedia-streaming-analytics.git
+cd wikipedia-streaming-analytics
 
 # 이미지 빌드, DB 준비, 실제 수집 샘플 20건 전송, Spark 처리, DB·Parquet 대조
-bash scripts/week4.sh demo
+python scripts/week4.py demo
 ```
+
+이미 저장소가 있는 컴퓨터에서는 clone 대신 `git pull --ff-only origin master`로 갱신한다.
+가상환경 활성화나 호스트 `pip install`은 필요 없다. 기존 bash 명령도 호환 wrapper로 남겼다.
 
 처음에는 이미지 빌드 단계에서 Maven Central의 Kafka/JDBC 패키지와 전이 의존성을 내려받아
 이미지에 포함한다. 실행 시에는 Maven 패키지를 내려받지 않는다. 빌드에는 외부 인터넷이 필요하다.
 1GB Spark driver와 로컬 2개
-작업 스레드를 사용한다. 메모리가 부족하면 Codespace 자원을 확인하고 다른 작업을 중지한다.
+작업 스레드를 사용한다. 메모리가 부족하면 Docker 자원 할당을 확인한다.
 PostgreSQL은 호스트 포트를 공개하지 않는다. Compose 내부의 `postgres:5432`로 접근한다.
 기본 DB 비밀번호는 이 과제용 로컬 개발값이며, 외부 서비스용 인증 정보로 재사용하지 않는다.
 
@@ -76,13 +83,13 @@ PostgreSQL은 호스트 포트를 공개하지 않는다. Compose 내부의 `pos
 | `artifacts/week4/parquet/snapshots/<실행ID>/hourly_wiki/` | UTC 시간·위키별 집계 |
 
 `artifacts/`는 Git에서 제외한다. `evidence/week4/`에는 검증 성공 후 생성되는 작은 보고서를 보관한다.
-전체 데이터의 검증 결과를 얻으려면 원본 JSONL을 Codespaces로 가져오거나
+전체 데이터의 검증 결과를 얻으려면 원본 JSONL을 프로젝트의 `data/` 아래로 가져오거나
 [수집 안내](COLLECTION.md)에 따라 다시 수집한 후 아래처럼 전송한다.
 
 ```bash
-python -m src.producer --input data/실제수집폴더/events.jsonl --rate 200
-bash scripts/week4.sh run
-bash scripts/week4.sh check --report evidence/week4/full_verification.json
+python scripts/week4.py send --input data/실제수집폴더/events.jsonl --rate 200
+python scripts/week4.py run
+python scripts/week4.py check --expected-input data/실제수집폴더/events.jsonl --report evidence/week4/full_verification.json
 ```
 
 샘플만 처리했다면 이를 전체 3,846건 처리로 보고하지 않는다.
@@ -181,7 +188,7 @@ DB에서는 유일한 편집 이력을 집계하는 view로 제공한다. NULL �
 - **Parquet:** 컬럼 단위 분석·압축·Spark 재처리에 적합하다. DB의 정상 이력을 날짜별로 내보낸다.
   `CURRENT.json`에 기록된 **한 snapshot만** 읽는다. snapshots 전체를 한꺼번에 읽으면 같은 이력이 중복된다.
 - 두 저장소에 동시 커밋하는 분산 transaction은 사용하지 않는다. DB를 기준으로 Parquet을 다시 만들 수 있다.
-  DB 저장 후 파일 export가 실패하면 `bash scripts/week4.sh run --export-only`로 재시도한다.
+  DB 저장 후 파일 export가 실패하면 `python scripts/week4.py run --export-only`로 재시도한다.
 - Parquet은 새 경로에 모두 쓴 뒤 `CURRENT.json`을 원자적으로 교체한다. 중단된 snapshot은
   manifest에 게시되지 않는다. 파일 export는 한 작업씩 실행하며 snapshot 보존·삭제 자동화는 후속 범위다.
 
@@ -202,7 +209,7 @@ checkpoint를 지우면 Kafka를 처음부터 읽을 수 있다. DB PK는 중복
 기본 실행은 유한 입력 검증용이다. 계속 수신하려면:
 
 ```bash
-bash scripts/week4.sh run --continuous
+python scripts/week4.py run --continuous
 ```
 
 연속 실행 중 DB는 갱신되지만 Parquet snapshot은 주기적으로 생성하지 않는다. 정상 종료 뒤 또는
@@ -211,7 +218,7 @@ bash scripts/week4.sh run --continuous
 ## 7. 자동 검증
 
 ```bash
-bash scripts/week4.sh verify
+python scripts/week4.py verify
 ```
 
 별도 테스트 DB와 토픽을 생성하고 실제 데이터 DB에는 합성 레코드를 넣지 않는다.
@@ -224,7 +231,8 @@ bash scripts/week4.sh verify
 | 같은 checkpoint로 재시작 | 정상 3행, 오류 3행 유지 |
 | 원본 7개를 새 offset으로 재전송 | 정상 3행 유지, 오류는 새 수신 3건을 더해 6행 |
 | 집계 | 편집 수 3, 봇 수 1, 길이 제공 2, 전체 변화량 10 |
-| Parquet | DB 정상 행 수·고유 ID 수·집계 편집 수와 일치 |
+| Parquet | DB와 모든 정상 레코드·모든 집계 행이 양방향으로 일치, 날짜 파티션도 검증 |
+| 실제 수집 샘플 | 별도 demo에서 원본 20건의 ID·발생 시각·위키·문서명·봇 여부·길이·변화량 대조 |
 
 성공 시 `evidence/week4/recovery_verification.json`이 생성된다. 전체 로그는
 `artifacts/week4/tests/<실행ID>/`에 남긴다. 스크립트가 실패하면 PASS로 보고하지 말고 해당 로그를 확인한다.
@@ -234,21 +242,22 @@ bash scripts/week4.sh verify
 
 ```bash
 git add evidence/week4/
-git commit -m "Record week 4 Codespaces verification"
+git commit -m "Record week 4 Docker verification"
 git push origin master
 ```
 
 데이터를 보존하며 이번 작업 서비스를 중지:
 
 ```bash
-docker compose -f docker-compose.yml -f compose.week4.yml stop
+python scripts/week4.py stop
 ```
 
-Codespaces도 작업 후 Stop한다. `down -v`는 DB·Kafka 볼륨을 삭제하므로 재시작 검증에 사용하지 않는다.
+`down -v`는 DB·Kafka 볼륨을 삭제하므로 재시작 검증에 사용하지 않는다.
 
 ## 8. 남은 범위와 참고
 
-- GitHub Actions의 격리 통합 검증은 통과했다. Codespaces에서 `demo`를 실행해 실제 수집 샘플의 처리 증거를 추가해야 한다.
+- GitHub Actions의 합성 장애 복구 검증과 실제 수집 샘플 20건의 통합 검증이 통과했다.
+- Windows 네이티브 Docker Desktop에서의 실기 검증은 수행하지 않았다. 실행 도구는 표준 라이브러리 Python으로 Windows/Linux/macOS에 맞췄다.
 - 실행 검증은 단일 writer·소규모 학습 데이터 대상이다. DB 드라이버 단일 transaction으로 적재하며,
   대규모 분산 적재·여러 동시 writer·스키마 migration·집계 materialization은 후속 범위다.
 - PostgreSQL view와 Parquet snapshot은 실시간으로 동기화된 한 transaction이 아니다.

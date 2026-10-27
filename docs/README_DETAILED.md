@@ -1,6 +1,6 @@
 # 3주차 과제 — Wikipedia 편집 이벤트 Kafka 수집
 
-4회차 Spark 전처리·저장 구현과 Codespaces 실행 방법은 [4회차 보고서](WEEK4.md)에 정리했다.
+4회차 Spark 전처리·저장 구현과 Docker 실행 방법은 [4회차 보고서](WEEK4.md)에 정리했다.
 3회차 보고서는 [WEEK3.md](WEEK3.md)에 보관한다. 저장소 메인 화면에는 README 본문을 표시하지 않는다.
 
 2주차의 실시간 파이프라인 설계를 바탕으로 **실제 수집 데이터 → Python Producer → Kafka → 콘솔 Consumer** 구간을 구현했다. 실시간 API를 10분간 수집한 뒤, Wikipedia 편집만 골라 재생한다. 원본을 보관하므로 같은 입력으로 전송 속도와 장애 동작을 반복 검증할 수 있다.
