@@ -58,7 +58,9 @@ pip install -r requirements.txt
 bash scripts/week4.sh demo
 ```
 
-처음에는 Spark 이미지와 Maven Kafka/JDBC 패키지를 내려받는다. 1GB Spark driver와 로컬 2개
+처음에는 이미지 빌드 단계에서 Maven Central의 Kafka/JDBC 패키지와 전이 의존성을 내려받아
+이미지에 포함한다. 실행 시에는 Maven 패키지를 내려받지 않는다. 빌드에는 외부 인터넷이 필요하다.
+1GB Spark driver와 로컬 2개
 작업 스레드를 사용한다. 메모리가 부족하면 Codespace 자원을 확인하고 다른 작업을 중지한다.
 PostgreSQL은 호스트 포트를 공개하지 않는다. Compose 내부의 `postgres:5432`로 접근한다.
 기본 DB 비밀번호는 이 과제용 로컬 개발값이며, 외부 서비스용 인증 정보로 재사용하지 않는다.
