@@ -19,11 +19,11 @@ JSONL은 JSON 기록을 한 줄에 하나씩 저장한 파일이다. MB는 1,000
 
 전체 데이터에는 Wikipedia 외에도 Wikidata·Commons 등의 기록이 들어 있다. 이번 과제에서는 **사이트가 `.wikipedia.org`로 끝나고, 변경 유형이 `edit`인 기록**만 골랐다. 선택된 3,846건을 파일에서 다시 읽어 Kafka로 전송하고, 제대로 도착했는지 확인했다.
 
-[수집 결과 상세](docs/RESULT.md) · [측정값 원본](evidence/collection_summary.json)
+[수집 결과 상세](RESULT.md) · [측정값 원본](../evidence/collection_summary.json)
 
 ## 1. Producer 코드 흐름
 
-코드: [src/producer.py](src/producer.py)
+코드: [src/producer.py](../src/producer.py)
 
 ```text
 수집 파일 읽기 → 위키피디아 편집만 선택 → JSON 메시지 만들기
@@ -44,7 +44,7 @@ JSONL은 JSON 기록을 한 줄에 하나씩 저장한 파일이다. MB는 1,000
 
 **key:** `enwiki:Bey` — 영어 위키피디아의 `Bey` 문서를 뜻한다.
 
-아래는 실제로 전송하고 읽은 JSON이다. 길이를 줄이기 위해 `payload`의 일부 필드만 표시했다. [전체 메시지 원문](evidence/submission_message.json)
+아래는 실제로 전송하고 읽은 JSON이다. 길이를 줄이기 위해 `payload`의 일부 필드만 표시했다. [전체 메시지 원문](../evidence/submission_message.json)
 
 ```json
 {
@@ -94,7 +94,7 @@ Wikipedia 편집은 같은 형식으로 처리하므로 언어별로 토픽을 �
 
 리텐션을 7일로 정해 처리 프로그램을 수정한 뒤에도 최근 데이터를 다시 읽을 수 있도록 했다. 로컬에서는 Kafka 서버인 **브로커 1개**를 사용하므로, 서버 장애에 대비한 복제 구성은 이번 실습에 포함하지 않았다.
 
-[실제 토픽 설정 확인 결과](evidence/topic_describe.txt)
+[실제 토픽 설정 확인 결과](../evidence/topic_describe.txt)
 
 ## 실행 확인과 속도 조절
 
@@ -106,7 +106,7 @@ Kafka를 로컬에서 실행하고 토픽을 만든 뒤, `--rate 200`으로 초�
 | 콘솔 Consumer 수신 | 3,846건 |
 | 이번 실행의 중복·누락 | 0건 |
 
-[전송 결과](evidence/producer_summary.json) · [콘솔 수신 캡처](evidence/consumer_sample.txt) · [원본 대조 결과](evidence/verification.json)
+[전송 결과](../evidence/producer_summary.json) · [콘솔 수신 캡처](../evidence/consumer_sample.txt) · [원본 대조 결과](../evidence/verification.json)
 
 **보너스:** `--rate` 값으로 초당 전송 건수를 조절할 수 있다. 예를 들어 아래 명령은 샘플 데이터를 초당 10건씩 보낸다. 프로젝트 최상위 폴더에서 Kafka 실행과 Python 환경 준비 후 사용한다.
 
@@ -114,4 +114,4 @@ Kafka를 로컬에서 실행하고 토픽을 만든 뒤, `--rate 200`으로 초�
 python -m src.producer --input samples/wikipedia_edits.jsonl --rate 10
 ```
 
-환경 설치와 Kafka·토픽 생성 명령은 [기존 상세 README](docs/README_DETAILED.md)의 **5. 재현 방법**에 보관했다.
+환경 설치와 Kafka·토픽 생성 명령은 [기존 상세 README](README_DETAILED.md)의 **5. 재현 방법**에 보관했다.
