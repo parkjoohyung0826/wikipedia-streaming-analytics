@@ -1,0 +1,40 @@
+name: Week 4 pipeline verification
+on:
+  push:
+    paths:
+      - 'src/process_edits.py'
+      - 'compose.week4.yml'
+      - 'docker/**'
+      - 'sql/**'
+      - 'scripts/**'
+      - 'tests_week4/**'
+      - '.github/workflows/week4.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install producer client
+        run: pip install -r requirements.txt
+      - name: Test transforms, crash recovery, replay and Parquet
+        run: bash scripts/week4.sh verify
+      - name: Upload verification evidence and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: week4-verification
+          path: |
+            evidence/week4/
+            artifacts/week4/tests/**/*.log
+            artifacts/week4/tests/**/*.json
+          if-no-files-found: ignore
+      - name: Container logs
+        if: failure()
+        run: docker compose -f docker-compose.yml -f compose.week4.yml logs --tail 100

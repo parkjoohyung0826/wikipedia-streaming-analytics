@@ -1,0 +1,7 @@
+.git
+.venv
+data
+artifacts
+dist
+*.zip
+**/__pycache__

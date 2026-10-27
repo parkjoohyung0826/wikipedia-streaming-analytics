@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:16.6
+    environment:
+      POSTGRES_USER: wiki
+      POSTGRES_DB: wiki
+      POSTGRES_PASSWORD: ${WIKI_DB_PASSWORD:-wiki_local_lab}
+    volumes:
+      - week4-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wiki -d wiki"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  spark:
+    build:
+      context: .
+      dockerfile: docker/spark.Dockerfile
+    profiles: ["week4"]
+    user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
+    working_dir: /workspace
+    environment:
+      HOME: /tmp
+      PYTHONPATH: /workspace
+      PYTHONUNBUFFERED: "1"
+      PGHOST: postgres
+      PGPORT: "5432"
+      PGDATABASE: wiki
+      PGUSER: wiki
+      PGPASSWORD: ${WIKI_DB_PASSWORD:-wiki_local_lab}
+      SPARK_LOCAL_IP: 127.0.0.1
+    volumes:
+      - .:/workspace
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    entrypoint:
+      - /opt/spark/bin/spark-submit
+      - --master
+      - local[2]
+      - --driver-memory
+      - 1g
+      - --conf
+      - spark.jars.ivy=/workspace/artifacts/week4/ivy
+      - --packages
+      - org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.8,org.postgresql:postgresql:42.7.7
+    command: ["src/process_edits.py"]
+volumes:
+  week4-postgres:
