@@ -1,0 +1,158 @@
+{
+  "verified": true,
+  "environment": "GitHub Actions ubuntu-latest; Docker Compose; Spark 3.5.8; PostgreSQL 16.6; Kafka 3.8.0",
+  "fixture": "Synthetic records isolated from real data",
+  "commit": "6ace266403687d665dab9093daae06e47a59c5be",
+  "run_url": "https://github.com/parkjoohyung0826/wikipedia-streaming-analytics/actions/runs/40460684533",
+  "transform_records_checked": 11,
+  "recovery": {
+    "verified": true,
+    "database_edits": 3,
+    "distinct_ids": 3,
+    "rejected": 3,
+    "rejection_reasons": {
+      "invalid_event_time": 1,
+      "invalid_json_or_types": 1,
+      "unsupported_schema_version": 1
+    },
+    "aggregate_edit_count": 3,
+    "parquet_edits": 3,
+    "parquet_aggregate_edit_count": 3,
+    "snapshot": {
+      "snapshot": "/workspace/artifacts/week4/tests/20261027062300_10506/parquet/snapshots/20261027T062344_175234Z-e6ef197e",
+      "edits": 3,
+      "timezone": "UTC",
+      "created_at": "20261027T062344_175234Z-e6ef197e"
+    },
+    "output_examples": [
+      {
+        "event_id": "week4-test-a",
+        "event_time": "2026-10-25 10:04:24+00:00",
+        "ingest_time": "2026-10-25 10:05:00+00:00",
+        "wiki": "kowiki",
+        "title": "테스트 문서",
+        "bot": false,
+        "bytes_delta": 30
+      },
+      {
+        "event_id": "week4-test-b",
+        "event_time": "2026-10-25 10:04:24+00:00",
+        "ingest_time": "2026-10-25 10:05:00+00:00",
+        "wiki": "kowiki",
+        "title": "테스트 문서",
+        "bot": true,
+        "bytes_delta": null
+      },
+      {
+        "event_id": "week4-test-c",
+        "event_time": "2026-10-25 10:04:24+00:00",
+        "ingest_time": "2026-10-25 10:05:00+00:00",
+        "wiki": "kowiki",
+        "title": "테스트 문서",
+        "bot": false,
+        "bytes_delta": -20
+      }
+    ],
+    "checked_at": "2026-10-27T06:23:58.046551+00:00"
+  },
+  "checkpoint_restart": {
+    "verified": true,
+    "database_edits": 3,
+    "distinct_ids": 3,
+    "rejected": 3,
+    "rejection_reasons": {
+      "invalid_event_time": 1,
+      "invalid_json_or_types": 1,
+      "unsupported_schema_version": 1
+    },
+    "aggregate_edit_count": 3,
+    "parquet_edits": 3,
+    "parquet_aggregate_edit_count": 3,
+    "snapshot": {
+      "snapshot": "/workspace/artifacts/week4/tests/20261027062300_10506/parquet/snapshots/20261027T062406_938935Z-330df491",
+      "edits": 3,
+      "timezone": "UTC",
+      "created_at": "20261027T062406_938935Z-330df491"
+    },
+    "output_examples": [
+      {
+        "event_id": "week4-test-a",
+        "event_time": "2026-10-25 10:04:24+00:00",
+        "ingest_time": "2026-10-25 10:05:00+00:00",
+        "wiki": "kowiki",
+        "title": "테스트 문서",
+        "bot": false,
+        "bytes_delta": 30
+      },
+      {
+        "event_id": "week4-test-b",
+        "event_time": "2026-10-25 10:04:24+00:00",
+        "ingest_time": "2026-10-25 10:05:00+00:00",
+        "wiki": "kowiki",
+        "title": "테스트 문서",
+        "bot": true,
+        "bytes_delta": null
+      },
+      {
+        "event_id": "week4-test-c",
+        "event_time": "2026-10-25 10:04:24+00:00",
+        "ingest_time": "2026-10-25 10:05:00+00:00",
+        "wiki": "kowiki",
+        "title": "테스트 문서",
+        "bot": false,
+        "bytes_delta": -20
+      }
+    ],
+    "checked_at": "2026-10-27T06:24:21.959144+00:00"
+  },
+  "input_replay": {
+    "verified": true,
+    "database_edits": 3,
+    "distinct_ids": 3,
+    "rejected": 6,
+    "rejection_reasons": {
+      "invalid_event_time": 2,
+      "invalid_json_or_types": 2,
+      "unsupported_schema_version": 2
+    },
+    "aggregate_edit_count": 3,
+    "parquet_edits": 3,
+    "parquet_aggregate_edit_count": 3,
+    "snapshot": {
+      "snapshot": "/workspace/artifacts/week4/tests/20261027062300_10506/parquet/snapshots/20261027T062445_118359Z-2c222153",
+      "edits": 3,
+      "timezone": "UTC",
+      "created_at": "20261027T062445_118359Z-2c222153"
+    },
+    "output_examples": [
+      {
+        "event_id": "week4-test-a",
+        "event_time": "2026-10-25 10:04:24+00:00",
+        "ingest_time": "2026-10-25 10:05:00+00:00",
+        "wiki": "kowiki",
+        "title": "테스트 문서",
+        "bot": false,
+        "bytes_delta": 30
+      },
+      {
+        "event_id": "week4-test-b",
+        "event_time": "2026-10-25 10:04:24+00:00",
+        "ingest_time": "2026-10-25 10:05:00+00:00",
+        "wiki": "kowiki",
+        "title": "테스트 문서",
+        "bot": true,
+        "bytes_delta": null
+      },
+      {
+        "event_id": "week4-test-c",
+        "event_time": "2026-10-25 10:04:24+00:00",
+        "ingest_time": "2026-10-25 10:05:00+00:00",
+        "wiki": "kowiki",
+        "title": "테스트 문서",
+        "bot": false,
+        "bytes_delta": -20
+      }
+    ],
+    "checked_at": "2026-10-27T06:24:59.046550+00:00"
+  }
+}

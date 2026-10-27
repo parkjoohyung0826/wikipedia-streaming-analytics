@@ -6,9 +6,15 @@
 검증·형 변환한 뒤 PostgreSQL에 저장한다. PostgreSQL의 정상 편집 이력을 Parquet으로
 내보내며 UTC 시간·위키별 집계도 만든다.
 
-**현재는 구현과 정적 검사를 완료한 상태다. Codespaces 통합 실행 결과는 아직 확보하지 않았다.**
-아래 `demo`와 `verify`가 성공하면 실제 결과 파일이 생성된다. 3회차의 3,846건 전송 기록을
-4회차 실행 결과로 사용하지 않는다. 실제 실행 결과와 남은 오류는 생성된 보고서를 기준으로 갱신한다.
+**구현·정적 검사와 GitHub Actions의 실제 Docker 통합 검증을 완료했다.**
+[통합 테스트 실행](https://github.com/parkjoohyung0826/wikipedia-streaming-analytics/actions/runs/40460684533)에서
+Spark 변환 11건, DB commit 직후 강제 실패 복구, checkpoint 재시작, 입력 재전송,
+DB·Parquet 일치를 확인했다. [검증 결과](../evidence/week4/ci_verification.json)는
+격리된 합성 데이터 테스트이며 실제 Wikimedia 데이터 처리와 구분한다.
+복구·재시작 후 정상 3행/오류 3행, 새 offset으로 재전송 후 정상 3행/오류 6행을 확인했다.
+사용자 Codespaces에서 실제 수집 샘플을 처리하는 `demo`는 아직 실행하지 않았다.
+아래 `demo`와 `verify`가 성공하면 해당 환경의 실제 결과 파일이 생성된다.
+3회차의 3,846건 전송 기록을 4회차 실행 결과로 사용하지 않는다.
 
 ## 1. 처리 흐름
 
@@ -240,7 +246,7 @@ Codespaces도 작업 후 Stop한다. `down -v`는 DB·Kafka 볼륨을 삭제하�
 
 ## 8. 남은 범위와 참고
 
-- Codespaces에서 `demo`와 `verify` 실행 후 실제 증거와 오류 여부를 기록해야 한다.
+- GitHub Actions의 격리 통합 검증은 통과했다. Codespaces에서 `demo`를 실행해 실제 수집 샘플의 처리 증거를 추가해야 한다.
 - 실행 검증은 단일 writer·소규모 학습 데이터 대상이다. DB 드라이버 단일 transaction으로 적재하며,
   대규모 분산 적재·여러 동시 writer·스키마 migration·집계 materialization은 후속 범위다.
 - PostgreSQL view와 Parquet snapshot은 실시간으로 동기화된 한 transaction이 아니다.
