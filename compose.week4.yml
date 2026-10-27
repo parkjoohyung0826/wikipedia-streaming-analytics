@@ -29,6 +29,7 @@ services:
       PGUSER: wiki
       PGPASSWORD: ${WIKI_DB_PASSWORD:-wiki_local_lab}
       SPARK_LOCAL_IP: 127.0.0.1
+      SPARK_DRIVER_BIND_ADDRESS: 127.0.0.1
     volumes:
       - .:/workspace
     depends_on:
@@ -37,7 +38,8 @@ services:
       postgres:
         condition: service_healthy
     entrypoint:
-      - /opt/spark/bin/spark-submit
+      - /opt/entrypoint.sh
+      - driver
       - --master
       - local[2]
       - --driver-memory
@@ -49,3 +51,4 @@ services:
     command: ["src/process_edits.py"]
 volumes:
   week4-postgres:
+
