@@ -1,0 +1,10 @@
+{
+  "sample_events": 3846,
+  "observed_events_per_second": 6.409820145788006,
+  "mean_key_bytes": 36.06838273530941,
+  "mean_value_bytes": 1429.8452938117525,
+  "estimated_daily_events": 553808.4605960838,
+  "estimated_daily_key_value_bytes": 811835396.5752738,
+  "estimated_7day_key_value_bytes": 5682847776.0269165,
+  "basis": "10-minute sample; normalized UTF-8 key+value, fixed-width ingest_time; excludes compression, Kafka overhead, indexes, replication. Projection, not observed daily traffic."
+}

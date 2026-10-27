@@ -1,0 +1,37 @@
+{
+  "verified": true,
+  "expected": 3846,
+  "consumed": 3846,
+  "duplicates": 0,
+  "acknowledged": 3846,
+  "partition_counts": {
+    "0": 1328,
+    "1": 1266,
+    "2": 1252
+  },
+  "offset_ranges": {
+    "0": {
+      "min": 0,
+      "max": 1327
+    },
+    "1": {
+      "min": 0,
+      "max": 1265
+    },
+    "2": {
+      "min": 0,
+      "max": 1251
+    }
+  },
+  "key_bytes": 138719,
+  "value_bytes": 5499185,
+  "console_capture_sha256": "1f6f54c1751aaa77cf7597832fb934eefc4d0f648faa2c180c75a25389dcde34",
+  "checks": [
+    "event_id set",
+    "key",
+    "original payload",
+    "envelope fields",
+    "no duplicate events",
+    "ACK partition/offset uniqueness"
+  ]
+}

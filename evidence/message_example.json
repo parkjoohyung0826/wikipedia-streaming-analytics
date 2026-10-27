@@ -1,0 +1,49 @@
+{
+  "key": "arwiki:أكاديمية تشولاتشومكلاو العسكرية الملكية",
+  "value": {
+    "event_id": "eeda7480-d5f5-4cd8-9a9e-8965a8d62143",
+    "event_type": "wikipedia.edit",
+    "event_time": "2026-10-25T10:04:24+00:00",
+    "ingest_time": "2026-10-25T10:27:53.047946+00:00",
+    "schema_version": 1,
+    "source": "wikimedia-recentchange-replay",
+    "payload": {
+      "$schema": "/mediawiki/recentchange/1.0.0",
+      "meta": {
+        "uri": "https://ar.wikipedia.org/wiki/%D8%A3%D9%83%D8%A7%D8%AF%D9%8A%D9%85%D9%8A%D8%A9_%D8%AA%D8%B4%D9%88%D9%84%D8%A7%D8%AA%D8%B4%D9%88%D9%85%D9%83%D9%84%D8%A7%D9%88_%D8%A7%D9%84%D8%B9%D8%B3%D9%83%D8%B1%D9%8A%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83%D9%8A%D8%A9",
+        "request_id": "ba2e5563-57f1-40a1-bf47-e54f45739e3d",
+        "id": "eeda7480-d5f5-4cd8-9a9e-8965a8d62143",
+        "domain": "ar.wikipedia.org",
+        "stream": "mediawiki.recentchange",
+        "dt": "2026-10-25T10:04:25.655Z",
+        "topic": "eqiad.mediawiki.recentchange",
+        "partition": 0,
+        "offset": 6638408675
+      },
+      "id": 351006898,
+      "type": "edit",
+      "namespace": 0,
+      "title": "أكاديمية تشولاتشومكلاو العسكرية الملكية",
+      "title_url": "https://ar.wikipedia.org/wiki/%D8%A3%D9%83%D8%A7%D8%AF%D9%8A%D9%85%D9%8A%D8%A9_%D8%AA%D8%B4%D9%88%D9%84%D8%A7%D8%AA%D8%B4%D9%88%D9%85%D9%83%D9%84%D8%A7%D9%88_%D8%A7%D9%84%D8%B9%D8%B3%D9%83%D8%B1%D9%8A%D8%A9_%D8%A7%D9%84%D9%85%D9%84%D9%83%D9%8A%D8%A9",
+      "comment": "بوت:صيانة V5.11.0، أضاف وسم مقالات بحاجة لشريط بوابات، أضاف  وسم [[ويكيبيديا:وصلات قليلة|وصلات قليلة]]",
+      "timestamp": 1792922664,
+      "user": "LokasBot",
+      "bot": true,
+      "notify_url": "https://ar.wikipedia.org/w/index.php?diff=77064447&oldid=77044377",
+      "minor": true,
+      "length": {
+        "old": 1146,
+        "new": 1254
+      },
+      "revision": {
+        "old": 77044377,
+        "new": 77064447
+      },
+      "server_url": "https://ar.wikipedia.org",
+      "server_name": "ar.wikipedia.org",
+      "server_script_path": "/w",
+      "wiki": "arwiki",
+      "parsedcomment": "بوت:صيانة V5.11.0، أضاف وسم مقالات بحاجة لشريط بوابات، أضاف  وسم <a href=\"/wiki/%D9%88%D9%8A%D9%83%D9%8A%D8%A8%D9%8A%D8%AF%D9%8A%D8%A7:%D9%88%D8%B5%D9%84%D8%A7%D8%AA_%D9%82%D9%84%D9%8A%D9%84%D8%A9\" class=\"mw-redirect\" title=\"ويكيبيديا:وصلات قليلة\">وصلات قليلة</a>"
+    }
+  }
+}

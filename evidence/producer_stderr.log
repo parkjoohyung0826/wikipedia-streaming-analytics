@@ -1,0 +1,2 @@
+%3|1792924073.048|FAIL|wikipedia-week3-replay#producer-1| [thrd:localhost:9092/bootstrap]: localhost:9092/bootstrap: Connect to ipv6#[::1]:9092 failed: Connection refused (after 1ms in state CONNECT)
+%4|1792924073.841|GETPID|wikipedia-week3-replay#producer-1| [thrd:main]: Failed to acquire idempotence PID from broker localhost:9092/1: Broker: Coordinator load in progress: retrying

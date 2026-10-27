@@ -1,0 +1,49 @@
+{
+  "key": "enwiki:Bey",
+  "value": {
+    "event_id": "5b91f22d-50ac-476e-93be-97203972b30c",
+    "event_type": "wikipedia.edit",
+    "event_time": "2026-10-25T10:10:12+00:00",
+    "ingest_time": "2026-10-25T10:28:04.414157+00:00",
+    "schema_version": 1,
+    "source": "wikimedia-recentchange-replay",
+    "payload": {
+      "$schema": "/mediawiki/recentchange/1.0.0",
+      "meta": {
+        "uri": "https://en.wikipedia.org/wiki/Bey",
+        "request_id": "519768d2-8364-4c7e-8626-70803318226b",
+        "id": "5b91f22d-50ac-476e-93be-97203972b30c",
+        "domain": "en.wikipedia.org",
+        "stream": "mediawiki.recentchange",
+        "dt": "2026-10-25T10:10:15.803Z",
+        "topic": "eqiad.mediawiki.recentchange",
+        "partition": 0,
+        "offset": 6638424363
+      },
+      "id": 2082877495,
+      "type": "edit",
+      "namespace": 0,
+      "title": "Bey",
+      "title_url": "https://en.wikipedia.org/wiki/Bey",
+      "comment": "/* See also */",
+      "timestamp": 1792923012,
+      "user": "Magjozs",
+      "bot": false,
+      "notify_url": "https://en.wikipedia.org/w/index.php?diff=1381877145&oldid=1379091873",
+      "minor": false,
+      "length": {
+        "old": 18883,
+        "new": 18905
+      },
+      "revision": {
+        "old": 1379091873,
+        "new": 1381877145
+      },
+      "server_url": "https://en.wikipedia.org",
+      "server_name": "en.wikipedia.org",
+      "server_script_path": "/w",
+      "wiki": "enwiki",
+      "parsedcomment": "<span class=\"autocomment\"><a href=\"/wiki/Bey#See_also\" title=\"Bey\">→<bdi dir=\"ltr\">See also</bdi></a></span>"
+    }
+  }
+}

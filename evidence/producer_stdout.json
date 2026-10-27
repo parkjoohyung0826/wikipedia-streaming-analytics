@@ -1,0 +1,32 @@
+{
+  "started_at": "2026-10-25T10:27:52.974291+00:00",
+  "finished_at": "2026-10-25T10:28:12.201809+00:00",
+  "elapsed_seconds": 19.227754167019157,
+  "input": "data/20261025T100423_674945Z/events.jsonl",
+  "topic": "wikipedia-edits",
+  "requested_rate": 200.0,
+  "counts": {
+    "read": 25860,
+    "filtered": 22014,
+    "duplicate_input": 0,
+    "queued": 3846,
+    "delivered": 3846,
+    "failed": 0,
+    "invalid": 0
+  },
+  "unresolved": 0,
+  "flush_remaining": 0,
+  "interrupted": false,
+  "producer_config": {
+    "bootstrap.servers": "localhost:9092",
+    "client.id": "wikipedia-week3-replay",
+    "enable.idempotence": true,
+    "acks": "all",
+    "compression.type": "lz4",
+    "delivery.timeout.ms": 120000,
+    "request.timeout.ms": 30000
+  },
+  "delivered_per_second": 200.02336032551005,
+  "output": "artifacts/runs/20261025T102752_972357Z",
+  "success": true
+}

@@ -1,0 +1,10 @@
+{"event_id": "506647e8-7ff7-4323-a65a-a2737cc5e0d3", "key": "itwiki:Peter Godfrey", "topic": "wikipedia-edits", "at": "2026-10-25T10:27:54.586721+00:00", "status": "delivered", "partition": 0, "offset": 0}
+{"event_id": "349dded0-ceea-4fcb-869d-b705891adca4", "key": "afwiki:Capua intractana", "topic": "wikipedia-edits", "at": "2026-10-25T10:27:54.586822+00:00", "status": "delivered", "partition": 0, "offset": 1}
+{"event_id": "0a3b0c9a-b4a9-4706-86a6-a074d4d35ee6", "key": "enwiki:1991–92 Aston Villa F.C. season", "topic": "wikipedia-edits", "at": "2026-10-25T10:27:54.586872+00:00", "status": "delivered", "partition": 0, "offset": 2}
+{"event_id": "58c3225a-857f-43c5-b93d-990e91dcb1c1", "key": "zhwiki:阿波加俊太", "topic": "wikipedia-edits", "at": "2026-10-25T10:27:54.586919+00:00", "status": "delivered", "partition": 0, "offset": 3}
+{"event_id": "8a73b9be-f569-4a5d-a989-57a2e5a905b5", "key": "frwiki:Utilisateur:Raphodon/LISTE", "topic": "wikipedia-edits", "at": "2026-10-25T10:27:54.586957+00:00", "status": "delivered", "partition": 0, "offset": 4}
+{"event_id": "66baed69-6e73-42be-852f-26b22dc876bc", "key": "cewiki:Боргоново-Валь-Тидоне", "topic": "wikipedia-edits", "at": "2026-10-25T10:27:54.586992+00:00", "status": "delivered", "partition": 0, "offset": 5}
+{"event_id": "f37122b5-69b3-47b6-822c-71211e99d5b7", "key": "trwiki:Stabiae", "topic": "wikipedia-edits", "at": "2026-10-25T10:27:54.587026+00:00", "status": "delivered", "partition": 0, "offset": 6}
+{"event_id": "819c2a98-4909-47cc-8bea-29dceeec5267", "key": "cewiki:Боргонуово (Арецо)", "topic": "wikipedia-edits", "at": "2026-10-25T10:27:54.587054+00:00", "status": "delivered", "partition": 0, "offset": 7}
+{"event_id": "8e1ac099-3d3b-433e-b71f-f1cf42890b55", "key": "viwiki:Find the Way", "topic": "wikipedia-edits", "at": "2026-10-25T10:27:54.587084+00:00", "status": "delivered", "partition": 0, "offset": 8}
+{"event_id": "341ee7c5-b1e5-44b7-9731-6abbe101e8e0", "key": "cewiki:Боргонуово (Белуно)", "topic": "wikipedia-edits", "at": "2026-10-25T10:27:54.587111+00:00", "status": "delivered", "partition": 0, "offset": 9}

@@ -1,0 +1,4 @@
+Topic: wikipedia-edits	TopicId: EmU4LRIzRPml8vIMoP6LwA	PartitionCount: 3	ReplicationFactor: 1	Configs: min.insync.replicas=1,cleanup.policy=delete,retention.ms=604800000
+	Topic: wikipedia-edits	Partition: 0	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: wikipedia-edits	Partition: 1	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: wikipedia-edits	Partition: 2	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
