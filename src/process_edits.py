@@ -57,6 +57,14 @@ def initialize_database():
         conn.close()
 
 
+def database_reader(spark):
+    host, port = os.environ.get('PGHOST', 'postgres'), os.environ.get('PGPORT', '5432')
+    db = os.environ.get('PGDATABASE', 'wiki')
+    return (spark.read.format('jdbc').option('url', f'jdbc:postgresql://{host}:{port}/{db}')
+            .option('driver', 'org.postgresql.Driver').option('user', os.environ['PGUSER'])
+            .option('password', os.environ['PGPASSWORD']))
+
+
 def transform(raw):
     """Preserve every source record, with either typed columns or a rejection reason."""
     parsed = raw.withColumn('j', F.from_json('raw_value', ENVELOPE_SCHEMA))
@@ -95,9 +103,10 @@ def transform(raw):
 def write_batch(raw, batch_id, fail_after_commit=False):
     """One database transaction per micro-batch. Replayed IDs keep first committed row."""
     rows = transform(raw).cache()
-    conn = connect()
+    conn = None
     counts = {'input': 0, 'valid': 0, 'invalid': 0, 'inserted': 0, 'rejected_inserted': 0}
     try:
+        conn = connect()
         with conn:
             with conn.cursor() as cur:
                 # Input is bounded by maxOffsetsPerTrigger; stream rows through the driver.
@@ -138,7 +147,8 @@ def write_batch(raw, batch_id, fail_after_commit=False):
             raise RuntimeError('Injected failure AFTER database commit, BEFORE Spark checkpoint completion')
     finally:
         rows.unpersist()
-        conn.close()
+        if conn is not None:
+            conn.close()
 
 
 def export_snapshot(spark, output):
@@ -150,12 +160,7 @@ def export_snapshot(spark, output):
     root = Path(output).resolve()
     target = root / 'snapshots' / stamp
     target.mkdir(parents=True)
-    host, port = os.environ.get('PGHOST', 'postgres'), os.environ.get('PGPORT', '5432')
-    db = os.environ.get('PGDATABASE', 'wiki')
-    reader = (spark.read.format('jdbc').option('url', f'jdbc:postgresql://{host}:{port}/{db}')
-              .option('driver', 'org.postgresql.Driver').option('user', os.environ['PGUSER'])
-              .option('password', os.environ['PGPASSWORD']))
-    edits = reader.option('dbtable', 'week4.edits').load().cache()
+    edits = database_reader(spark).option('dbtable', 'week4.edits').load().cache()
     try:
         count = edits.count()
         # Both outputs derive from the same cached snapshot, not separate live DB reads.

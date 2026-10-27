@@ -34,8 +34,9 @@ def main():
     from confluent_kafka import Producer
     p = argparse.ArgumentParser()
     p.add_argument('--topic', required=True)
+    p.add_argument('--bootstrap-servers', default='localhost:9092')
     args = p.parse_args()
-    producer = Producer({'bootstrap.servers': 'localhost:9092', 'enable.idempotence': True})
+    producer = Producer({'bootstrap.servers': args.bootstrap_servers, 'enable.idempotence': True})
     errors = []
     def ack(error, message):
         if error:

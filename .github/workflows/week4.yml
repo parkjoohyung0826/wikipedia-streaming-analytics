@@ -8,6 +8,10 @@ on:
       - 'sql/**'
       - 'scripts/**'
       - 'tests_week4/**'
+      - 'src/producer.py'
+      - 'samples/**'
+      - 'docker-compose.yml'
+      - 'requirements.txt'
       - '.github/workflows/week4.yml'
   workflow_dispatch:
 permissions:
@@ -21,10 +25,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install producer client
-        run: pip install -r requirements.txt
       - name: Test transforms, crash recovery, replay and Parquet
-        run: bash scripts/week4.sh verify
+        run: python scripts/week4.py verify
+      - name: Process real collected sample and compare source records
+        run: python scripts/week4.py demo
+      - name: Existing collector and producer regression tests
+        run: docker compose -f docker-compose.yml -f compose.week4.yml run --rm -T producer -m unittest discover -s tests -v
       - name: Upload verification evidence and logs
         if: always()
         uses: actions/upload-artifact@v4
