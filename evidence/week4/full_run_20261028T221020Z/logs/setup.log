@@ -1,0 +1,116 @@
++ docker compose version
+Docker Compose version v5.0.2
++ docker compose -f docker-compose.yml -f compose.week4.yml build producer spark
+ Image wikipedia-streaming-analytics-producer Building 
+ Image wikipedia-streaming-analytics-spark Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.17kB done
+#1 DONE 0.0s
+
+#2 [spark internal] load build definition from spark.Dockerfile
+#2 transferring dockerfile: 740B done
+#2 DONE 0.0s
+
+#3 [producer internal] load build definition from producer.Dockerfile
+#3 transferring dockerfile: 189B done
+#3 DONE 0.0s
+
+#4 [producer internal] load metadata for docker.io/library/python:3.11-slim
+#4 ...
+
+#5 [auth] library/spark:pull token for registry-1.docker.io
+#5 DONE 0.0s
+
+#6 [auth] library/python:pull token for registry-1.docker.io
+#6 DONE 0.0s
+
+#7 [spark internal] load metadata for docker.io/library/spark:3.5.8-python3
+#7 ...
+
+#4 [producer internal] load metadata for docker.io/library/python:3.11-slim
+#4 DONE 1.7s
+
+#8 [spark internal] load .dockerignore
+#8 transferring context: 92B done
+#8 DONE 0.0s
+
+#9 [producer 1/4] FROM docker.io/library/python:3.11-slim@sha256:673719e071ecf27434fd2635bbd8d00f49f4fdd81f243143438a42ced8bedf60
+#9 resolve docker.io/library/python:3.11-slim@sha256:673719e071ecf27434fd2635bbd8d00f49f4fdd81f243143438a42ced8bedf60 done
+#9 DONE 0.0s
+
+#10 [producer internal] load build context
+#10 transferring context: 37B done
+#10 DONE 0.0s
+
+#11 [producer 3/4] RUN pip install --no-cache-dir -r /tmp/requirements.txt
+#11 CACHED
+
+#12 [producer 2/4] COPY requirements.txt /tmp/requirements.txt
+#12 CACHED
+
+#13 [producer 4/4] WORKDIR /workspace
+#13 CACHED
+
+#7 [spark internal] load metadata for docker.io/library/spark:3.5.8-python3
+#7 DONE 1.8s
+
+#14 [spark internal] load build context
+#14 DONE 0.0s
+
+#15 [producer] exporting to image
+#15 exporting layers done
+#15 exporting manifest sha256:b8b5d0cd1cb5bbc93a0715a60f64cd82126daea688ee7589203a4fc2b23f6dd4 done
+#15 exporting config sha256:213f70c01bbdc8080a8935cd22007948ea66dc1d2465c5136ffe8bc94666619a done
+#15 exporting attestation manifest sha256:4fbcda74b481ff1320090fe9c9a44fd5898b8ba7d26bb4528b8758287b9bd905 0.0s done
+#15 exporting manifest list sha256:e51c857bface3a644c891512e9efbfc2d12045bbced963c7ce902193c14ea0fe done
+#15 naming to docker.io/library/wikipedia-streaming-analytics-producer:latest done
+#15 unpacking to docker.io/library/wikipedia-streaming-analytics-producer:latest done
+#15 DONE 0.1s
+
+#16 [spark 1/5] FROM docker.io/library/spark:3.5.8-python3@sha256:d0210e48141dfbd6309500bd34d133bd4fded694ac19a4ce774dd048119a8207
+#16 resolve docker.io/library/spark:3.5.8-python3@sha256:d0210e48141dfbd6309500bd34d133bd4fded694ac19a4ce774dd048119a8207
+#16 resolve docker.io/library/spark:3.5.8-python3@sha256:d0210e48141dfbd6309500bd34d133bd4fded694ac19a4ce774dd048119a8207 0.0s done
+#16 DONE 0.0s
+
+#14 [spark internal] load build context
+#14 transferring context: 120B done
+#14 DONE 0.0s
+
+#17 [spark 4/5] COPY docker/resolve_dependencies.py /opt/week4-resolve.py
+#17 CACHED
+
+#18 [spark 3/5] COPY docker/ivysettings.xml /opt/week4-ivysettings.xml
+#18 CACHED
+
+#19 [spark 2/5] RUN pip3 install --no-cache-dir psycopg2-binary==2.9.10
+#19 CACHED
+
+#20 [spark 5/5] RUN SPARK_LOCAL_IP=127.0.0.1 /opt/spark/bin/spark-submit     --master 'local[1]' --driver-memory 512m     --conf spark.jars.ivy=/tmp/week4-build-ivy     --conf spark.jars.ivySettings=/opt/week4-ivysettings.xml     --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.8,org.postgresql:postgresql:42.7.7     /opt/week4-resolve.py
+#20 CACHED
+
+#21 [producer] resolving provenance for metadata file
+#21 DONE 0.0s
+
+#22 [spark] exporting to image
+#22 exporting layers done
+#22 exporting manifest sha256:2e33188b2c3aa34865d8e19e6b39f98492e0dc9f89301f8b780a027daf574af3 done
+#22 exporting config sha256:ffface0f2144743d34974095a1e0e8b4668266ab09c5ddec69c29d242a83a998 done
+#22 exporting attestation manifest sha256:481c00310109264613db7187524be844b6749066daff12f2215109259273db28 0.0s done
+#22 exporting manifest list sha256:27184401871f58ca9359a39f8af7269d512055046238b3a889ceff86e4e844eb 0.0s done
+#22 naming to docker.io/library/wikipedia-streaming-analytics-spark:latest done
+#22 unpacking to docker.io/library/wikipedia-streaming-analytics-spark:latest 0.0s done
+#22 DONE 0.1s
+
+#23 [spark] resolving provenance for metadata file
+#23 DONE 0.0s
+ Image wikipedia-streaming-analytics-spark Built 
+ Image wikipedia-streaming-analytics-producer Built 
++ docker compose -f docker-compose.yml -f compose.week4.yml up -d --wait kafka postgres
+ Container wikipedia-streaming-analytics-postgres-1 Starting 
+ Container wikipedia-streaming-analytics-kafka-1 Starting 
+ Container wikipedia-streaming-analytics-kafka-1 Started 
+ Container wikipedia-streaming-analytics-postgres-1 Started 
+ Container wikipedia-streaming-analytics-kafka-1 Waiting 
+ Container wikipedia-streaming-analytics-postgres-1 Waiting 
+ Container wikipedia-streaming-analytics-postgres-1 Healthy 
+ Container wikipedia-streaming-analytics-kafka-1 Healthy 

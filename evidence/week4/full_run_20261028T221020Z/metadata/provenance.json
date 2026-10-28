@@ -1,0 +1,6 @@
+{
+  "source_directory": "/Users/parkjoohyung/Documents/메타코드 데이터엔지니어링 부트캠프/3week_homework/data/20261025T100423_674945Z",
+  "input": "/Users/parkjoohyung/Documents/wikipedia-streaming-analytics/data/20261025T100423_674945Z/events.jsonl",
+  "sha256": "ab19eb2dd5d40b276cfa22ff65047a638436b21bd02dca200fd7033cd18e7996",
+  "scope": "Full collected input; Wikipedia edits selected by producer; expected 3846 unique edits"
+}

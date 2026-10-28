@@ -1,0 +1,179 @@
+[
+  {
+    "event_id": "0a3b0c9a-b4a9-4706-86a6-a074d4d35ee6",
+    "input_original": {
+      "$schema": "/mediawiki/recentchange/1.0.0",
+      "meta": {
+        "uri": "https://en.wikipedia.org/wiki/1991%E2%80%9392_Aston_Villa_F.C._season",
+        "request_id": "e248abf9-a90f-43a5-a7ab-8bec6174b706",
+        "id": "0a3b0c9a-b4a9-4706-86a6-a074d4d35ee6",
+        "domain": "en.wikipedia.org",
+        "stream": "mediawiki.recentchange",
+        "dt": "2026-10-25T10:04:26.485Z",
+        "topic": "eqiad.mediawiki.recentchange",
+        "partition": 0,
+        "offset": 6638408720
+      },
+      "id": 2082876468,
+      "type": "edit",
+      "namespace": 0,
+      "title": "1991–92 Aston Villa F.C. season",
+      "title_url": "https://en.wikipedia.org/wiki/1991%E2%80%9392_Aston_Villa_F.C._season",
+      "comment": "/* First Division */",
+      "timestamp": 1792922664,
+      "user": "Tiny Particle",
+      "bot": false,
+      "notify_url": "https://en.wikipedia.org/w/index.php?diff=1381876592&oldid=1381875640",
+      "minor": false,
+      "length": {
+        "old": 24636,
+        "new": 27290
+      },
+      "revision": {
+        "old": 1381875640,
+        "new": 1381876592
+      },
+      "server_url": "https://en.wikipedia.org",
+      "server_name": "en.wikipedia.org",
+      "server_script_path": "/w",
+      "wiki": "enwiki",
+      "parsedcomment": "<span class=\"autocomment\"><a href=\"/wiki/1991%E2%80%9392_Aston_Villa_F.C._season#First_Division\" title=\"1991–92 Aston Villa F.C. season\">→<bdi dir=\"ltr\">First Division</bdi></a></span>"
+    },
+    "output_database": {
+      "event_id": "0a3b0c9a-b4a9-4706-86a6-a074d4d35ee6",
+      "event_type": "wikipedia.edit",
+      "schema_version": 1,
+      "event_time": "2026-10-25T10:04:24+00:00",
+      "ingest_time": "2026-10-28T12:12:52.624975+00:00",
+      "source": "wikimedia-recentchange-replay",
+      "wiki": "enwiki",
+      "title": "1991–92 Aston Villa F.C. season",
+      "bot": false,
+      "old_length": 24636,
+      "new_length": 27290,
+      "bytes_delta": 2654,
+      "source_topic": "wikipedia-edits",
+      "source_partition": 0,
+      "source_offset": 2,
+      "processed_at": "2026-10-28T12:13:01.589736+00:00"
+    }
+  },
+  {
+    "event_id": "5b388d66-c904-4207-a83b-962329be6505",
+    "input_original": {
+      "$schema": "/mediawiki/recentchange/1.0.0",
+      "meta": {
+        "uri": "https://en.wikipedia.org/wiki/Deputy_Leader_of_the_Opposition_in_the_Tamil_Nadu_Legislative_Assembly",
+        "request_id": "f639ee1d-d07b-4f3d-80a3-bfbad041ba9f",
+        "id": "5b388d66-c904-4207-a83b-962329be6505",
+        "domain": "en.wikipedia.org",
+        "stream": "mediawiki.recentchange",
+        "dt": "2026-10-25T10:04:27.072Z",
+        "topic": "eqiad.mediawiki.recentchange",
+        "partition": 0,
+        "offset": 6638408740
+      },
+      "id": 2082876469,
+      "type": "edit",
+      "namespace": 0,
+      "title": "Deputy Leader of the Opposition in the Tamil Nadu Legislative Assembly",
+      "title_url": "https://en.wikipedia.org/wiki/Deputy_Leader_of_the_Opposition_in_the_Tamil_Nadu_Legislative_Assembly",
+      "comment": "/* List */",
+      "timestamp": 1792922665,
+      "user": "Dr.AyushBhardwaj",
+      "bot": false,
+      "notify_url": "https://en.wikipedia.org/w/index.php?diff=1381876596&oldid=1381876172",
+      "minor": false,
+      "length": {
+        "old": 4670,
+        "new": 5014
+      },
+      "revision": {
+        "old": 1381876172,
+        "new": 1381876596
+      },
+      "server_url": "https://en.wikipedia.org",
+      "server_name": "en.wikipedia.org",
+      "server_script_path": "/w",
+      "wiki": "enwiki",
+      "parsedcomment": "<span class=\"autocomment\"><a href=\"/wiki/Deputy_Leader_of_the_Opposition_in_the_Tamil_Nadu_Legislative_Assembly#List\" title=\"Deputy Leader of the Opposition in the Tamil Nadu Legislative Assembly\">→<bdi dir=\"ltr\">List</bdi></a></span>"
+    },
+    "output_database": {
+      "event_id": "5b388d66-c904-4207-a83b-962329be6505",
+      "event_type": "wikipedia.edit",
+      "schema_version": 1,
+      "event_time": "2026-10-25T10:04:25+00:00",
+      "ingest_time": "2026-10-28T12:12:52.926024+00:00",
+      "source": "wikimedia-recentchange-replay",
+      "wiki": "enwiki",
+      "title": "Deputy Leader of the Opposition in the Tamil Nadu Legislative Assembly",
+      "bot": false,
+      "old_length": 4670,
+      "new_length": 5014,
+      "bytes_delta": 344,
+      "source_topic": "wikipedia-edits",
+      "source_partition": 2,
+      "source_offset": 3,
+      "processed_at": "2026-10-28T12:13:01.589736+00:00"
+    }
+  },
+  {
+    "event_id": "467d6de7-831c-48d8-a037-36795239ad2e",
+    "input_original": {
+      "$schema": "/mediawiki/recentchange/1.0.0",
+      "meta": {
+        "uri": "https://en.wikipedia.org/wiki/Steve_Chalke",
+        "request_id": "0b10703e-7cd0-48da-b271-7157dd5f72e8",
+        "id": "467d6de7-831c-48d8-a037-36795239ad2e",
+        "domain": "en.wikipedia.org",
+        "stream": "mediawiki.recentchange",
+        "dt": "2026-10-25T10:04:27.226Z",
+        "topic": "eqiad.mediawiki.recentchange",
+        "partition": 0,
+        "offset": 6638408753
+      },
+      "id": 2082876471,
+      "type": "edit",
+      "namespace": 0,
+      "title": "Steve Chalke",
+      "title_url": "https://en.wikipedia.org/wiki/Steve_Chalke",
+      "comment": "/* Broadcaster */ raised citation need against whole section",
+      "timestamp": 1792922664,
+      "user": "Cloptonson",
+      "bot": false,
+      "notify_url": "https://en.wikipedia.org/w/index.php?diff=1381876593&oldid=1381876146",
+      "minor": false,
+      "length": {
+        "old": 46236,
+        "new": 46260
+      },
+      "revision": {
+        "old": 1381876146,
+        "new": 1381876593
+      },
+      "server_url": "https://en.wikipedia.org",
+      "server_name": "en.wikipedia.org",
+      "server_script_path": "/w",
+      "wiki": "enwiki",
+      "parsedcomment": "<span class=\"autocomment\"><a href=\"/wiki/Steve_Chalke#Broadcaster\" title=\"Steve Chalke\">→<bdi dir=\"ltr\">Broadcaster</bdi></a>: </span> raised citation need against whole section"
+    },
+    "output_database": {
+      "event_id": "467d6de7-831c-48d8-a037-36795239ad2e",
+      "event_type": "wikipedia.edit",
+      "schema_version": 1,
+      "event_time": "2026-10-25T10:04:24+00:00",
+      "ingest_time": "2026-10-28T12:12:53.124971+00:00",
+      "source": "wikimedia-recentchange-replay",
+      "wiki": "enwiki",
+      "title": "Steve Chalke",
+      "bot": false,
+      "old_length": 46236,
+      "new_length": 46260,
+      "bytes_delta": 24,
+      "source_topic": "wikipedia-edits",
+      "source_partition": 2,
+      "source_offset": 4,
+      "processed_at": "2026-10-28T12:13:01.589736+00:00"
+    }
+  }
+]

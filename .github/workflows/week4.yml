@@ -7,7 +7,7 @@ on:
       - 'docker/**'
       - 'sql/**'
       - 'scripts/**'
-      - 'tests_week4/**'
+      - 'tests/**'
       - 'src/producer.py'
       - 'samples/**'
       - 'docker-compose.yml'
@@ -30,7 +30,7 @@ jobs:
       - name: Process real collected sample and compare source records
         run: python scripts/week4.py demo
       - name: Existing collector and producer regression tests
-        run: docker compose -f docker-compose.yml -f compose.week4.yml run --rm -T producer -m unittest discover -s tests -v
+        run: docker compose -f docker-compose.yml -f compose.week4.yml run --rm -T producer -m unittest discover -s tests/unit -v
       - name: Upload verification evidence and logs
         if: always()
         uses: actions/upload-artifact@v4

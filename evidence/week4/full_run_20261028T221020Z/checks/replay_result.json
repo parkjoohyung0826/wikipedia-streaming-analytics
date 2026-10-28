@@ -1,0 +1,7 @@
+{
+  "same_input_replayed": true,
+  "database_rows_before": 3846,
+  "database_rows_after": 3846,
+  "all_columns_unchanged": true,
+  "includes_processed_at": true
+}

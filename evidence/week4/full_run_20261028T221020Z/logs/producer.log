@@ -1,0 +1,40 @@
++ docker compose -f docker-compose.yml -f compose.week4.yml exec -T kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:29092 --create --if-not-exists --topic wikipedia-edits --partitions 3 --replication-factor 1 --config retention.ms=604800000 --config cleanup.policy=delete
++ docker compose -f docker-compose.yml -f compose.week4.yml run --rm -T producer -m src.producer --bootstrap-servers kafka:29092 --input data/20261025T100423_674945Z/events.jsonl --rate 200
+ Container wikipedia-streaming-analytics-kafka-1 Running 
+ Container wikipedia-streaming-analytics-kafka-1 Waiting 
+ Container wikipedia-streaming-analytics-kafka-1 Healthy 
+ Container wikipedia-streaming-analytics-producer-run-b4d776a47506 Creating 
+ Container wikipedia-streaming-analytics-producer-run-b4d776a47506 Created 
+%4|1793225496.749|GETPID|wikipedia-week3-replay#producer-1| [thrd:main]: Failed to acquire idempotence PID from broker kafka:29092/1: Broker: Coordinator load in progress: retrying
+{
+  "started_at": "2026-10-28T22:11:36.203728+00:00",
+  "finished_at": "2026-10-28T22:11:55.430247+00:00",
+  "elapsed_seconds": 19.227110134,
+  "input": "data/20261025T100423_674945Z/events.jsonl",
+  "topic": "wikipedia-edits",
+  "requested_rate": 200.0,
+  "counts": {
+    "read": 25860,
+    "filtered": 22014,
+    "duplicate_input": 0,
+    "queued": 3846,
+    "delivered": 3846,
+    "failed": 0,
+    "invalid": 0
+  },
+  "unresolved": 0,
+  "flush_remaining": 0,
+  "interrupted": false,
+  "producer_config": {
+    "bootstrap.servers": "kafka:29092",
+    "client.id": "wikipedia-week3-replay",
+    "enable.idempotence": true,
+    "acks": "all",
+    "compression.type": "lz4",
+    "delivery.timeout.ms": 120000,
+    "request.timeout.ms": 30000
+  },
+  "delivered_per_second": 200.0300603260694,
+  "output": "artifacts/runs/20261028T221136_203251Z",
+  "success": true
+}

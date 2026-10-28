@@ -1,0 +1,70 @@
+[
+  {
+    "name": "project-airflow-worker-1",
+    "running": true
+  },
+  {
+    "name": "project-airflow-triggerer-1",
+    "running": true
+  },
+  {
+    "name": "project-airflow-dag-processor-1",
+    "running": true
+  },
+  {
+    "name": "project-airflow-scheduler-1",
+    "running": true
+  },
+  {
+    "name": "project-airflow-apiserver-1",
+    "running": true
+  },
+  {
+    "name": "airflow-week7-airflow-worker-1",
+    "running": true
+  },
+  {
+    "name": "airflow-week7-airflow-dag-processor-1",
+    "running": true
+  },
+  {
+    "name": "airflow-week7-airflow-scheduler-1",
+    "running": true
+  },
+  {
+    "name": "airflow-week7-airflow-apiserver-1",
+    "running": true
+  },
+  {
+    "name": "airflow-week7-airflow-triggerer-1",
+    "running": true
+  },
+  {
+    "name": "ex14-airflow-webserver-1",
+    "running": true
+  },
+  {
+    "name": "ex14-airflow-scheduler-1",
+    "running": true
+  },
+  {
+    "name": "ex14-airflow-worker-1",
+    "running": true
+  },
+  {
+    "name": "ex14-airflow-triggerer-1",
+    "running": true
+  },
+  {
+    "name": "airflow-triggerer",
+    "running": true
+  },
+  {
+    "name": "airflow-dag-processor",
+    "running": true
+  },
+  {
+    "name": "airflow-apiserver",
+    "running": true
+  }
+]

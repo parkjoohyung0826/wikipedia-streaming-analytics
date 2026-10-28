@@ -57,7 +57,7 @@ if __name__ == "__main__":
     parser.add_argument("--input", required=True, type=Path)
     parser.add_argument("--consumed", required=True, type=Path)
     parser.add_argument("--run", required=True, type=Path)
-    parser.add_argument("--output", type=Path, default=Path("evidence/verification.json"))
+    parser.add_argument("--output", type=Path, default=Path("evidence/week3/verification.json"))
     args = parser.parse_args()
     result = verify(args.input, args.consumed, args.run)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")

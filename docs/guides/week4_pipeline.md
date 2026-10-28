@@ -10,7 +10,7 @@
 [통합 테스트 실행](https://github.com/parkjoohyung0826/wikipedia-streaming-analytics/actions/runs/40466607879)에서
 Spark 변환 11건, DB commit 직후 강제 실패 복구, checkpoint 재시작, 입력 재전송,
 DB·Parquet의 전체 레코드와 집계 일치를 확인했다.
-[검증 결과](../evidence/week4/ci_verification.json)는 격리된 합성 테스트와
+[검증 결과](../../evidence/week4/ci_verification.json)는 격리된 합성 테스트와
 실제 Wikimedia 수집 샘플 테스트를 구분해서 기록한다.
 복구·재시작 후 정상 3행/오류 3행, 새 offset으로 재전송 후 정상 3행/오류 6행을 확인했다.
 실제 수집 샘플은 **20건 입력 → 정상 DB 20행 → Parquet 20행**, 오류 0건이며
@@ -41,8 +41,8 @@ flowchart LR
 - 파일 출력: 기본 실행은 시작 시 확보된 Kafka 입력을 처리하고 종료하는 `availableNow` 방식이다.
   정상 종료 후 DB를 읽어 Parquet snapshot을 만든다.
 
-Kafka를 쓰는 이유와 3회차 전송 확인은 [3회차 보고서](WEEK3.md),
-[상세 README](README_DETAILED.md)에 있다. 이번 회차는 Spark를 컨테이너의 `local[2]`로 실행한다.
+Kafka를 쓰는 이유와 3회차 전송 확인은 [3회차 보고서](../archive/week3.md),
+[상세 README](kafka_setup.md)에 있다. 이번 회차는 Spark를 컨테이너의 `local[2]`로 실행한다.
 분산 클러스터의 성능이나 고가용성을 검증하는 작업은 아니다.
 
 ## 2. Docker가 설치된 컴퓨터에서 실행
@@ -84,7 +84,7 @@ PostgreSQL은 호스트 포트를 공개하지 않는다. Compose 내부의 `pos
 
 `artifacts/`는 Git에서 제외한다. `evidence/week4/`에는 검증 성공 후 생성되는 작은 보고서를 보관한다.
 전체 데이터의 검증 결과를 얻으려면 원본 JSONL을 프로젝트의 `data/` 아래로 가져오거나
-[수집 안내](COLLECTION.md)에 따라 다시 수집한 후 아래처럼 전송한다.
+[수집 안내](collection.md)에 따라 다시 수집한 후 아래처럼 전송한다.
 
 ```bash
 python scripts/week4.py send --input data/실제수집폴더/events.jsonl --rate 200
@@ -114,7 +114,7 @@ python scripts/week4.py check --expected-input data/실제수집폴더/events.js
 
 ## 4. 입력·출력 예시
 
-실제 처리 전 메시지: [3회차 메시지 원문](../evidence/submission_message.json).
+실제 처리 전 메시지: [3회차 메시지 원문](../../evidence/week3/submission_message.json).
 실제 처리 후 예시는 `demo`가 만드는 `evidence/week4/demo_verification.json`의 `output_examples`에 기록된다.
 
 아래는 **합성 테스트 fixture의 예상 변환**이며 실제 Wikimedia 실행 결과로 제시하지 않는다.
@@ -141,7 +141,7 @@ python scripts/week4.py check --expected-input data/실제수집폴더/events.js
 
 ## 5. 최종 스키마
 
-DDL: [sql/week4.sql](../sql/week4.sql).
+DDL: [sql/week4.sql](../../sql/week4.sql).
 
 ### 정상 이력 `week4.edits`
 

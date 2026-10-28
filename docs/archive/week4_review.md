@@ -10,15 +10,15 @@
 | 수집 데이터 읽기 → 전처리 → 저장 | `src/process_edits.py`: Kafka → Spark → PostgreSQL → Parquet |
 | 자료형·시각·결측·중복 처리와 이유 | 명시적 StructType, timezone 필수/UTC 변환, 오류 분리, event_id PK |
 | 처리 전·후 데이터 예시 | 원본 샘플·메시지, demo 보고서 input_examples와 output_examples |
-| 최종 필드명·자료형·의미 | `sql/week4.sql`, `docs/WEEK4.md`의 정상/오류/집계 스키마 |
+| 최종 필드명·자료형·의미 | `sql/week4.sql`, `docs/guides/week4_pipeline.md`의 정상/오류/집계 스키마 |
 | 고유 키·중복 기준 | event_id, 최초 커밋 유지; 오류는 topic/partition/offset |
 | 실제 테이블·파일 저장 | PostgreSQL 이력·오류 테이블/집계 view, 날짜별 Parquet snapshot |
 | 저장 포맷과 이유 | SQL 유일성·transaction, 컬럼 분석용 Parquet, DB 기준 재생성 |
 | 동일 입력 재처리 | checkpoint 재시작 및 새 Kafka offset으로 재전송하는 통합 테스트 |
-| 실행 방법·입출력 위치·남은 문제 | `docs/WEEK4.md`, `python scripts/week4.py demo/verify/run/check` |
+| 실행 방법·입출력 위치·남은 문제 | `docs/guides/week4_pipeline.md`, `python scripts/week4.py demo/verify/run/check` |
 
 메인 화면에 README를 표시하지 않는 사용자 요청에 따라 루트 README는 생성하지 않는다.
-README 업데이트는 기존 `docs/README_DETAILED.md`의 4회차 안내와 상세 보고서로 제공한다.
+README 업데이트는 기존 `docs/guides/kafka_setup.md`의 4회차 안내와 상세 보고서로 제공한다.
 
 ## 검토 중 수정한 사항
 
@@ -56,7 +56,7 @@ GitHub Actions의 Linux Docker다. 실제 검증한 범위와 아직 확인하�
 | 전체 레코드·집계 | 양방향 exceptAll 대조 통과 |
 | 기존 3회차 수집·Producer 테스트 | 7개 통과 |
 
-정량 결과와 실제 전후 예시는 [ci_verification.json](../evidence/week4/ci_verification.json)에 보관한다.
+정량 결과와 실제 전후 예시는 [ci_verification.json](../../evidence/week4/ci_verification.json)에 보관한다.
 강의의 코드·문서 요구사항은 위 구현과 증거로 대응했다. 전체 3,846건을 이번 코드로
 처리했다고 주장하지 않으며, 수업 피드백 반영과 최종 제출은 별도 사용자 작업이다.
 검토 범위에서 확인한 실행 차단 문제를 수정했지만 모든 컴퓨터에서 무결함을 보장하는 표현은 사용하지 않는다.

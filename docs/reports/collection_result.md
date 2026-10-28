@@ -36,6 +36,6 @@ MB와 KB는 각각 1,000,000바이트, 1,000바이트입니다. gzip 압축으�
 
 재실행: `python3 -m src.collect_recentchange --seconds 600`
 
-테스트: `python3 -m unittest discover -s tests -v`
+테스트: `python3 -m unittest discover -s tests/unit -v`
 
 출처: https://stream.wikimedia.org/v2/stream/recentchange

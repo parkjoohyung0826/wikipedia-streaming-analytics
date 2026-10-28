@@ -1,0 +1,12 @@
+[
+  {
+    "path": "artifacts/week4/parquet/snapshots/20261028T221316_433907Z-70e48d2b/hourly_wiki/part-00000-0b110d47-da9c-4217-9789-e52db0c072d4-c000.snappy.parquet",
+    "bytes": 3430,
+    "sha256": "40ee8548e5e530563b26f3cc315560ec6b23c15fcc217a2997e9d65e70a0c7c9"
+  },
+  {
+    "path": "artifacts/week4/parquet/snapshots/20261028T221316_433907Z-70e48d2b/edits/event_date=2026-10-25/part-00000-cfe59ab6-39d5-4930-a24a-1335922ca685.c000.snappy.parquet",
+    "bytes": 320658,
+    "sha256": "00469d8edb930070db9515eb4946764c487fc0e30e0b0b8c2000aa7b765921ad"
+  }
+]

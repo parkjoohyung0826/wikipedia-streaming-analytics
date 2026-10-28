@@ -1,4 +1,4 @@
-name: wikipedia-week3
+name: wikipedia-streaming-analytics
 services:
   kafka:
     image: apache/kafka:3.8.0

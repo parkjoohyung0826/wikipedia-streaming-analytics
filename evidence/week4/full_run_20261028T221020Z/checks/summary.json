@@ -1,0 +1,26 @@
+{
+  "project_directory": "/Users/parkjoohyung/Documents/wikipedia-streaming-analytics",
+  "compose_project": "wikipedia-streaming-analytics",
+  "checked_at_kst": "2026-10-29T07:13:24.203125+09:00",
+  "raw_records": 25860,
+  "selected_edits": 3846,
+  "first_pass": {
+    "existing_before": 20,
+    "inserted": 3826,
+    "duplicates_skipped": 20,
+    "final_rows": 3846,
+    "rejected": 0
+  },
+  "replay": {
+    "same_input_replayed": true,
+    "database_rows_before": 3846,
+    "database_rows_after": 3846,
+    "all_columns_unchanged": true,
+    "includes_processed_at": true
+  },
+  "db_parquet_rows_equal": true,
+  "db_parquet_aggregates_equal": true,
+  "hourly_wiki_groups": 82,
+  "latest_parquet_snapshot": "artifacts/week4/parquet/snapshots/20261028T221316_433907Z-70e48d2b",
+  "input_output_examples": "evidence/week4/full_run_20261028T221020Z/input_output_examples.json"
+}

@@ -1,0 +1,38 @@
+{
+  "verified": true,
+  "expected": 20,
+  "consumed": 20,
+  "duplicates": 0,
+  "acknowledged": 20,
+  "partition_counts": {
+    "0": 6,
+    "1": 7,
+    "2": 7
+  },
+  "offset_ranges": {
+    "1": {
+      "min": 0,
+      "max": 6
+    },
+    "2": {
+      "min": 0,
+      "max": 6
+    },
+    "0": {
+      "min": 0,
+      "max": 5
+    }
+  },
+  "key_bytes": 777,
+  "value_bytes": 29722,
+  "console_capture_sha256": "1857bd1ae4ddb55a6920e83e44fc975358be371effe05b3793e9242208c367ab",
+  "checks": [
+    "event_id set",
+    "key",
+    "original payload",
+    "envelope fields",
+    "no duplicate events",
+    "ACK partition/offset uniqueness"
+  ],
+  "consumer": "confluent_kafka Python Consumer; explicit assignment of 3 partitions"
+}

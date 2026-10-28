@@ -1,0 +1,282 @@
+[
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-16 14:27:11 +0900 KST",
+    "ID": "90e2e64e3aba",
+    "Image": "week7-airflow:parkjoohyung",
+    "Labels": "com.docker.compose.config-hash=2fdd3d50bdb3224aa52b878ffc2dcdd1dc8f9f37d66dd50ef1f3a73b823d4fe2,com.docker.compose.container-number=1,com.docker.compose.depends_on=postgres:service_healthy:false,airflow-apiserver:service_healthy:false,airflow-init:service_completed_successfully:false,redis:service_healthy:false,com.docker.compose.image=sha256:80806bace81ebfb96a4a8171070b5bddeb0f3d05fdeaeea7257cd3cae8f7c924,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Documents/project/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Documents/project,com.docker.compose.project=project,com.docker.compose.service=airflow-worker,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Documents/project/data,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/data,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/.aws,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/home/airflow/.aws,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Documents/project/dags,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/dags,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Documents/project/logs,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/logs,desktop.docker.io/binds/4/Source=/Users/parkjoohyung/Documents/project/config,desktop.docker.io/binds/4/SourceKind=hostFile,desktop.docker.io/binds/4/Target=/opt/airflow/config,desktop.docker.io/binds/5/Source=/Users/parkjoohyung/Documents/project/plugins,desktop.docker.io/binds/5/SourceKind=hostFile,desktop.docker.io/binds/5/Target=/opt/airflow/plugins,desktop.docker.io/binds/6/Source=/Users/parkjoohyung/Documents/project/jobs,desktop.docker.io/binds/6/SourceKind=hostFile,desktop.docker.io/binds/6/Target=/opt/airflow/jobs,desktop.docker.io/ports.scheme=v2,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=3adbbe1c58e4532df1964cb7794805e763816ee8,org.apache.airflow.module=airflow,org.apache.airflow.python.version=3.13.14,org.apache.airflow.uid=50000,org.apache.airflow.version=3.3.1,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=3adbbe1c58e4532df1964cb7794805e763816ee8,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=3.3.1",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "project-airflow-worker-1",
+    "Networks": "project_default",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "79.7MB (virtual 3.69GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-16 14:27:11 +0900 KST",
+    "ID": "cdb6b9b49760",
+    "Image": "week7-airflow:parkjoohyung",
+    "Labels": "com.docker.compose.config-hash=9b7a6321c2f494f5a5b0b620c5ebbf32f465099532537078347091aa6b1f0d53,com.docker.compose.container-number=1,com.docker.compose.depends_on=airflow-init:service_completed_successfully:false,redis:service_healthy:false,postgres:service_healthy:false,com.docker.compose.image=sha256:80806bace81ebfb96a4a8171070b5bddeb0f3d05fdeaeea7257cd3cae8f7c924,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Documents/project/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Documents/project,com.docker.compose.project=project,com.docker.compose.service=airflow-triggerer,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Documents/project/dags,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/dags,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Documents/project/logs,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/logs,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Documents/project/config,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/config,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Documents/project/plugins,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/plugins,desktop.docker.io/binds/4/Source=/Users/parkjoohyung/Documents/project/jobs,desktop.docker.io/binds/4/SourceKind=hostFile,desktop.docker.io/binds/4/Target=/opt/airflow/jobs,desktop.docker.io/binds/5/Source=/Users/parkjoohyung/Documents/project/data,desktop.docker.io/binds/5/SourceKind=hostFile,desktop.docker.io/binds/5/Target=/opt/airflow/data,desktop.docker.io/binds/6/Source=/Users/parkjoohyung/.aws,desktop.docker.io/binds/6/SourceKind=hostFile,desktop.docker.io/binds/6/Target=/home/airflow/.aws,desktop.docker.io/ports.scheme=v2,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=3adbbe1c58e4532df1964cb7794805e763816ee8,org.apache.airflow.module=airflow,org.apache.airflow.python.version=3.13.14,org.apache.airflow.uid=50000,org.apache.airflow.version=3.3.1,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=3adbbe1c58e4532df1964cb7794805e763816ee8,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=3.3.1",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "project-airflow-triggerer-1",
+    "Networks": "project_default",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "35.1MB (virtual 3.65GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-16 14:27:11 +0900 KST",
+    "ID": "dcb3d8caf65a",
+    "Image": "week7-airflow:parkjoohyung",
+    "Labels": "com.docker.compose.config-hash=54a1f73961140daf2c5c6a4599aa41f12364480be12a169168dcb98bda5dc146,com.docker.compose.container-number=1,com.docker.compose.depends_on=postgres:service_healthy:false,airflow-init:service_completed_successfully:false,redis:service_healthy:false,com.docker.compose.image=sha256:80806bace81ebfb96a4a8171070b5bddeb0f3d05fdeaeea7257cd3cae8f7c924,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Documents/project/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Documents/project,com.docker.compose.project=project,com.docker.compose.service=airflow-dag-processor,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Documents/project/logs,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/logs,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Documents/project/config,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/config,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Documents/project/plugins,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/plugins,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Documents/project/jobs,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/jobs,desktop.docker.io/binds/4/Source=/Users/parkjoohyung/Documents/project/data,desktop.docker.io/binds/4/SourceKind=hostFile,desktop.docker.io/binds/4/Target=/opt/airflow/data,desktop.docker.io/binds/5/Source=/Users/parkjoohyung/.aws,desktop.docker.io/binds/5/SourceKind=hostFile,desktop.docker.io/binds/5/Target=/home/airflow/.aws,desktop.docker.io/binds/6/Source=/Users/parkjoohyung/Documents/project/dags,desktop.docker.io/binds/6/SourceKind=hostFile,desktop.docker.io/binds/6/Target=/opt/airflow/dags,desktop.docker.io/ports.scheme=v2,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=3adbbe1c58e4532df1964cb7794805e763816ee8,org.apache.airflow.module=airflow,org.apache.airflow.python.version=3.13.14,org.apache.airflow.uid=50000,org.apache.airflow.version=3.3.1,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=3adbbe1c58e4532df1964cb7794805e763816ee8,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=3.3.1",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "project-airflow-dag-processor-1",
+    "Networks": "project_default",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "92.6MB (virtual 3.71GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-16 14:27:11 +0900 KST",
+    "ID": "f7c9d766ecee",
+    "Image": "week7-airflow:parkjoohyung",
+    "Labels": "com.docker.compose.config-hash=2435a2c68a47d9cb85716f14336ef9b998e0418de251e3789e38f53c920b224d,com.docker.compose.container-number=1,com.docker.compose.depends_on=redis:service_healthy:false,postgres:service_healthy:false,airflow-init:service_completed_successfully:false,com.docker.compose.image=sha256:80806bace81ebfb96a4a8171070b5bddeb0f3d05fdeaeea7257cd3cae8f7c924,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Documents/project/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Documents/project,com.docker.compose.project=project,com.docker.compose.service=airflow-scheduler,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Documents/project/jobs,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/jobs,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Documents/project/data,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/data,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/.aws,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/home/airflow/.aws,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Documents/project/dags,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/dags,desktop.docker.io/binds/4/Source=/Users/parkjoohyung/Documents/project/logs,desktop.docker.io/binds/4/SourceKind=hostFile,desktop.docker.io/binds/4/Target=/opt/airflow/logs,desktop.docker.io/binds/5/Source=/Users/parkjoohyung/Documents/project/config,desktop.docker.io/binds/5/SourceKind=hostFile,desktop.docker.io/binds/5/Target=/opt/airflow/config,desktop.docker.io/binds/6/Source=/Users/parkjoohyung/Documents/project/plugins,desktop.docker.io/binds/6/SourceKind=hostFile,desktop.docker.io/binds/6/Target=/opt/airflow/plugins,desktop.docker.io/ports.scheme=v2,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=3adbbe1c58e4532df1964cb7794805e763816ee8,org.apache.airflow.module=airflow,org.apache.airflow.python.version=3.13.14,org.apache.airflow.uid=50000,org.apache.airflow.version=3.3.1,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=3adbbe1c58e4532df1964cb7794805e763816ee8,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=3.3.1",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "project-airflow-scheduler-1",
+    "Networks": "project_default",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "38.2MB (virtual 3.65GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-16 14:27:11 +0900 KST",
+    "ID": "81163560428b",
+    "Image": "week7-airflow:parkjoohyung",
+    "Labels": "com.docker.compose.config-hash=a777b4e62f145cde6a763d23b0239046d323a5ca3037ff067a33a312e3f63cbf,com.docker.compose.container-number=1,com.docker.compose.depends_on=airflow-init:service_completed_successfully:false,redis:service_healthy:false,postgres:service_healthy:false,com.docker.compose.image=sha256:80806bace81ebfb96a4a8171070b5bddeb0f3d05fdeaeea7257cd3cae8f7c924,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Documents/project/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Documents/project,com.docker.compose.project=project,com.docker.compose.service=airflow-apiserver,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Documents/project/plugins,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/plugins,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Documents/project/jobs,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/jobs,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Documents/project/data,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/data,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/.aws,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/home/airflow/.aws,desktop.docker.io/binds/4/Source=/Users/parkjoohyung/Documents/project/dags,desktop.docker.io/binds/4/SourceKind=hostFile,desktop.docker.io/binds/4/Target=/opt/airflow/dags,desktop.docker.io/binds/5/Source=/Users/parkjoohyung/Documents/project/logs,desktop.docker.io/binds/5/SourceKind=hostFile,desktop.docker.io/binds/5/Target=/opt/airflow/logs,desktop.docker.io/binds/6/Source=/Users/parkjoohyung/Documents/project/config,desktop.docker.io/binds/6/SourceKind=hostFile,desktop.docker.io/binds/6/Target=/opt/airflow/config,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/8080/tcp=:8080,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=3adbbe1c58e4532df1964cb7794805e763816ee8,org.apache.airflow.module=airflow,org.apache.airflow.python.version=3.13.14,org.apache.airflow.uid=50000,org.apache.airflow.version=3.3.1,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=3adbbe1c58e4532df1964cb7794805e763816ee8,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=3.3.1",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "project-airflow-apiserver-1",
+    "Networks": "",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "46.8MB (virtual 3.66GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-14 14:25:48 +0900 KST",
+    "ID": "69eb0fbc8bc6",
+    "Image": "apache/airflow:3.3.1",
+    "Labels": "com.docker.compose.config-hash=099ac3d215cb4266c51dcbc3fa335e1e3601c3dc008a8b75964471c726b3742d,com.docker.compose.container-number=1,com.docker.compose.depends_on=airflow-init:service_completed_successfully:false,redis:service_healthy:false,postgres:service_healthy:false,airflow-apiserver:service_healthy:false,com.docker.compose.image=sha256:0c4bcc0370e526de1b7892a3bf4343d260c6c82359c66f77155b53cd773d6339,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Documents/airflow-week7/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Documents/airflow-week7,com.docker.compose.project=airflow-week7,com.docker.compose.service=airflow-worker,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Documents/airflow-week7/dags,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/dags,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Documents/airflow-week7/logs,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/logs,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Documents/airflow-week7/config,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/config,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Documents/airflow-week7/plugins,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/plugins,desktop.docker.io/ports.scheme=v2,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=3adbbe1c58e4532df1964cb7794805e763816ee8,org.apache.airflow.module=airflow,org.apache.airflow.python.version=3.13.14,org.apache.airflow.uid=50000,org.apache.airflow.version=3.3.1,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=3adbbe1c58e4532df1964cb7794805e763816ee8,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=3.3.1",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "airflow-week7-airflow-worker-1",
+    "Networks": "airflow-week7_default",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "80.1MB (virtual 2.63GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-14 14:25:47 +0900 KST",
+    "ID": "70cc7ac27d06",
+    "Image": "apache/airflow:3.3.1",
+    "Labels": "com.docker.compose.config-hash=1bf216b0b3477114bfc444555e8064f8445acdfca995a92726e9980fea3d26ed,com.docker.compose.container-number=1,com.docker.compose.depends_on=postgres:service_healthy:false,airflow-init:service_completed_successfully:false,redis:service_healthy:false,com.docker.compose.image=sha256:0c4bcc0370e526de1b7892a3bf4343d260c6c82359c66f77155b53cd773d6339,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Documents/airflow-week7/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Documents/airflow-week7,com.docker.compose.project=airflow-week7,com.docker.compose.service=airflow-dag-processor,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Documents/airflow-week7/plugins,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/plugins,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Documents/airflow-week7/dags,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/dags,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Documents/airflow-week7/logs,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/logs,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Documents/airflow-week7/config,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/config,desktop.docker.io/ports.scheme=v2,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=3adbbe1c58e4532df1964cb7794805e763816ee8,org.apache.airflow.module=airflow,org.apache.airflow.python.version=3.13.14,org.apache.airflow.uid=50000,org.apache.airflow.version=3.3.1,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=3adbbe1c58e4532df1964cb7794805e763816ee8,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=3.3.1",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "airflow-week7-airflow-dag-processor-1",
+    "Networks": "airflow-week7_default",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "94.7MB (virtual 2.64GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-14 14:25:47 +0900 KST",
+    "ID": "12dfdaceb14e",
+    "Image": "apache/airflow:3.3.1",
+    "Labels": "com.docker.compose.config-hash=b678dffa52392d96d77d2aada61537cda7fb0a37532485f804057405d5c44f9e,com.docker.compose.container-number=1,com.docker.compose.depends_on=airflow-init:service_completed_successfully:false,redis:service_healthy:false,postgres:service_healthy:false,com.docker.compose.image=sha256:0c4bcc0370e526de1b7892a3bf4343d260c6c82359c66f77155b53cd773d6339,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Documents/airflow-week7/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Documents/airflow-week7,com.docker.compose.project=airflow-week7,com.docker.compose.service=airflow-scheduler,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Documents/airflow-week7/config,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/config,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Documents/airflow-week7/plugins,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/plugins,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Documents/airflow-week7/dags,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/dags,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Documents/airflow-week7/logs,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/logs,desktop.docker.io/ports.scheme=v2,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=3adbbe1c58e4532df1964cb7794805e763816ee8,org.apache.airflow.module=airflow,org.apache.airflow.python.version=3.13.14,org.apache.airflow.uid=50000,org.apache.airflow.version=3.3.1,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=3adbbe1c58e4532df1964cb7794805e763816ee8,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=3.3.1",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "airflow-week7-airflow-scheduler-1",
+    "Networks": "airflow-week7_default",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "63MB (virtual 2.61GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-14 14:25:47 +0900 KST",
+    "ID": "cd8030804a43",
+    "Image": "apache/airflow:3.3.1",
+    "Labels": "com.docker.compose.config-hash=69cceb6849321d98dbf8332200ec940369993a2788970ce1b5b66eb59a89df0b,com.docker.compose.container-number=1,com.docker.compose.depends_on=airflow-init:service_completed_successfully:false,redis:service_healthy:false,postgres:service_healthy:false,com.docker.compose.image=sha256:0c4bcc0370e526de1b7892a3bf4343d260c6c82359c66f77155b53cd773d6339,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Documents/airflow-week7/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Documents/airflow-week7,com.docker.compose.project=airflow-week7,com.docker.compose.service=airflow-apiserver,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Documents/airflow-week7/dags,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/dags,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Documents/airflow-week7/logs,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/logs,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Documents/airflow-week7/config,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/config,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Documents/airflow-week7/plugins,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/plugins,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/8080/tcp=:8080,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=3adbbe1c58e4532df1964cb7794805e763816ee8,org.apache.airflow.module=airflow,org.apache.airflow.python.version=3.13.14,org.apache.airflow.uid=50000,org.apache.airflow.version=3.3.1,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=3adbbe1c58e4532df1964cb7794805e763816ee8,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=3.3.1",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "airflow-week7-airflow-apiserver-1",
+    "Networks": "",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "47.1MB (virtual 2.6GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-14 14:25:47 +0900 KST",
+    "ID": "f6f7d0cca6c4",
+    "Image": "apache/airflow:3.3.1",
+    "Labels": "com.docker.compose.config-hash=cc2672ca93975b4a47179679cc1448411358731fc20b65135b6b0a522e97e9c8,com.docker.compose.container-number=1,com.docker.compose.depends_on=airflow-init:service_completed_successfully:false,redis:service_healthy:false,postgres:service_healthy:false,com.docker.compose.image=sha256:0c4bcc0370e526de1b7892a3bf4343d260c6c82359c66f77155b53cd773d6339,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Documents/airflow-week7/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Documents/airflow-week7,com.docker.compose.project=airflow-week7,com.docker.compose.service=airflow-triggerer,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Documents/airflow-week7/dags,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/dags,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Documents/airflow-week7/logs,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/logs,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Documents/airflow-week7/config,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/config,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Documents/airflow-week7/plugins,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/plugins,desktop.docker.io/ports.scheme=v2,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=3adbbe1c58e4532df1964cb7794805e763816ee8,org.apache.airflow.module=airflow,org.apache.airflow.python.version=3.13.14,org.apache.airflow.uid=50000,org.apache.airflow.version=3.3.1,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=3adbbe1c58e4532df1964cb7794805e763816ee8,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=3.3.1",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "airflow-week7-airflow-triggerer-1",
+    "Networks": "airflow-week7_default",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "35.3MB (virtual 2.58GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-13 10:13:53 +0900 KST",
+    "ID": "c0b266bf19e2",
+    "Image": "apache/airflow:2.10.5",
+    "Labels": "com.docker.compose.config-hash=3b11acf78002b90219af73c3e71d6bbda23b9590788910c2189b7b307506ad28,com.docker.compose.container-number=1,com.docker.compose.depends_on=postgres:service_healthy:false,airflow-init:service_completed_successfully:false,redis:service_healthy:false,com.docker.compose.image=sha256:6499a680a93463846d3a6be980e85d601dc97b0d81e82eed9ef5e5cb9da31b79,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14,com.docker.compose.project=ex14,com.docker.compose.replace=airflow-webserver-1,com.docker.compose.service=airflow-webserver,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/dags,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/dags,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/logs,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/logs,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/config,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/config,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/plugins,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/plugins,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/8080/tcp=:8080,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=223b0a4b61a44a83895371b2c9a3a5cafa5df8ea,org.apache.airflow.module=airflow,org.apache.airflow.uid=50000,org.apache.airflow.version=2.10.5,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=223b0a4b61a44a83895371b2c9a3a5cafa5df8ea,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=2.10.5",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "ex14-airflow-webserver-1",
+    "Networks": "",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "161MB (virtual 1.88GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-13 10:07:49 +0900 KST",
+    "ID": "f7b6e21373bd",
+    "Image": "apache/airflow:2.10.5",
+    "Labels": "com.docker.compose.config-hash=ebfd6d60d4c9887c3b69f02c4eccfb4b2963346be9f83fb526e619c23b6295f6,com.docker.compose.container-number=1,com.docker.compose.depends_on=airflow-init:service_completed_successfully:false,redis:service_healthy:false,postgres:service_healthy:false,com.docker.compose.image=sha256:6499a680a93463846d3a6be980e85d601dc97b0d81e82eed9ef5e5cb9da31b79,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14,com.docker.compose.project=ex14,com.docker.compose.service=airflow-scheduler,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/config,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/config,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/plugins,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/plugins,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/dags,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/dags,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/logs,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/logs,desktop.docker.io/ports.scheme=v2,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=223b0a4b61a44a83895371b2c9a3a5cafa5df8ea,org.apache.airflow.module=airflow,org.apache.airflow.uid=50000,org.apache.airflow.version=2.10.5,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=223b0a4b61a44a83895371b2c9a3a5cafa5df8ea,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=2.10.5",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "ex14-airflow-scheduler-1",
+    "Networks": "ex14_default",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "76.6MB (virtual 1.79GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-13 10:07:49 +0900 KST",
+    "ID": "8a84daccdd8a",
+    "Image": "apache/airflow:2.10.5",
+    "Labels": "com.docker.compose.config-hash=299aba88733bc3cc340e7dc4b86b7f74aa86569da7c8165eb24f4c7d618759a5,com.docker.compose.container-number=1,com.docker.compose.depends_on=airflow-init:service_completed_successfully:false,redis:service_healthy:false,postgres:service_healthy:false,com.docker.compose.image=sha256:6499a680a93463846d3a6be980e85d601dc97b0d81e82eed9ef5e5cb9da31b79,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14,com.docker.compose.project=ex14,com.docker.compose.service=airflow-worker,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/dags,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/dags,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/logs,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/logs,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/config,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/config,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/plugins,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/plugins,desktop.docker.io/ports.scheme=v2,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=223b0a4b61a44a83895371b2c9a3a5cafa5df8ea,org.apache.airflow.module=airflow,org.apache.airflow.uid=50000,org.apache.airflow.version=2.10.5,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=223b0a4b61a44a83895371b2c9a3a5cafa5df8ea,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=2.10.5",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "ex14-airflow-worker-1",
+    "Networks": "ex14_default",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "60.7MB (virtual 1.78GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  },
+  {
+    "Command": "\"/usr/bin/dumb-init \u2026\"",
+    "CreatedAt": "2026-09-13 10:07:49 +0900 KST",
+    "ID": "553136f89fc1",
+    "Image": "apache/airflow:2.10.5",
+    "Labels": "com.docker.compose.config-hash=ab0572a12aa96cff781fa71729fd6f2c67b9e4f514b5f9a7fbade55976cfa220,com.docker.compose.container-number=1,com.docker.compose.depends_on=airflow-init:service_completed_successfully:false,redis:service_healthy:false,postgres:service_healthy:false,com.docker.compose.image=sha256:6499a680a93463846d3a6be980e85d601dc97b0d81e82eed9ef5e5cb9da31b79,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/docker-compose.yaml,com.docker.compose.project.working_dir=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14,com.docker.compose.project=ex14,com.docker.compose.service=airflow-triggerer,com.docker.compose.version=5.0.2,desktop.docker.io/binds/0/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/logs,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/opt/airflow/logs,desktop.docker.io/binds/1/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/config,desktop.docker.io/binds/1/SourceKind=hostFile,desktop.docker.io/binds/1/Target=/opt/airflow/config,desktop.docker.io/binds/2/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/plugins,desktop.docker.io/binds/2/SourceKind=hostFile,desktop.docker.io/binds/2/Target=/opt/airflow/plugins,desktop.docker.io/binds/3/Source=/Users/parkjoohyung/Downloads/Dave_\uac15\uc0ac\ub2d8_\uac15\uc758\uc790\ub8cc_\uba54\ud0c0\ucf54\ub4dcM (2)/\uc2e4\uc2b5\ucf54\ub4dc\ud30c\uc77c(\ucd5c\uc885)/ex14/dags,desktop.docker.io/binds/3/SourceKind=hostFile,desktop.docker.io/binds/3/Target=/opt/airflow/dags,desktop.docker.io/ports.scheme=v2,org.apache.airflow.component=airflow,org.apache.airflow.distro=debian,org.apache.airflow.image=airflow,org.apache.airflow.main-image.build-id=,org.apache.airflow.main-image.commit-sha=223b0a4b61a44a83895371b2c9a3a5cafa5df8ea,org.apache.airflow.module=airflow,org.apache.airflow.uid=50000,org.apache.airflow.version=2.10.5,org.opencontainers.image.authors=dev@airflow.apache.org,org.opencontainers.image.created=,org.opencontainers.image.description=Reference, production-ready Apache Airflow image,org.opencontainers.image.documentation=https://airflow.apache.org/docs/docker-stack/index.html,org.opencontainers.image.licenses=Apache-2.0,org.opencontainers.image.ref.name=airflow,org.opencontainers.image.revision=223b0a4b61a44a83895371b2c9a3a5cafa5df8ea,org.opencontainers.image.source=https://github.com/apache/airflow,org.opencontainers.image.title=Production Airflow Image,org.opencontainers.image.url=https://airflow.apache.org,org.opencontainers.image.vendor=Apache Software Foundation,org.opencontainers.image.version=2.10.5",
+    "LocalVolumes": "0",
+    "Mounts": "/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026,/host_mnt/User\u2026",
+    "Names": "ex14-airflow-triggerer-1",
+    "Networks": "ex14_default",
+    "Platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    "Ports": "8080/tcp",
+    "RunningFor": "6 weeks ago",
+    "Size": "61.5MB (virtual 1.78GB)",
+    "State": "running",
+    "Status": "Up 34 seconds (health: starting)"
+  }
+]

@@ -84,8 +84,8 @@ def verify():
     compose('exec', '-T', 'postgres', 'psql', '-U', 'wiki', '-d', 'wiki',
             '-v', 'ON_ERROR_STOP=1', '-c', 'CREATE DATABASE ' + database)
     create_topic(topic)
-    spark('tests_week4/test_transform.py', log=test_root + '/transform.log')
-    send = ['scripts/week4_fixture.py', '--topic', topic, '--bootstrap-servers', 'kafka:29092']
+    spark('tests/integration/test_transform.py', log=test_root + '/transform.log')
+    send = ['tests/fixtures/week4_fixture.py', '--topic', topic, '--bootstrap-servers', 'kafka:29092']
     produce(*send)
     args = ['src/process_edits.py', '--topic', topic, '--checkpoint', test_root + '/checkpoint',
             '--output', test_root + '/parquet']

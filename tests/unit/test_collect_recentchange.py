@@ -1,4 +1,4 @@
-"""Offline checks: python3 -m unittest discover -s tests -v"""
+"""Offline checks: python3 -m unittest discover -s tests/unit -v"""
 import json
 from pathlib import Path
 import tempfile

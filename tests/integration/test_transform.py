@@ -1,7 +1,7 @@
 """Run using spark-submit inside the week4 service; no Kafka or DB mutation."""
 import json
 from pyspark.sql import SparkSession, types as T
-from scripts.week4_fixture import records
+from tests.fixtures.week4_fixture import records
 from src.process_edits import transform
 
 
