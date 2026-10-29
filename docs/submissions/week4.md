@@ -1,7 +1,5 @@
 # 4회차 제출 — Wikipedia 편집 데이터 전처리와 저장
 
-`3회차_강의자료.pdf` 11~12쪽에서 요구한 다섯 항목을 현재 코드에 맞춰 정리했다.
-
 데이터 출처는 [Wikimedia EventStreams](https://stream.wikimedia.org/v2/stream/recentchange)다. 2026-10-25 한국시간 19:04:23~19:14:23에 받은 전체 변경 기록은 **25,860건·36.80MB**, 그중 Wikipedia 편집은 **3,846건**이다. 이전 CI에서는 실제 편집 20건 샘플을, 이번 로컬 Spark 실행에서는 **3,846건 전체**를 처리했다.
 
 **로컬 검증 완료:** 원본 편집 3,846건 → DB 3,846행 → Parquet 3,846행, 오류 0건. 같은 입력을 다시 보내도 모든 DB 열과 행 수가 유지됐다. [전체 결과·CSV·동일 이벤트 입출력 예시](../../evidence/week4/full_run_20261028T221020Z/README.md). 기존 Linux CI의 합성 오류·장애 복구 결과는 별도 근거로 보존한다.
@@ -9,7 +7,7 @@
 ## 1. 처리 흐름
 
 ```text
-수집 JSONL 샘플 → Producer → Kafka
+수집 JSONL의 Wikipedia 편집 3,846건 → Producer → Kafka
 → Spark: JSON 해석·시각 변환·필수 필드 검사
 → 정상 기록은 PostgreSQL edits / 오류는 rejected
 → 시간·위키별 집계 → Parquet 파일 저장
@@ -99,16 +97,43 @@
 
 **실제 로컬 저장 결과:** DB 정상 3,846행, Parquet 3,846행, 오류 0건이다. 시간·위키별 집계는 82행이며 편집 수 합계는 3,846건이다. 원본·DB·Parquet 대조 및 재전송 결과는 [검증 폴더](../../evidence/week4/full_run_20261028T221020Z/README.md)에 저장했다. CSV와 JSONL 전체 출력도 함께 보관했다.
 
+### 실제 DB 조회 화면
+
+아래는 PostgreSQL에 접속해 직접 조회한 화면이다. `week4.edits`는 **3,846행**, `week4.rejected`는 **0행**이며, 정상 편집의 최근 10건과 시간·위키별 편집 수 상위 10개가 표시되어 있다. 봇 여부는 `t`/`f`로 표시되며, 음수 `bytes_delta`는 문서 크기가 줄어든 정상 편집이다.
+
+![실제 PostgreSQL 정상·오류 건수와 편집·집계 조회 결과](../images/week4-db-query.png)
+
+[이미지 원본 보기](../images/week4-db-query.png)
+
+조회에 사용한 SQL:
+
+```sql
+SELECT COUNT(*) FROM week4.edits;
+SELECT COUNT(*) FROM week4.rejected;
+
+SELECT wiki, title, event_time, bot, bytes_delta
+FROM week4.edits
+ORDER BY event_time DESC
+LIMIT 10;
+
+SELECT *
+FROM week4.hourly_wiki
+ORDER BY edit_count DESC
+LIMIT 10;
+```
+
+이 사진은 DB의 저장·조회 결과를 보여준다. 원본 전체 대조, DB·Parquet 일치, 재전송 전후 동일성은 [별도 검증 파일](../../evidence/week4/full_run_20261028T221020Z/README.md)에 기록했다.
+
 DB를 기준 데이터로 삼고 Parquet은 다시 만들 수 있는 snapshot으로 관리한다. 새 파일을 모두 쓴 뒤 `CURRENT.json`을 교체한다. 조회할 때는 **CURRENT.json이 가리키는 snapshot 하나만** 읽는다. 과거 snapshot을 전부 읽으면 같은 데이터가 중복될 수 있다.
 
 재실행 시 같은 event_id는 DB에 다시 추가되지 않는다. 별도 합성 테스트에서도 DB 저장 직후 실패·checkpoint 재시작·입력 재전송 후 정상 3행이 유지됐다. 오류 원문을 새 Kafka offset으로 다시 보내면 새로운 오류 수신 기록이므로 오류 행은 3행에서 6행으로 늘었다.
 
-## 5. README 업데이트 — 실행 방법·위치·남은 문제
+## 5. 실행 방법·입출력 위치·운영 범위
 
 프로젝트 최상위 폴더에서 실행한다. Docker Desktop과 Compose, Python 3.9 이상이 필요하다. Spark·Java·Python 패키지는 컨테이너에서 준비한다.
 
 ```bash
-cd /Users/parkjoohyung/Documents/wikipedia-streaming-analytics
+cd wikipedia-streaming-analytics
 
 # 이미지 빌드 → 샘플 20건 전송 → Spark 처리 → DB·Parquet 검증
 python3 scripts/week4.py demo
@@ -137,4 +162,4 @@ DB 저장 후 Parquet 출력만 실패했다면 `python3 scripts/week4.py run --
 
 이전 로컬 Kafka 검증에서는 여러 Airflow 서비스와 함께 실행할 때 메모리 부족 종료가 발생했다. Spark를 실행하기 전 자원 여유를 확인해야 한다. 관련 없는 컨테이너는 임의로 중지하지 않는다.
 
-제출 마감: **2026-10-29(목) 20:00 전**. 제출 형식: **레포 링크 + README 업데이트**. 기존 상세 설명은 [docs/guides/week4_pipeline.md](../guides/week4_pipeline.md)에 보존했다.
+상세 실행 방법은 [파이프라인 안내](../guides/week4_pipeline.md)에 정리했다.

@@ -5,8 +5,6 @@
 
 2주차의 실시간 파이프라인 설계를 바탕으로 **실제 수집 데이터 → Python Producer → Kafka → 콘솔 Consumer** 구간을 구현했다. 실시간 API를 10분간 수집한 뒤, Wikipedia 편집만 골라 재생한다. 원본을 보관하므로 같은 입력으로 전송 속도와 장애 동작을 반복 검증할 수 있다.
 
-과제 기준은 `2회차_강의자료.pdf` 6~8쪽의 메시지·토픽 설계와 8쪽의 3회차 과제다. [이전 보고서](../archive/week2.md)는 보존했으며, 제공되지 않은 발표 피드백을 임의로 작성하지 않았다.
-
 ## 1. 데이터와 실측 규모
 
 소스: [Wikimedia EventStreams recentchange](https://stream.wikimedia.org/v2/stream/recentchange).
@@ -221,7 +219,6 @@ python -m src.verify_delivery \
 
 **모든 명령은 프로젝트 최상위 폴더에서 실행한다.** 소스는 `python -m src.모듈명`으로 실행하며, 테스트는 `python -m unittest discover -s tests/unit -v`로 실행한다. `evidence/`는 보고서 근거로 남길 결과이고, `artifacts/`는 실행 과정에서 생성되는 로컬 작업 파일이다. 이전 실행의 JSON 기록에 있는 경로와 시각은 당시 증거이므로 유지했다.
 
-
 - `src/producer.py`: 과제 핵심 코드, 속도 조절 보너스 포함.
 - `docker-compose.yml`, `requirements.txt`: 로컬 실행 환경.
 - `samples/wikipedia_edits.jsonl`: 실제 수집 데이터에서 고른 재현용 20건.
@@ -230,11 +227,10 @@ python -m src.verify_delivery \
 - `src/collect_recentchange.py`, `docs/reports/collection_result.md`, `docs/guides/collection.md`: 선행 수집 코드와 측정 근거.
 - `docs/archive/week2.md`: 이전 설계 보고서.
 
-Git에 올릴 때 `.venv/`, 대용량 `data/`, 실행별 전체 로그 `artifacts/`, 제출 압축본 `dist/`는 제외한다. 강의 PDF의 제출 형식은 **레포 링크(producer.py) + README 업데이트**, 마감은 **10/26 월요일 20:00 전**이다. 이 작업은 로컬 구현·검증과 제출 자료 준비까지이며 원격 레포 생성이나 디스코드 전송은 포함하지 않는다.
+Git에 올릴 때 `.venv/`, 대용량 `data/`, 실행별 전체 로그 `artifacts/`, 제출 압축본 `dist/`는 제외한다.
 
 ## 7. 참고 자료
 
-- 사용자 제공 `2회차_강의자료.pdf`, 6~8쪽: Topic·메시지·Producer 설정, 과제 범위.
 - [Wikimedia EventStreams 설명](https://wikitech.wikimedia.org/wiki/Event_Platform/EventStreams_HTTP_Service)
 - [Apache Kafka Docker 안내](https://kafka.apache.org/38/getting-started/docker/)
 - [Confluent Python Client: 전송 콜백·poll·flush](https://docs.confluent.io/kafka-clients/python/current/overview.html)
