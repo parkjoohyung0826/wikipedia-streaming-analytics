@@ -21,6 +21,14 @@ Docker 프로젝트: `wikipedia-streaming-analytics`
 
 원본의 ID·발생 시각·위키·문서명·봇 여부·편집 크기를 DB와 대조했다. DB와 Parquet의 전체 행 및 집계도 일치했다. 전체 입력을 다시 전송한 후에는 `processed_at`을 포함한 DB의 모든 열이 이전과 동일함을 확인했다. 이전 샘플 20건은 최초 저장된 ingest_time·processed_at을 유지한다.
 
+## 실제 DB 조회 화면
+
+정상 3,846행·오류 0행, 정상 편집 최근 10건과 시간·위키별 집계 상위 10개를 실제 PostgreSQL에서 조회한 화면이다. 사진의 집계값은 이 폴더의 전체 출력과 일치한다.
+
+![실제 PostgreSQL 조회 결과](../../../docs/images/week4-db-query.png)
+
+[이미지 원본 보기](../../../docs/images/week4-db-query.png)
+
 ## 같은 이벤트의 입력과 출력
 
 처리 전 원본 일부:
@@ -70,7 +78,7 @@ Docker 프로젝트: `wikipedia-streaming-analytics`
 | [parquet_files.json](metadata/parquet_files.json) | 최신 Parquet 파일 경로·크기·SHA-256 |
 | [provenance.json](metadata/provenance.json) | 원본 수집 폴더·복사 위치·파일 해시 |
 
-단계별 실행 로그는 같은 폴더의 `producer.log`, `spark.log`, `verification.log` 및 `replay_*.log`에 있다. 원래 수집 파일은 프로젝트의 `data/20261025T100423_674945Z/events.jsonl`에 보관했다.
+단계별 실행 로그는 [logs/](logs/)의 `producer.log`, `spark.log`, `verification.log` 및 `replay_*.log`에 있다. 원래 수집 파일은 프로젝트의 `data/20261025T100423_674945Z/events.jsonl`에 보관했다.
 
 Parquet 원본은 프로젝트 기준 `artifacts/week4/parquet/snapshots/20261028T221316_433907Z-70e48d2b`에 있다. 기존 snapshot도 보존했으며 최신 결과는 `artifacts/week4/parquet/CURRENT.json`으로 찾는다. `/workspace`는 컨테이너 내부에서 프로젝트 루트를 가리킨다.
 

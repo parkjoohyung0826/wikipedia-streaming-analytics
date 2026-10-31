@@ -1,7 +1,5 @@
 # 4회차 제출 — Wikipedia 편집 데이터 전처리와 저장
 
-`3회차_강의자료.pdf` 11~12쪽에서 요구한 다섯 항목을 현재 코드에 맞춰 정리했다.
-
 데이터 출처는 [Wikimedia EventStreams](https://stream.wikimedia.org/v2/stream/recentchange)다. 2026-10-25 한국시간 19:04:23~19:14:23에 받은 전체 변경 기록은 **25,860건·36.80MB**, 그중 Wikipedia 편집은 **3,846건**이다. 이전 CI에서는 실제 편집 20건 샘플을, 이번 로컬 Spark 실행에서는 **3,846건 전체**를 처리했다.
 
 **로컬 검증 완료:** 원본 편집 3,846건 → DB 3,846행 → Parquet 3,846행, 오류 0건. 같은 입력을 다시 보내도 모든 DB 열과 행 수가 유지됐다. [전체 결과·CSV·동일 이벤트 입출력 예시](../../evidence/week4/full_run_20261028T221020Z/README.md). 기존 Linux CI의 합성 오류·장애 복구 결과는 별도 근거로 보존한다.
@@ -11,7 +9,7 @@
 새 실행 코드: [src/stream_edits.py](../../src/stream_edits.py). 기존 원본 DB와 snapshot 결과는 보존했다.
 
 ```text
-Kafka → JSON 해석·검증
+수집 JSONL → Producer → Kafka → JSON 해석·검증
   ├─ 전체 정상·오류 기록 → 기존 PostgreSQL edits / rejected (감사·재처리용)
   └─ 정상 기록 → watermark + event_id 중복 제거
        → 날짜별 Parquet에 계속 추가
@@ -198,6 +196,33 @@ Kafka key는 `enwiki:1991–92 Aston Villa F.C. season`이다. key는 메시지 
 | 기존 snapshot | DB 전체를 내보낸 과거 결과 및 별도 배치 export. 새 스트리밍 출력과 분리 |
 
 Parquet의 `_spark_metadata`와 checkpoint가 파일 커밋을 관리한다. 이 폴더들을 함께 보존해야 하며, 파일을 임의로 옮기거나 직접 덧붙이지 않는다. 실시간 집계는 Spark 상태와 DB의 배치 기록을 함께 사용한다. DB, 출력, checkpoint 중 일부만 삭제하고 재사용하면 안 된다.
+
+### 기존 전체 처리 결과의 DB 조회 화면
+
+아래는 기존 snapshot 경로의 전체 3,846건 처리 후 PostgreSQL에 접속해 직접 조회한 화면이다. 새 실시간 집계 `windowed_wiki`의 검증 화면과는 구분한다. `week4.edits`는 **3,846행**, `week4.rejected`는 **0행**이며, 정상 편집의 최근 10건과 시간·위키별 편집 수 상위 10개가 표시되어 있다. 봇 여부는 `t`/`f`로 표시되며, 음수 `bytes_delta`는 문서 크기가 줄어든 정상 편집이다.
+
+![실제 PostgreSQL 정상·오류 건수와 편집·집계 조회 결과](../images/week4-db-query.png)
+
+[이미지 원본 보기](../images/week4-db-query.png)
+
+조회에 사용한 SQL:
+
+```sql
+SELECT COUNT(*) FROM week4.edits;
+SELECT COUNT(*) FROM week4.rejected;
+
+SELECT wiki, title, event_time, bot, bytes_delta
+FROM week4.edits
+ORDER BY event_time DESC
+LIMIT 10;
+
+SELECT *
+FROM week4.hourly_wiki
+ORDER BY edit_count DESC
+LIMIT 10;
+```
+
+이 사진은 DB의 저장·조회 결과를 보여준다. 원본 전체 대조, DB·Parquet 일치, 재전송 전후 동일성은 [별도 검증 파일](../../evidence/week4/full_run_20261028T221020Z/README.md)에 기록했다.
 
 ## 5. 실행 방법·검증·한계
 

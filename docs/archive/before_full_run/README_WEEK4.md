@@ -1,7 +1,5 @@
 # 4회차 제출 — Wikipedia 편집 데이터 전처리와 저장
 
-`3회차_강의자료.pdf` 11~12쪽에서 요구한 다섯 항목을 현재 코드에 맞춰 정리했다.
-
 데이터 출처는 [Wikimedia EventStreams](https://stream.wikimedia.org/v2/stream/recentchange)다. 2026-10-25 한국시간 19:04:23~19:14:23에 받은 전체 변경 기록은 **25,860건·36.80MB**, 그중 Wikipedia 편집은 **3,846건**이다. 이번 4회차 검증에는 실제 편집 **20건 샘플**을 사용했다.
 
 **검증 범위:** 저장소에 보관된 [CI 검증 기록](../../../evidence/week4/ci_verification.json)에 따르면 Linux Docker에서 Spark·DB·Parquet 처리를 확인했다. 이 기록을 현재 Mac에서 실행한 결과로 표현하지 않는다. 다른 로컬 폴더에서 수행한 Kafka 20건 재검증도 Spark 검증과 구분한다.
@@ -136,5 +134,3 @@ DB 저장 후 Parquet 출력만 실패했다면 `python3 scripts/week4.py run --
 **남은 문제와 범위:** 이 README 정리 과정에서는 해당 Mac에서 Spark를 새로 실행하지 않았다. 현재 보고된 Spark 성공 근거는 저장소의 Linux CI 기록이다. 전체 3,846건의 4회차 처리, 여러 동시 writer, 대규모 성능 검증은 포함되지 않는다. 같은 event_id의 수정본 갱신 정책도 없으며 최초 저장 값을 유지한다. DB와 Parquet은 하나의 transaction으로 동시에 갱신되지는 않는다.
 
 이전 로컬 Kafka 검증에서는 여러 Airflow 서비스와 함께 실행할 때 메모리 부족 종료가 발생했다. Spark를 실행하기 전 자원 여유를 확인해야 한다. 관련 없는 컨테이너는 임의로 중지하지 않는다.
-
-제출 마감: **2026-10-29(목) 20:00 전**. 제출 형식: **레포 링크 + README 업데이트**. 기존 상세 설명은 [docs/guides/week4_pipeline.md](../../guides/week4_pipeline.md)에 보존했다.

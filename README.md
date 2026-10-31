@@ -2,8 +2,6 @@
 
 Wikimedia 실시간 편집 기록을 수집하고, Kafka → Spark → PostgreSQL·Parquet으로 처리하는 프로젝트
 
-**프로젝트 경로:** `/Users/parkjoohyung/Documents/wikipedia-streaming-analytics`
-
 ## 문서 안내
 
 | 문서 | 용도 |
@@ -38,6 +36,14 @@ Wikimedia SSE → 원본 JSONL → Producer → Kafka
 - 저장소의 [CI 보고서](evidence/week4/ci_verification.json): 실제 샘플 20건의 DB·Parquet 일치, 합성 입력의 변환·실패 복구·재시작·재전송 검증 결과를 포함한다. Linux Docker CI 결과다.
 - **로컬 전체 실행 완료:** Wikipedia 편집 3,846건을 Spark로 처리해 PostgreSQL·Parquet에 저장했고, 전체 재전송 후에도 3,846건과 모든 DB 열이 유지됨을 확인했다. [입출력 예시와 실행 결과](evidence/week4/full_run_20261028T221020Z/README.md)
 
+## 실제 DB 조회 결과
+
+정상 편집 기록 **3,846건**, 오류 기록 **0건**을 조회했다. 아래 화면은 정상 테이블의 최근 편집 10건과 시간·위키별 집계 상위 10개를 함께 확인한 결과다. 전체 집계 그룹은 82개이며 편집 수 합계는 3,846건이다.
+
+![PostgreSQL 저장 건수, 최근 편집과 시간·위키별 집계 조회](docs/images/week4-db-query.png)
+
+[이미지 원본 보기](docs/images/week4-db-query.png) · [전처리·저장 보고서](docs/submissions/week4.md) · [전체 데이터 및 검증 결과](evidence/week4/full_run_20261028T221020Z/README.md)
+
 ## 실행
 
 Compose 프로젝트 이름은 `wikipedia-streaming-analytics`다. 이전 `wikipedia-week3`와 다른 컨테이너·볼륨을 사용한다.
@@ -45,7 +51,7 @@ Compose 프로젝트 이름은 `wikipedia-streaming-analytics`다. 이전 `wikip
 Docker Desktop을 시작한 뒤 이 프로젝트 폴더에서 실행한다. 호스트 Python은 실행 도구용이며 Spark·Java·패키지는 컨테이너에 포함된다.
 
 ```bash
-cd /Users/parkjoohyung/Documents/wikipedia-streaming-analytics
+cd wikipedia-streaming-analytics
 python3 scripts/week4.py demo
 python3 scripts/week4.py verify
 ```

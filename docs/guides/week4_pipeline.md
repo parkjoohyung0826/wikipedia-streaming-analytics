@@ -4,6 +4,8 @@
 
 ## 범위와 현재 검증 상태
 
+최신 전체 실행에서는 Wikipedia 편집 **3,846건**을 처리해 PostgreSQL·Parquet 각각 3,846행, 오류 0건, 집계 82개를 확인했다. [최신 처리 결과](../submissions/week4.md)와 [실제 DB 조회 화면](../images/week4-db-query.png)을 참고한다. 아래 CI 설명은 별도의 샘플·합성 데이터 검증 기록이다.
+
 3회차의 Wikimedia 편집 메시지를 Kafka에서 읽고, Spark Structured Streaming으로
 검증·형 변환한 뒤 PostgreSQL에 저장한다. PostgreSQL의 정상 편집 이력을 Parquet으로
 내보내며 UTC 시간·위키별 집계도 만든다.
@@ -264,6 +266,5 @@ python scripts/week4.py stop
   대규모 분산 적재·여러 동시 writer·스키마 migration·집계 materialization은 후속 범위다.
 - PostgreSQL view와 Parquet snapshot은 실시간으로 동기화된 한 transaction이 아니다.
 - 이번 회차에는 대시보드와 Airflow를 추가하지 않는다.
-- 근거: 사용자 제공 `3회차_강의자료.pdf` 11~12쪽(처리 흐름, 전후 예시, 스키마, 저장 포맷, 재실행).
 - [Spark 3.5.8 Kafka 연동](https://spark.apache.org/docs/3.5.8/structured-streaming-kafka-integration.html)
 - [Spark foreachBatch와 checkpoint](https://spark.apache.org/docs/3.5.8/structured-streaming-programming-guide.html)
