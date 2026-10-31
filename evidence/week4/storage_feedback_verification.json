@@ -1,0 +1,22 @@
+{
+  "verified": true,
+  "checked_at": "2026-10-31T05:42:59.211426+00:00",
+  "input_records": 2401,
+  "staging_partitions": 4,
+  "records_after_recovery": 2402,
+  "checks": [
+    "staging failure leaves canonical tables untouched",
+    "duplicate staging retry idempotence",
+    "reject preservation",
+    "post-commit retry",
+    "no-change export writes no files",
+    "only changed date rewritten",
+    "unchanged partition paths and hashes retained",
+    "failure before publish retains CURRENT",
+    "full DB/Parquet equality",
+    "update and date deletion tracked",
+    "concurrent ingestion snapshot consistency",
+    "empty dataset readable"
+  ],
+  "root": "artifacts/week4/tests/storage-93bfbac6fb"
+}

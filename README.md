@@ -29,6 +29,10 @@ Wikimedia SSE → 원본 JSONL → Producer → Kafka
 
 [실행·결과·지연 정책 안내](docs/guides/stream_v2.md). 새 검증은 `python3 scripts/week4.py verify-stream`으로 수행한다. 아래 3,846건 기록은 기존 snapshot 경로의 검증이다.
 
+## 저장 성능 구조 보완
+
+모든 행을 드라이버로 가져오는 대신 executor JDBC staging과 DB 일괄 병합을 사용한다. snapshot은 변경 날짜만 다시 쓰고 나머지 날짜의 파일은 재사용한다. [설명·검증·운영 범위](docs/guides/storage_feedback.md). 검증 명령은 `python3 scripts/week4.py verify-storage`다.
+
 ## 구현과 검증 상태
 
 - 수집·Kafka 전송: 구현돼 있으며, 3회차 전체 3,846건의 전송·수신 검증 기록이 있다.

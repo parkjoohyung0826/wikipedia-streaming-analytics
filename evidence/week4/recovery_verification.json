@@ -1,0 +1,227 @@
+{
+  "verified": true,
+  "fixture": "synthetic; separate database and topic",
+  "database": "week4_test_20261031054302_115ca2",
+  "topic": "week4-test-20261031054302_115ca2",
+  "reports": {
+    "recovery": {
+      "verified": true,
+      "database_edits": 3,
+      "distinct_ids": 3,
+      "source_events_verified": null,
+      "full_row_equality": true,
+      "full_aggregate_equality": true,
+      "input_examples": [],
+      "rejected": 3,
+      "rejection_reasons": {
+        "invalid_event_time": 1,
+        "invalid_json_or_types": 1,
+        "unsupported_schema_version": 1
+      },
+      "aggregate_edit_count": 3,
+      "parquet_edits": 3,
+      "parquet_aggregate_edit_count": 3,
+      "snapshot": {
+        "version": 2,
+        "source_id": "6f01f4fe-e05b-4c4e-aa36-d622a10fc264",
+        "created_at": "20261031T054324_505673Z-af8fac2b",
+        "timezone": "UTC",
+        "revisions": {
+          "2026-10-25": 1
+        },
+        "partitions": {
+          "2026-10-25": {
+            "edits": 3,
+            "revision": 1,
+            "edits_path": "/workspace/artifacts/week4/tests/20261031054302_115ca2/parquet/versions/20261031T054324_505673Z-af8fac2b/event_date=2026-10-25/edits",
+            "hourly_wiki_path": "/workspace/artifacts/week4/tests/20261031054302_115ca2/parquet/versions/20261031T054324_505673Z-af8fac2b/event_date=2026-10-25/hourly_wiki"
+          }
+        },
+        "empty": {
+          "edits_path": "/workspace/artifacts/week4/tests/20261031054302_115ca2/parquet/versions/20261031T054324_505673Z-af8fac2b/empty/edits",
+          "hourly_wiki_path": "/workspace/artifacts/week4/tests/20261031054302_115ca2/parquet/versions/20261031T054324_505673Z-af8fac2b/empty/hourly_wiki"
+        },
+        "edits": 3,
+        "rewritten_dates": [
+          "2026-10-25"
+        ]
+      },
+      "output_examples": [
+        {
+          "event_id": "week4-test-a",
+          "event_time": "2026-10-25 10:04:24+00:00",
+          "ingest_time": "2026-10-25 10:05:00+00:00",
+          "wiki": "kowiki",
+          "title": "테스트 문서",
+          "bot": false,
+          "bytes_delta": 30
+        },
+        {
+          "event_id": "week4-test-b",
+          "event_time": "2026-10-25 10:04:24+00:00",
+          "ingest_time": "2026-10-25 10:05:00+00:00",
+          "wiki": "kowiki",
+          "title": "테스트 문서",
+          "bot": true,
+          "bytes_delta": null
+        },
+        {
+          "event_id": "week4-test-c",
+          "event_time": "2026-10-25 10:04:24+00:00",
+          "ingest_time": "2026-10-25 10:05:00+00:00",
+          "wiki": "kowiki",
+          "title": "테스트 문서",
+          "bot": false,
+          "bytes_delta": -20
+        }
+      ],
+      "checked_at": "2026-10-31T05:43:32.296416+00:00"
+    },
+    "restart": {
+      "verified": true,
+      "database_edits": 3,
+      "distinct_ids": 3,
+      "source_events_verified": null,
+      "full_row_equality": true,
+      "full_aggregate_equality": true,
+      "input_examples": [],
+      "rejected": 3,
+      "rejection_reasons": {
+        "invalid_event_time": 1,
+        "invalid_json_or_types": 1,
+        "unsupported_schema_version": 1
+      },
+      "aggregate_edit_count": 3,
+      "parquet_edits": 3,
+      "parquet_aggregate_edit_count": 3,
+      "snapshot": {
+        "version": 2,
+        "source_id": "6f01f4fe-e05b-4c4e-aa36-d622a10fc264",
+        "created_at": "20261031T054324_505673Z-af8fac2b",
+        "timezone": "UTC",
+        "revisions": {
+          "2026-10-25": 1
+        },
+        "partitions": {
+          "2026-10-25": {
+            "edits": 3,
+            "revision": 1,
+            "edits_path": "/workspace/artifacts/week4/tests/20261031054302_115ca2/parquet/versions/20261031T054324_505673Z-af8fac2b/event_date=2026-10-25/edits",
+            "hourly_wiki_path": "/workspace/artifacts/week4/tests/20261031054302_115ca2/parquet/versions/20261031T054324_505673Z-af8fac2b/event_date=2026-10-25/hourly_wiki"
+          }
+        },
+        "empty": {
+          "edits_path": "/workspace/artifacts/week4/tests/20261031054302_115ca2/parquet/versions/20261031T054324_505673Z-af8fac2b/empty/edits",
+          "hourly_wiki_path": "/workspace/artifacts/week4/tests/20261031054302_115ca2/parquet/versions/20261031T054324_505673Z-af8fac2b/empty/hourly_wiki"
+        },
+        "edits": 3,
+        "rewritten_dates": [
+          "2026-10-25"
+        ]
+      },
+      "output_examples": [
+        {
+          "event_id": "week4-test-a",
+          "event_time": "2026-10-25 10:04:24+00:00",
+          "ingest_time": "2026-10-25 10:05:00+00:00",
+          "wiki": "kowiki",
+          "title": "테스트 문서",
+          "bot": false,
+          "bytes_delta": 30
+        },
+        {
+          "event_id": "week4-test-b",
+          "event_time": "2026-10-25 10:04:24+00:00",
+          "ingest_time": "2026-10-25 10:05:00+00:00",
+          "wiki": "kowiki",
+          "title": "테스트 문서",
+          "bot": true,
+          "bytes_delta": null
+        },
+        {
+          "event_id": "week4-test-c",
+          "event_time": "2026-10-25 10:04:24+00:00",
+          "ingest_time": "2026-10-25 10:05:00+00:00",
+          "wiki": "kowiki",
+          "title": "테스트 문서",
+          "bot": false,
+          "bytes_delta": -20
+        }
+      ],
+      "checked_at": "2026-10-31T05:43:42.573983+00:00"
+    },
+    "replay": {
+      "verified": true,
+      "database_edits": 3,
+      "distinct_ids": 3,
+      "source_events_verified": null,
+      "full_row_equality": true,
+      "full_aggregate_equality": true,
+      "input_examples": [],
+      "rejected": 6,
+      "rejection_reasons": {
+        "invalid_event_time": 2,
+        "invalid_json_or_types": 2,
+        "unsupported_schema_version": 2
+      },
+      "aggregate_edit_count": 3,
+      "parquet_edits": 3,
+      "parquet_aggregate_edit_count": 3,
+      "snapshot": {
+        "version": 2,
+        "source_id": "6f01f4fe-e05b-4c4e-aa36-d622a10fc264",
+        "created_at": "20261031T054324_505673Z-af8fac2b",
+        "timezone": "UTC",
+        "revisions": {
+          "2026-10-25": 1
+        },
+        "partitions": {
+          "2026-10-25": {
+            "edits": 3,
+            "revision": 1,
+            "edits_path": "/workspace/artifacts/week4/tests/20261031054302_115ca2/parquet/versions/20261031T054324_505673Z-af8fac2b/event_date=2026-10-25/edits",
+            "hourly_wiki_path": "/workspace/artifacts/week4/tests/20261031054302_115ca2/parquet/versions/20261031T054324_505673Z-af8fac2b/event_date=2026-10-25/hourly_wiki"
+          }
+        },
+        "empty": {
+          "edits_path": "/workspace/artifacts/week4/tests/20261031054302_115ca2/parquet/versions/20261031T054324_505673Z-af8fac2b/empty/edits",
+          "hourly_wiki_path": "/workspace/artifacts/week4/tests/20261031054302_115ca2/parquet/versions/20261031T054324_505673Z-af8fac2b/empty/hourly_wiki"
+        },
+        "edits": 3,
+        "rewritten_dates": [
+          "2026-10-25"
+        ]
+      },
+      "output_examples": [
+        {
+          "event_id": "week4-test-a",
+          "event_time": "2026-10-25 10:04:24+00:00",
+          "ingest_time": "2026-10-25 10:05:00+00:00",
+          "wiki": "kowiki",
+          "title": "테스트 문서",
+          "bot": false,
+          "bytes_delta": 30
+        },
+        {
+          "event_id": "week4-test-b",
+          "event_time": "2026-10-25 10:04:24+00:00",
+          "ingest_time": "2026-10-25 10:05:00+00:00",
+          "wiki": "kowiki",
+          "title": "테스트 문서",
+          "bot": true,
+          "bytes_delta": null
+        },
+        {
+          "event_id": "week4-test-c",
+          "event_time": "2026-10-25 10:04:24+00:00",
+          "ingest_time": "2026-10-25 10:05:00+00:00",
+          "wiki": "kowiki",
+          "title": "테스트 문서",
+          "bot": false,
+          "bytes_delta": -20
+        }
+      ],
+      "checked_at": "2026-10-31T05:43:57.463626+00:00"
+    }
+  }
+}

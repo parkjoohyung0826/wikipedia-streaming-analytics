@@ -193,9 +193,15 @@ Kafka key는 `enwiki:1991–92 Aston Villa F.C. season`이다. key는 메시지 
 | 기존 `edits` / `rejected` | 전체 정상·오류 기록 보존. 늦은 데이터 재처리 및 원본 대조용 |
 | 새 `clean/` Parquet | Spark에서 중복 제거한 이벤트를 날짜별로 append. 집계 재시작 때 다시 읽을 수 있음 |
 | 새 `windowed_wiki` | 1분·위키별 실시간 집계를 PK 기준으로 갱신. SQL로 바로 조회 |
-| 기존 snapshot | DB 전체를 내보낸 과거 결과 및 별도 배치 export. 새 스트리밍 출력과 분리 |
+| 날짜별 snapshot | 변경 날짜만 재출력하고 나머지 날짜 파일은 재사용. 새 스트리밍 출력과 분리 |
 
 Parquet의 `_spark_metadata`와 checkpoint가 파일 커밋을 관리한다. 이 폴더들을 함께 보존해야 하며, 파일을 임의로 옮기거나 직접 덧붙이지 않는다. 실시간 집계는 Spark 상태와 DB의 배치 기록을 함께 사용한다. DB, 출력, checkpoint 중 일부만 삭제하고 재사용하면 안 된다.
+
+### 강사 피드백 반영: 저장 병목과 전체 재출력 개선
+
+1. **DB 적재:** 모든 행을 드라이버로 가져오던 `toLocalIterator()`를 제거했다. Spark 파티션이 JDBC로 임시 테이블에 나눠 쓰고, 모두 성공하면 DB에서 정상·오류 기록과 집계를 일괄 병합한다. 정상·오류 PK와 집계 배치 기록으로 재시도 중복을 막는다.
+2. **Parquet snapshot:** 매번 전체 데이터를 다시 쓰는 대신 변경된 UTC 날짜만 새 파일로 만든다. 변경 없는 날짜는 이전 파일을 재사용한다. 모든 쓰기가 끝난 뒤 `CURRENT.json`을 교체하므로 실패한 파일은 공개되지 않는다.
+3. **검증:** `verify-storage`가 2,401건 입력과 staging 중복·실패, 날짜별 재사용, manifest 공개 전 실패 등을 검증한다. [결과](../../evidence/week4/storage_feedback_verification.json)와 [상세 설명](../guides/storage_feedback.md)을 참고한다. 기존 DB 3,846건도 새 snapshot으로 export해 전체 일치를 확인했다([결과](../../evidence/week4/storage_full_check/README.md)). 속도 향상 배수는 측정하지 않았다.
 
 ### 기존 전체 처리 결과의 DB 조회 화면
 
@@ -240,6 +246,8 @@ python3 scripts/week4.py run --continuous
 python3 scripts/week4.py verify-stream
 # 기존 snapshot 기능은 별도 명령으로 유지
 python3 scripts/week4.py snapshot --export-only
+# 분산 적재·날짜별 snapshot 검증
+python3 scripts/week4.py verify-storage
 ```
 
 기본 `run`은 `availableNow`로 끝나며, 연속 실행은 `--continuous`를 붙인다. 기존 `demo`, `verify`, `check`는 과거 snapshot 경로의 검증 명령이다.

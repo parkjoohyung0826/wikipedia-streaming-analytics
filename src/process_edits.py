@@ -1,13 +1,9 @@
 """Week 4: Kafka -> Spark validation -> idempotent PostgreSQL -> Parquet snapshot."""
 import argparse
-from datetime import datetime, timezone
-import json
 import os
 from pathlib import Path
-import uuid
 
 import psycopg2
-from psycopg2.extras import execute_values
 from pyspark.sql import SparkSession, functions as F, types as T
 
 
@@ -53,6 +49,7 @@ def initialize_database():
         with conn:
             with conn.cursor() as cur:
                 cur.execute(Path('sql/week4.sql').read_text(encoding='utf-8'))
+                cur.execute(Path('sql/storage.sql').read_text(encoding='utf-8'))
     finally:
         conn.close()
 
@@ -100,89 +97,14 @@ def transform(raw):
     return data.withColumn('error_reason', reason).drop('j')
 
 
-def write_batch(raw, batch_id, fail_after_commit=False):
-    """One database transaction per micro-batch. Replayed IDs keep first committed row."""
-    rows = transform(raw).cache()
-    conn = None
-    counts = {'input': 0, 'valid': 0, 'invalid': 0, 'inserted': 0, 'rejected_inserted': 0}
-    try:
-        conn = connect()
-        with conn:
-            with conn.cursor() as cur:
-                # Input is bounded by maxOffsetsPerTrigger; stream rows through the driver.
-                good, bad = [], []
-                def flush():
-                    if good:
-                        execute_values(cur,
-                            'INSERT INTO week4.edits (' + ','.join(EDIT_COLUMNS) +
-                            ') VALUES %s ON CONFLICT (event_id) DO NOTHING', good, page_size=len(good))
-                        counts['inserted'] += cur.rowcount
-                        good.clear()
-                    if bad:
-                        execute_values(cur,
-                            'INSERT INTO week4.rejected (source_id,source_topic,source_partition,source_offset,raw_value,error_reason) '
-                            'VALUES %s ON CONFLICT (source_id) DO NOTHING', bad, page_size=len(bad))
-                        counts['rejected_inserted'] += cur.rowcount
-                        bad.clear()
-                for row in rows.toLocalIterator():
-                    counts['input'] += 1
-                    if row.error_reason is None:
-                        counts['valid'] += 1
-                        values = [row[c] for c in EDIT_COLUMNS]
-                        # Spark timestamps are naive UTC in a UTC session; psycopg needs explicit UTC.
-                        for i in (3, 4):
-                            values[i] = values[i].replace(tzinfo=timezone.utc)
-                        good.append(tuple(values))
-                    else:
-                        counts['invalid'] += 1
-                        source_id = json.dumps([row.source_topic, row.source_partition, row.source_offset])
-                        bad.append((source_id, row.source_topic, row.source_partition, row.source_offset,
-                                    row.raw_value, row.error_reason))
-                    if len(good) + len(bad) >= 500:
-                        flush()
-                flush()
-        counts['duplicate_or_existing'] = counts['valid'] - counts['inserted']
-        print(json.dumps({'batch_id': batch_id, **counts}), flush=True)
-        if fail_after_commit and counts['input']:
-            raise RuntimeError('Injected failure AFTER database commit, BEFORE Spark checkpoint completion')
-    finally:
-        rows.unpersist()
-        if conn is not None:
-            conn.close()
+def write_batch(raw, batch_id, fail_after_commit=False, partitions=4, fail_after_stage=False):
+    from src.db_sink import write_audit
+    return write_audit(raw, batch_id, fail_after_commit, partitions, fail_after_stage)
 
 
-def export_snapshot(spark, output):
-    """Immutable snapshot, then atomic manifest replacement on the mounted local filesystem.
-
-    Run with a single writer. PostgreSQL is canonical; failed exports can be retried.
-    """
-    stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S_%fZ') + '-' + uuid.uuid4().hex[:8]
-    root = Path(output).resolve()
-    target = root / 'snapshots' / stamp
-    target.mkdir(parents=True)
-    edits = database_reader(spark).option('dbtable', 'week4.edits').load().cache()
-    try:
-        count = edits.count()
-        # Both outputs derive from the same cached snapshot, not separate live DB reads.
-        hourly = (edits.groupBy(F.date_trunc('hour', 'event_time').alias('hour_utc'), 'wiki')
-                  .agg(F.count('*').alias('edit_count'),
-                       F.sum(F.col('bot').cast('long')).alias('bot_edit_count'),
-                       F.count('bytes_delta').alias('size_known_count'),
-                       F.sum('bytes_delta').alias('net_bytes_delta')))
-        dated = edits.withColumn('event_date', F.to_date('event_time'))
-        export = dated.write.mode('error')
-        if count:
-            export = export.partitionBy('event_date')
-        export.parquet(str(target / 'edits'))
-        hourly.write.mode('error').parquet(str(target / 'hourly_wiki'))
-        manifest = {'snapshot': str(target), 'edits': count, 'timezone': 'UTC', 'created_at': stamp}
-        temporary = root / ('CURRENT-' + uuid.uuid4().hex + '.json')
-        temporary.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-        os.replace(temporary, root / 'CURRENT.json')
-        print(json.dumps({'export': manifest}), flush=True)
-        return manifest
-    finally:
-        edits.unpersist()
+def export_snapshot(spark, output, fail_before_publish=False):
+    from src.snapshot_store import export_snapshot as export
+    return export(spark, output, fail_before_publish)
 
 
 def main():
@@ -191,11 +113,14 @@ def main():
     parser.add_argument('--bootstrap-servers', default='kafka:29092')
     parser.add_argument('--checkpoint', default='artifacts/week4/checkpoints/main')
     parser.add_argument('--output', default='artifacts/week4/parquet')
+    parser.add_argument('--jdbc-partitions', type=int, default=4)
     parser.add_argument('--max-offsets', type=int, default=1000)
     parser.add_argument('--continuous', action='store_true')
     parser.add_argument('--export-only', action='store_true')
     parser.add_argument('--fail-after-commit', action='store_true', help='Recovery test only')
     args = parser.parse_args()
+    if not 1 <= args.jdbc_partitions <= 32:
+        parser.error("jdbc-partitions must be between 1 and 32")
     if args.max_offsets < 1:
         parser.error('--max-offsets must be positive')
     os.environ['TZ'] = 'UTC'
@@ -217,7 +142,7 @@ def main():
                    .load().selectExpr('CAST(key AS STRING) AS message_key', 'CAST(value AS STRING) AS raw_value',
                                       'topic AS source_topic', 'partition AS source_partition', 'offset AS source_offset'))
             writer = (raw.writeStream.option('checkpointLocation', args.checkpoint)
-                      .foreachBatch(lambda batch, number: write_batch(batch, number, args.fail_after_commit)))
+                      .foreachBatch(lambda batch, number: write_batch(batch, number, args.fail_after_commit, args.jdbc_partitions)))
             writer = writer.trigger(processingTime='10 seconds') if args.continuous else writer.trigger(availableNow=True)
             writer.start().awaitTermination()
         export_snapshot(spark, args.output)

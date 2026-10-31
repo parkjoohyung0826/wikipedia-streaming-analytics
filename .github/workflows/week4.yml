@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - 'src/process_edits.py'
+      - 'src/db_sink.py'
+      - 'src/snapshot_store.py'
       - 'src/stream_edits.py'
       - 'compose.week4.yml'
       - 'docker/**'
@@ -30,6 +32,8 @@ jobs:
         run: python scripts/week4.py verify
       - name: Process real collected sample and compare source records
         run: python scripts/week4.py demo
+      - name: Distributed storage and incremental snapshots
+        run: python scripts/week4.py verify-storage
       - name: Stateful streaming verification
         run: python scripts/week4.py verify-stream
       - name: Existing collector and producer regression tests

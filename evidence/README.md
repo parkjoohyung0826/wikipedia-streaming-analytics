@@ -32,3 +32,9 @@ PostgreSQL이 기준 저장소이며, 이 폴더의 CSV·JSONL은 확인용 내�
 - [실제 샘플 20건 최초 처리](week4/stream_v2_sample_initial.json)
 - [같은 샘플 재전송](week4/stream_v2_sample_replay.json)
 
+
+## 저장 구조 개선 검증
+
+[분산 staging·증분 snapshot 검증](week4/storage_feedback_verification.json): 합성 2,401건 입력, 재시도·실패 복구·변경 날짜만 쓰기를 확인한다. 처리 속도 측정 결과는 아니다.
+
+[기존 DB 3,846건의 새 snapshot 검증](week4/storage_full_check/README.md): 원본·DB·Parquet 및 집계 일치, 이전 manifest 보관.

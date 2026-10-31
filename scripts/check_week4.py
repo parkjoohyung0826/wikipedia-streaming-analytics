@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from pyspark.sql import SparkSession, functions as F
 from src.process_edits import connect, database_reader, EDIT_COLUMNS
+from src.snapshot_store import read_snapshot
 
 
 def main():
@@ -72,9 +73,8 @@ def main():
              .config('spark.sql.session.timeZone', 'UTC').getOrCreate())
     spark.sparkContext.setLogLevel('WARN')
     try:
-        path = Path(manifest['snapshot'])
-        edits = spark.read.parquet(str(path / 'edits'))
-        hourly = spark.read.parquet(str(path / 'hourly_wiki'))
+        edits = read_snapshot(spark, manifest, 'edits')
+        hourly = read_snapshot(spark, manifest, 'hourly_wiki')
         columns = EDIT_COLUMNS + ['processed_at']
         database_edits = database_reader(spark).option('dbtable', 'week4.edits').load()
         left, right = edits.select(*columns), database_edits.select(*columns)

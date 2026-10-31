@@ -1,6 +1,6 @@
 # 4회차 과제: Spark 전처리와 저장
 
-> 이 문서는 기존 snapshot 경로 설명이다. 새 3·4·5단계 스트리밍 구현과 기본 run 명령은 [stream_v2.md](stream_v2.md)를 따른다.
+> 이 문서는 snapshot 경로 설명이다. 최신 저장 방식은 [분산 적재·날짜별 갱신](storage_feedback.md)을 따른다. 새 3·4·5단계 스트리밍 구현과 기본 run 명령은 [stream_v2.md](stream_v2.md)를 따른다.
 
 ## 범위와 현재 검증 상태
 
@@ -39,7 +39,7 @@ flowchart LR
 
 - 입력: Kafka `wikipedia-edits`, UTF-8 key와 JSON envelope. 새 checkpoint에서는 earliest부터 읽는다.
 - 전처리: `src/process_edits.py`의 `transform`. 원본은 3회차 JSONL과 Kafka에 보존한다.
-- 저장: micro-batch마다 정상·오류 레코드를 하나의 PostgreSQL transaction으로 저장한다.
+- 저장: micro-batch를 executor JDBC로 staging에 나눠 적재하고, DB의 단일 transaction에서 정상·오류 레코드를 병합한다.
 - 중복: `event_id` 기본 키에 `ON CONFLICT DO NOTHING`을 적용한다. 같은 ID는 처음 커밋된 값을 유지한다.
 - 집계: `event_time` 기준 UTC 시간과 wiki별 편집 수·봇 편집 수·편집 크기 증감을 계산한다.
 - 파일 출력: 기본 실행은 시작 시 확보된 Kafka 입력을 처리하고 종료하는 `availableNow` 방식이다.
@@ -82,9 +82,9 @@ PostgreSQL은 호스트 포트를 공개하지 않는다. Compose 내부의 `pos
 |---|---|
 | `evidence/week4/demo_verification.json` | DB·Parquet 건수, 중복 여부, 집계 합계, 처리 후 예시 |
 | `artifacts/week4/checkpoints/main/` | Kafka 처리 진행 위치 |
-| `artifacts/week4/parquet/CURRENT.json` | 마지막으로 완료된 Parquet snapshot 경로 |
-| `artifacts/week4/parquet/snapshots/<실행ID>/edits/` | 날짜별 정상 편집 이력 |
-| `artifacts/week4/parquet/snapshots/<실행ID>/hourly_wiki/` | UTC 시간·위키별 집계 |
+| `artifacts/week4/parquet/CURRENT.json` | 완료된 날짜별 Parquet 경로를 담은 manifest |
+| `artifacts/week4/parquet/versions/<실행ID>/event_date=<날짜>/edits/` | 날짜별 정상 편집 이력 |
+| `artifacts/week4/parquet/versions/<실행ID>/event_date=<날짜>/hourly_wiki/` | UTC 시간·위키별 집계 |
 
 `artifacts/`는 Git에서 제외한다. `evidence/week4/`에는 검증 성공 후 생성되는 작은 보고서를 보관한다.
 전체 데이터의 검증 결과를 얻으려면 원본 JSONL을 프로젝트의 `data/` 아래로 가져오거나
@@ -190,7 +190,7 @@ DB에서는 유일한 편집 이력을 집계하는 view로 제공한다. NULL �
 - **PostgreSQL:** ID 유일성·transaction·SQL 조회가 필요하다. 집계는 이 테이블에서 계산하므로
   동일 편집을 다시 받아도 편집 수를 추가하지 않는다.
 - **Parquet:** 컬럼 단위 분석·압축·Spark 재처리에 적합하다. DB의 정상 이력을 날짜별로 내보낸다.
-  `CURRENT.json`에 기록된 **한 snapshot만** 읽는다. snapshots 전체를 한꺼번에 읽으면 같은 이력이 중복된다.
+  `CURRENT.json`의 날짜별 완료 경로만 `read_snapshot`으로 읽는다. versions 전체를 한꺼번에 읽으면 과거 버전과 미공개 파일이 섞인다.
 - 두 저장소에 동시 커밋하는 분산 transaction은 사용하지 않는다. DB를 기준으로 Parquet을 다시 만들 수 있다.
   DB 저장 후 파일 export가 실패하면 `python scripts/week4.py snapshot --export-only`로 재시도한다.
 - Parquet은 새 경로에 모두 쓴 뒤 `CURRENT.json`을 원자적으로 교체한다. 중단된 snapshot은
@@ -262,8 +262,8 @@ python scripts/week4.py stop
 
 - GitHub Actions의 합성 장애 복구 검증과 실제 수집 샘플 20건의 통합 검증이 통과했다.
 - Windows 네이티브 Docker Desktop에서의 실기 검증은 수행하지 않았다. 실행 도구는 표준 라이브러리 Python으로 Windows/Linux/macOS에 맞췄다.
-- 실행 검증은 단일 writer·소규모 학습 데이터 대상이다. DB 드라이버 단일 transaction으로 적재하며,
-  대규모 분산 적재·여러 동시 writer·스키마 migration·집계 materialization은 후속 범위다.
+- 실행 검증은 단일 writer·소규모 학습 데이터 대상이다. executor JDBC staging 후 DB transaction으로 병합한다.
+  대규모 처리량·여러 동시 writer에 대한 성능 검증은 후속 범위다.
 - PostgreSQL view와 Parquet snapshot은 실시간으로 동기화된 한 transaction이 아니다.
 - 이번 회차에는 대시보드와 Airflow를 추가하지 않는다.
 - [Spark 3.5.8 Kafka 연동](https://spark.apache.org/docs/3.5.8/structured-streaming-kafka-integration.html)

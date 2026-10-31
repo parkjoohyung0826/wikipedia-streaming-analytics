@@ -129,9 +129,18 @@ def verify_stream():
               '--pipeline-id', topic, '--phase', phase, database=database)
 
 
+def verify_storage():
+    setup()
+    name = 'storage_test_' + datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S') + '_' + secrets.token_hex(3)
+    compose('exec', '-T', 'postgres', 'psql', '-U', 'wiki', '-d', 'wiki',
+            '-v', 'ON_ERROR_STOP=1', '-c', 'CREATE DATABASE ' + name)
+    spark('tests/integration/test_storage.py', database=name,
+          log='artifacts/week4/tests/' + name + '/storage.log')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['setup', 'demo', 'verify', 'run', 'snapshot', 'verify-stream', 'check', 'send', 'status', 'stop'])
+    parser.add_argument('action', choices=['setup', 'demo', 'verify', 'run', 'snapshot', 'verify-stream', 'verify-storage', 'check', 'send', 'status', 'stop'])
     args, rest = parser.parse_known_args()
     if rest and args.action not in ('run', 'snapshot', 'check', 'send'):
         parser.error('Unexpected arguments: ' + ' '.join(rest))
@@ -145,6 +154,8 @@ def main():
         spark('src/stream_edits.py', *rest)
     elif args.action == 'snapshot':
         spark('src/process_edits.py', *rest)
+    elif args.action == 'verify-storage':
+        verify_storage()
     elif args.action == 'verify-stream':
         verify_stream()
     elif args.action == 'check':

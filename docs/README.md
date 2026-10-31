@@ -12,3 +12,5 @@
 ## 새 스트리밍 구현
 
 [3·4·5단계 보완 안내](guides/stream_v2.md): watermark, 중복 제거, 1분 집계, DB upsert, Parquet append.
+
+- [강사 피드백: 분산 DB 적재·날짜별 Parquet 갱신](guides/storage_feedback.md)

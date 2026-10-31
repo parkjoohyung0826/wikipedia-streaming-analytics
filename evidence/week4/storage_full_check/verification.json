@@ -1,0 +1,103 @@
+{
+  "verified": true,
+  "database_edits": 3846,
+  "distinct_ids": 3846,
+  "source_events_verified": 3846,
+  "full_row_equality": true,
+  "full_aggregate_equality": true,
+  "input_examples": [
+    {
+      "event_id": "506647e8-7ff7-4323-a65a-a2737cc5e0d3",
+      "timestamp": 1792922662,
+      "wiki": "itwiki",
+      "title": "Peter Godfrey",
+      "bot": false,
+      "length": {
+        "old": 1919,
+        "new": 1968
+      }
+    },
+    {
+      "event_id": "61324d56-c171-447b-a043-7845b89ac11f",
+      "timestamp": 1792922664,
+      "wiki": "dewiki",
+      "title": "Datei:Land und Frau Titelbild 1917 Bestand AddF.jpg",
+      "bot": true,
+      "length": {
+        "old": 297,
+        "new": 320
+      }
+    },
+    {
+      "event_id": "692843a7-fc6e-46ab-984a-911554a5ab91",
+      "timestamp": 1792922663,
+      "wiki": "cewiki",
+      "title": "Боргоново (Перуджа)",
+      "bot": true,
+      "length": {
+        "old": 4650,
+        "new": 4598
+      }
+    }
+  ],
+  "rejected": 0,
+  "rejection_reasons": {},
+  "aggregate_edit_count": 3846,
+  "parquet_edits": 3846,
+  "parquet_aggregate_edit_count": 3846,
+  "snapshot": {
+    "version": 2,
+    "source_id": "70cdb997-c59b-45ed-9cd6-93e0773d6f20",
+    "created_at": "20261031T054557_519473Z-4d6db42c",
+    "timezone": "UTC",
+    "revisions": {
+      "2026-10-25": 1
+    },
+    "partitions": {
+      "2026-10-25": {
+        "edits": 3846,
+        "revision": 1,
+        "edits_path": "/workspace/artifacts/week4/parquet/versions/20261031T054557_519473Z-4d6db42c/event_date=2026-10-25/edits",
+        "hourly_wiki_path": "/workspace/artifacts/week4/parquet/versions/20261031T054557_519473Z-4d6db42c/event_date=2026-10-25/hourly_wiki"
+      }
+    },
+    "empty": {
+      "edits_path": "/workspace/artifacts/week4/parquet/versions/20261031T054557_519473Z-4d6db42c/empty/edits",
+      "hourly_wiki_path": "/workspace/artifacts/week4/parquet/versions/20261031T054557_519473Z-4d6db42c/empty/hourly_wiki"
+    },
+    "edits": 3846,
+    "rewritten_dates": [
+      "2026-10-25"
+    ]
+  },
+  "output_examples": [
+    {
+      "event_id": "001bde83-c1b1-46d0-a890-aa7be6e3f779",
+      "event_time": "2026-10-25 10:09:51+00:00",
+      "ingest_time": "2026-10-28 22:11:46.828767+00:00",
+      "wiki": "jawiki",
+      "title": "井田明宏",
+      "bot": true,
+      "bytes_delta": 666
+    },
+    {
+      "event_id": "002585fc-c24d-46ef-ae59-928a66ca9c62",
+      "event_time": "2026-10-25 10:11:49+00:00",
+      "ingest_time": "2026-10-28 22:11:50.813353+00:00",
+      "wiki": "enwiki",
+      "title": "Chung Jin-suk (politician)",
+      "bot": false,
+      "bytes_delta": -1
+    },
+    {
+      "event_id": "005b7cf0-fdc6-4b7a-a6ab-a8c99ee26571",
+      "event_time": "2026-10-25 10:13:38+00:00",
+      "ingest_time": "2026-10-28 22:11:53.993137+00:00",
+      "wiki": "cewiki",
+      "title": "Борика (Софин область)",
+      "bot": true,
+      "bytes_delta": -52
+    }
+  ],
+  "checked_at": "2026-10-31T05:46:06.561269+00:00"
+}

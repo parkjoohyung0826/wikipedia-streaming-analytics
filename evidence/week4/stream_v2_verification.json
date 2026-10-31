@@ -1,7 +1,7 @@
 {
   "verified": true,
-  "pipeline_id": "test-1d7959b47072",
-  "checked_at": "2026-10-31T05:15:20.280725+00:00",
+  "pipeline_id": "test-f8f8cde4fcbe",
+  "checked_at": "2026-10-31T05:44:50.152125+00:00",
   "checks": [
     "same/cross-batch duplicate removal",
     "event-time window update 2 to 3",
@@ -27,22 +27,22 @@
       "wave": 1,
       "progress": [
         {
-          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
-          "runId": "122b569e-0456-45b5-a287-71e63deae70b",
+          "id": "cb8e185f-5ec6-4b49-834f-3e1c48215466",
+          "runId": "2dbe25f7-da1d-44c8-a38b-b6653d4d39fe",
           "name": null,
-          "timestamp": "2026-10-31T05:14:39.929Z",
+          "timestamp": "2026-10-31T05:44:03.685Z",
           "batchId": 0,
           "numInputRows": 3,
           "inputRowsPerSecond": 0.0,
-          "processedRowsPerSecond": 1.9035532994923856,
+          "processedRowsPerSecond": 1.6769144773616547,
           "durationMs": {
-            "addBatch": 1253,
-            "commitOffsets": 15,
-            "getBatch": 34,
-            "latestOffset": 20,
-            "queryPlanning": 219,
-            "triggerExecution": 1576,
-            "walCommit": 26
+            "addBatch": 1448,
+            "commitOffsets": 12,
+            "getBatch": 44,
+            "latestOffset": 25,
+            "queryPlanning": 226,
+            "triggerExecution": 1789,
+            "walCommit": 24
           },
           "eventTime": {
             "avg": "2026-10-25T00:00:13.333Z",
@@ -55,10 +55,10 @@
               "operatorName": "dedupeWithinWatermark",
               "numRowsTotal": 2,
               "numRowsUpdated": 2,
-              "allUpdatesTimeMs": 49,
+              "allUpdatesTimeMs": 73,
               "numRowsRemoved": 0,
-              "allRemovalsTimeMs": 0,
-              "commitTimeMs": 28,
+              "allRemovalsTimeMs": 5,
+              "commitTimeMs": 45,
               "memoryUsedBytes": 1008,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -73,7 +73,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/input]",
               "startOffset": null,
               "endOffset": {
                 "logOffset": 0
@@ -81,31 +81,31 @@
               "latestOffset": null,
               "numInputRows": 3,
               "inputRowsPerSecond": 0.0,
-              "processedRowsPerSecond": 1.9035532994923856
+              "processedRowsPerSecond": 1.6769144773616547
             }
           ],
           "sink": {
-            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
             "numOutputRows": -1
           }
         },
         {
-          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
-          "runId": "122b569e-0456-45b5-a287-71e63deae70b",
+          "id": "cb8e185f-5ec6-4b49-834f-3e1c48215466",
+          "runId": "2dbe25f7-da1d-44c8-a38b-b6653d4d39fe",
           "name": null,
-          "timestamp": "2026-10-31T05:14:41.512Z",
+          "timestamp": "2026-10-31T05:44:05.481Z",
           "batchId": 1,
           "numInputRows": 0,
           "inputRowsPerSecond": 0.0,
           "processedRowsPerSecond": 0.0,
           "durationMs": {
-            "addBatch": 174,
-            "commitOffsets": 10,
-            "getBatch": 0,
+            "addBatch": 130,
+            "commitOffsets": 12,
+            "getBatch": 1,
             "latestOffset": 0,
-            "queryPlanning": 22,
-            "triggerExecution": 225,
-            "walCommit": 14
+            "queryPlanning": 19,
+            "triggerExecution": 177,
+            "walCommit": 11
           },
           "eventTime": {
             "watermark": "2026-10-24T23:58:20.000Z"
@@ -115,10 +115,10 @@
               "operatorName": "dedupeWithinWatermark",
               "numRowsTotal": 2,
               "numRowsUpdated": 0,
-              "allUpdatesTimeMs": 37,
+              "allUpdatesTimeMs": 10,
               "numRowsRemoved": 0,
               "allRemovalsTimeMs": 0,
-              "commitTimeMs": 43,
+              "commitTimeMs": 40,
               "memoryUsedBytes": 1440,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -133,7 +133,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/input]",
               "startOffset": {
                 "logOffset": 0
               },
@@ -147,7 +147,7 @@
             }
           ],
           "sink": {
-            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
             "numOutputRows": -1
           }
         }
@@ -161,20 +161,20 @@
       "stage": "aggregate",
       "progress": [
         {
-          "id": "f2568117-fab1-47fb-9865-46884102b972",
-          "runId": "0f37f30d-7672-4577-89a8-7c1723e3cbcb",
+          "id": "f3df2821-6acd-4b70-9320-570c4074dfa0",
+          "runId": "a7ce3854-daa3-45e6-8dcc-3e1ee0733a21",
           "name": null,
-          "timestamp": "2026-10-31T05:14:42.676Z",
+          "timestamp": "2026-10-31T05:44:07.028Z",
           "batchId": 0,
           "numInputRows": 2,
           "inputRowsPerSecond": 0.0,
-          "processedRowsPerSecond": 5.970149253731343,
+          "processedRowsPerSecond": 5.649717514124294,
           "durationMs": {
-            "addBatch": 292,
+            "addBatch": 314,
             "commitOffsets": 9,
-            "getBatch": 7,
-            "queryPlanning": 22,
-            "triggerExecution": 335
+            "getBatch": 4,
+            "queryPlanning": 21,
+            "triggerExecution": 354
           },
           "eventTime": {
             "avg": "2026-10-25T00:00:15.000Z",
@@ -187,10 +187,10 @@
               "operatorName": "stateStoreSave",
               "numRowsTotal": 1,
               "numRowsUpdated": 1,
-              "allUpdatesTimeMs": 8,
+              "allUpdatesTimeMs": 12,
               "numRowsRemoved": 0,
               "allRemovalsTimeMs": 0,
-              "commitTimeMs": 24,
+              "commitTimeMs": 36,
               "memoryUsedBytes": 800,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -204,7 +204,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
               "startOffset": null,
               "endOffset": {
                 "logOffset": 0
@@ -212,7 +212,7 @@
               "latestOffset": null,
               "numInputRows": 2,
               "inputRowsPerSecond": 0.0,
-              "processedRowsPerSecond": 5.970149253731343
+              "processedRowsPerSecond": 5.649717514124294
             }
           ],
           "sink": {
@@ -221,22 +221,22 @@
           }
         },
         {
-          "id": "f2568117-fab1-47fb-9865-46884102b972",
-          "runId": "0f37f30d-7672-4577-89a8-7c1723e3cbcb",
+          "id": "f3df2821-6acd-4b70-9320-570c4074dfa0",
+          "runId": "a7ce3854-daa3-45e6-8dcc-3e1ee0733a21",
           "name": null,
-          "timestamp": "2026-10-31T05:14:43.012Z",
+          "timestamp": "2026-10-31T05:44:07.383Z",
           "batchId": 1,
           "numInputRows": 0,
           "inputRowsPerSecond": 0.0,
           "processedRowsPerSecond": 0.0,
           "durationMs": {
-            "addBatch": 286,
-            "commitOffsets": 8,
+            "addBatch": 244,
+            "commitOffsets": 14,
             "getBatch": 0,
             "latestOffset": 0,
-            "queryPlanning": 15,
-            "triggerExecution": 318,
-            "walCommit": 9
+            "queryPlanning": 12,
+            "triggerExecution": 282,
+            "walCommit": 10
           },
           "eventTime": {
             "watermark": "2026-10-24T23:58:20.000Z"
@@ -246,10 +246,10 @@
               "operatorName": "stateStoreSave",
               "numRowsTotal": 1,
               "numRowsUpdated": 0,
-              "allUpdatesTimeMs": 10,
+              "allUpdatesTimeMs": 15,
               "numRowsRemoved": 0,
               "allRemovalsTimeMs": 2,
-              "commitTimeMs": 24,
+              "commitTimeMs": 37,
               "memoryUsedBytes": 1200,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -263,7 +263,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
               "startOffset": {
                 "logOffset": 0
               },
@@ -287,10 +287,10 @@
       "stage": "aggregate",
       "progress": [
         {
-          "id": "f2568117-fab1-47fb-9865-46884102b972",
-          "runId": "195bed44-048c-4092-b8cd-9ff6c63c0e1c",
+          "id": "f3df2821-6acd-4b70-9320-570c4074dfa0",
+          "runId": "b80c765e-c609-4c34-b5ed-c82db2960713",
           "name": null,
-          "timestamp": "2026-10-31T05:14:43.377Z",
+          "timestamp": "2026-10-31T05:44:07.712Z",
           "batchId": 2,
           "numInputRows": 0,
           "inputRowsPerSecond": 0.0,
@@ -305,7 +305,7 @@
           "stateOperators": [],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
               "startOffset": {
                 "logOffset": 0
               },
@@ -330,22 +330,22 @@
       "wave": 2,
       "progress": [
         {
-          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
-          "runId": "e9c6d57b-60eb-4b0d-ad51-b50e82e95414",
+          "id": "cb8e185f-5ec6-4b49-834f-3e1c48215466",
+          "runId": "fd186761-06df-4af1-8d18-c047a4a0ae1b",
           "name": null,
-          "timestamp": "2026-10-31T05:14:43.464Z",
+          "timestamp": "2026-10-31T05:44:07.805Z",
           "batchId": 2,
           "numInputRows": 2,
           "inputRowsPerSecond": 0.0,
-          "processedRowsPerSecond": 7.8431372549019605,
+          "processedRowsPerSecond": 7.633587786259541,
           "durationMs": {
-            "addBatch": 177,
-            "commitOffsets": 13,
-            "getBatch": 4,
-            "latestOffset": 10,
-            "queryPlanning": 32,
-            "triggerExecution": 255,
-            "walCommit": 9
+            "addBatch": 192,
+            "commitOffsets": 8,
+            "getBatch": 3,
+            "latestOffset": 9,
+            "queryPlanning": 34,
+            "triggerExecution": 262,
+            "walCommit": 7
           },
           "eventTime": {
             "avg": "2026-10-25T00:00:20.000Z",
@@ -358,10 +358,10 @@
               "operatorName": "dedupeWithinWatermark",
               "numRowsTotal": 3,
               "numRowsUpdated": 1,
-              "allUpdatesTimeMs": 6,
+              "allUpdatesTimeMs": 10,
               "numRowsRemoved": 0,
               "allRemovalsTimeMs": 0,
-              "commitTimeMs": 32,
+              "commitTimeMs": 27,
               "memoryUsedBytes": 1520,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -376,7 +376,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/input]",
               "startOffset": {
                 "logOffset": 0
               },
@@ -386,31 +386,31 @@
               "latestOffset": null,
               "numInputRows": 2,
               "inputRowsPerSecond": 0.0,
-              "processedRowsPerSecond": 7.8431372549019605
+              "processedRowsPerSecond": 7.633587786259541
             }
           ],
           "sink": {
-            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
             "numOutputRows": -1
           }
         },
         {
-          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
-          "runId": "e9c6d57b-60eb-4b0d-ad51-b50e82e95414",
+          "id": "cb8e185f-5ec6-4b49-834f-3e1c48215466",
+          "runId": "fd186761-06df-4af1-8d18-c047a4a0ae1b",
           "name": null,
-          "timestamp": "2026-10-31T05:14:43.719Z",
+          "timestamp": "2026-10-31T05:44:08.067Z",
           "batchId": 3,
           "numInputRows": 0,
           "inputRowsPerSecond": 0.0,
           "processedRowsPerSecond": 0.0,
           "durationMs": {
-            "addBatch": 72,
-            "commitOffsets": 8,
-            "getBatch": 0,
-            "latestOffset": 1,
-            "queryPlanning": 7,
-            "triggerExecution": 102,
-            "walCommit": 13
+            "addBatch": 127,
+            "commitOffsets": 18,
+            "getBatch": 1,
+            "latestOffset": 0,
+            "queryPlanning": 5,
+            "triggerExecution": 160,
+            "walCommit": 7
           },
           "eventTime": {
             "watermark": "2026-10-24T23:58:30.000Z"
@@ -420,10 +420,10 @@
               "operatorName": "dedupeWithinWatermark",
               "numRowsTotal": 3,
               "numRowsUpdated": 0,
-              "allUpdatesTimeMs": 1,
+              "allUpdatesTimeMs": 0,
               "numRowsRemoved": 0,
               "allRemovalsTimeMs": 0,
-              "commitTimeMs": 21,
+              "commitTimeMs": 54,
               "memoryUsedBytes": 1576,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -438,7 +438,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/input]",
               "startOffset": {
                 "logOffset": 1
               },
@@ -452,7 +452,7 @@
             }
           ],
           "sink": {
-            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
             "numOutputRows": -1
           }
         }
@@ -462,22 +462,22 @@
       "stage": "aggregate",
       "progress": [
         {
-          "id": "f2568117-fab1-47fb-9865-46884102b972",
-          "runId": "d7cbc80e-9d57-4eb9-94ac-ffe4c61450c4",
+          "id": "f3df2821-6acd-4b70-9320-570c4074dfa0",
+          "runId": "e4306ecd-b071-4f37-ab0d-7570175ffbac",
           "name": null,
-          "timestamp": "2026-10-31T05:14:43.864Z",
+          "timestamp": "2026-10-31T05:44:08.280Z",
           "batchId": 2,
           "numInputRows": 1,
           "inputRowsPerSecond": 0.0,
-          "processedRowsPerSecond": 3.571428571428571,
+          "processedRowsPerSecond": 3.436426116838488,
           "durationMs": {
-            "addBatch": 216,
+            "addBatch": 209,
             "commitOffsets": 8,
-            "getBatch": 4,
-            "latestOffset": 9,
-            "queryPlanning": 20,
-            "triggerExecution": 280,
-            "walCommit": 14
+            "getBatch": 5,
+            "latestOffset": 13,
+            "queryPlanning": 38,
+            "triggerExecution": 291,
+            "walCommit": 11
           },
           "eventTime": {
             "avg": "2026-10-25T00:00:30.000Z",
@@ -490,10 +490,10 @@
               "operatorName": "stateStoreSave",
               "numRowsTotal": 1,
               "numRowsUpdated": 1,
-              "allUpdatesTimeMs": 13,
+              "allUpdatesTimeMs": 17,
               "numRowsRemoved": 0,
               "allRemovalsTimeMs": 0,
-              "commitTimeMs": 16,
+              "commitTimeMs": 31,
               "memoryUsedBytes": 1264,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -507,7 +507,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
               "startOffset": {
                 "logOffset": 0
               },
@@ -517,7 +517,7 @@
               "latestOffset": null,
               "numInputRows": 1,
               "inputRowsPerSecond": 0.0,
-              "processedRowsPerSecond": 3.571428571428571
+              "processedRowsPerSecond": 3.436426116838488
             }
           ],
           "sink": {
@@ -526,21 +526,21 @@
           }
         },
         {
-          "id": "f2568117-fab1-47fb-9865-46884102b972",
-          "runId": "d7cbc80e-9d57-4eb9-94ac-ffe4c61450c4",
+          "id": "f3df2821-6acd-4b70-9320-570c4074dfa0",
+          "runId": "e4306ecd-b071-4f37-ab0d-7570175ffbac",
           "name": null,
-          "timestamp": "2026-10-31T05:14:44.144Z",
+          "timestamp": "2026-10-31T05:44:08.572Z",
           "batchId": 3,
           "numInputRows": 0,
           "inputRowsPerSecond": 0.0,
           "processedRowsPerSecond": 0.0,
           "durationMs": {
-            "addBatch": 217,
-            "commitOffsets": 9,
+            "addBatch": 144,
+            "commitOffsets": 8,
             "getBatch": 0,
             "latestOffset": 0,
-            "queryPlanning": 9,
-            "triggerExecution": 245,
+            "queryPlanning": 10,
+            "triggerExecution": 170,
             "walCommit": 8
           },
           "eventTime": {
@@ -551,10 +551,10 @@
               "operatorName": "stateStoreSave",
               "numRowsTotal": 1,
               "numRowsUpdated": 0,
-              "allUpdatesTimeMs": 2,
+              "allUpdatesTimeMs": 4,
               "numRowsRemoved": 0,
               "allRemovalsTimeMs": 2,
-              "commitTimeMs": 16,
+              "commitTimeMs": 69,
               "memoryUsedBytes": 1168,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -568,7 +568,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
               "startOffset": {
                 "logOffset": 1
               },
@@ -593,21 +593,21 @@
       "wave": 3,
       "progress": [
         {
-          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
-          "runId": "f5fb44f7-57a4-4e73-844c-11c084b0b1d8",
+          "id": "cb8e185f-5ec6-4b49-834f-3e1c48215466",
+          "runId": "0f589e0d-1840-4843-bbf5-71fe7d3e5130",
           "name": null,
-          "timestamp": "2026-10-31T05:14:44.483Z",
+          "timestamp": "2026-10-31T05:44:08.836Z",
           "batchId": 4,
           "numInputRows": 1,
           "inputRowsPerSecond": 0.0,
-          "processedRowsPerSecond": 5.319148936170213,
+          "processedRowsPerSecond": 4.926108374384236,
           "durationMs": {
-            "addBatch": 132,
-            "commitOffsets": 9,
+            "addBatch": 131,
+            "commitOffsets": 17,
             "getBatch": 3,
-            "latestOffset": 9,
-            "queryPlanning": 21,
-            "triggerExecution": 188,
+            "latestOffset": 10,
+            "queryPlanning": 25,
+            "triggerExecution": 203,
             "walCommit": 9
           },
           "eventTime": {
@@ -621,10 +621,10 @@
               "operatorName": "dedupeWithinWatermark",
               "numRowsTotal": 4,
               "numRowsUpdated": 1,
-              "allUpdatesTimeMs": 14,
+              "allUpdatesTimeMs": 11,
               "numRowsRemoved": 0,
               "allRemovalsTimeMs": 0,
-              "commitTimeMs": 23,
+              "commitTimeMs": 29,
               "memoryUsedBytes": 1760,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -639,7 +639,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/input]",
               "startOffset": {
                 "logOffset": 1
               },
@@ -649,31 +649,31 @@
               "latestOffset": null,
               "numInputRows": 1,
               "inputRowsPerSecond": 0.0,
-              "processedRowsPerSecond": 5.319148936170213
+              "processedRowsPerSecond": 4.926108374384236
             }
           ],
           "sink": {
-            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
             "numOutputRows": -1
           }
         },
         {
-          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
-          "runId": "f5fb44f7-57a4-4e73-844c-11c084b0b1d8",
+          "id": "cb8e185f-5ec6-4b49-834f-3e1c48215466",
+          "runId": "0f589e0d-1840-4843-bbf5-71fe7d3e5130",
           "name": null,
-          "timestamp": "2026-10-31T05:14:44.672Z",
+          "timestamp": "2026-10-31T05:44:09.040Z",
           "batchId": 5,
           "numInputRows": 0,
           "inputRowsPerSecond": 0.0,
           "processedRowsPerSecond": 0.0,
           "durationMs": {
-            "addBatch": 78,
-            "commitOffsets": 11,
+            "addBatch": 75,
+            "commitOffsets": 10,
             "getBatch": 0,
             "latestOffset": 0,
-            "queryPlanning": 7,
-            "triggerExecution": 105,
-            "walCommit": 8
+            "queryPlanning": 6,
+            "triggerExecution": 100,
+            "walCommit": 9
           },
           "eventTime": {
             "watermark": "2026-10-25T00:08:00.000Z"
@@ -685,8 +685,8 @@
               "numRowsUpdated": 0,
               "allUpdatesTimeMs": 0,
               "numRowsRemoved": 3,
-              "allRemovalsTimeMs": 9,
-              "commitTimeMs": 27,
+              "allRemovalsTimeMs": 8,
+              "commitTimeMs": 38,
               "memoryUsedBytes": 1744,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -701,7 +701,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/input]",
               "startOffset": {
                 "logOffset": 2
               },
@@ -715,7 +715,7 @@
             }
           ],
           "sink": {
-            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
             "numOutputRows": -1
           }
         }
@@ -725,21 +725,21 @@
       "stage": "aggregate",
       "progress": [
         {
-          "id": "f2568117-fab1-47fb-9865-46884102b972",
-          "runId": "f48e6dbb-b7af-4016-ace8-9bf5d7ba6dcb",
+          "id": "f3df2821-6acd-4b70-9320-570c4074dfa0",
+          "runId": "b16ae1bc-93dd-496b-ae51-f1e8fb1413ff",
           "name": null,
-          "timestamp": "2026-10-31T05:14:44.818Z",
+          "timestamp": "2026-10-31T05:44:09.183Z",
           "batchId": 4,
           "numInputRows": 1,
           "inputRowsPerSecond": 0.0,
-          "processedRowsPerSecond": 4.385964912280701,
+          "processedRowsPerSecond": 4.8543689320388355,
           "durationMs": {
-            "addBatch": 181,
+            "addBatch": 159,
             "commitOffsets": 8,
             "getBatch": 4,
-            "latestOffset": 8,
+            "latestOffset": 9,
             "queryPlanning": 13,
-            "triggerExecution": 228,
+            "triggerExecution": 206,
             "walCommit": 8
           },
           "eventTime": {
@@ -756,7 +756,7 @@
               "allUpdatesTimeMs": 7,
               "numRowsRemoved": 0,
               "allRemovalsTimeMs": 0,
-              "commitTimeMs": 13,
+              "commitTimeMs": 28,
               "memoryUsedBytes": 1416,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -770,7 +770,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
               "startOffset": {
                 "logOffset": 1
               },
@@ -780,7 +780,7 @@
               "latestOffset": null,
               "numInputRows": 1,
               "inputRowsPerSecond": 0.0,
-              "processedRowsPerSecond": 4.385964912280701
+              "processedRowsPerSecond": 4.8543689320388355
             }
           ],
           "sink": {
@@ -789,22 +789,22 @@
           }
         },
         {
-          "id": "f2568117-fab1-47fb-9865-46884102b972",
-          "runId": "f48e6dbb-b7af-4016-ace8-9bf5d7ba6dcb",
+          "id": "f3df2821-6acd-4b70-9320-570c4074dfa0",
+          "runId": "b16ae1bc-93dd-496b-ae51-f1e8fb1413ff",
           "name": null,
-          "timestamp": "2026-10-31T05:14:45.047Z",
+          "timestamp": "2026-10-31T05:44:09.390Z",
           "batchId": 5,
           "numInputRows": 0,
           "inputRowsPerSecond": 0.0,
           "processedRowsPerSecond": 0.0,
           "durationMs": {
-            "addBatch": 174,
-            "commitOffsets": 8,
+            "addBatch": 104,
+            "commitOffsets": 7,
             "getBatch": 0,
             "latestOffset": 0,
-            "queryPlanning": 9,
-            "triggerExecution": 199,
-            "walCommit": 8
+            "queryPlanning": 8,
+            "triggerExecution": 130,
+            "walCommit": 9
           },
           "eventTime": {
             "watermark": "2026-10-25T00:08:00.000Z"
@@ -816,8 +816,8 @@
               "numRowsUpdated": 0,
               "allUpdatesTimeMs": 2,
               "numRowsRemoved": 1,
-              "allRemovalsTimeMs": 4,
-              "commitTimeMs": 13,
+              "allRemovalsTimeMs": 6,
+              "commitTimeMs": 20,
               "memoryUsedBytes": 1440,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -831,7 +831,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
               "startOffset": {
                 "logOffset": 2
               },
@@ -856,21 +856,21 @@
       "wave": 4,
       "progress": [
         {
-          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
-          "runId": "344d690b-4bd7-4a16-b1a5-734491bed7df",
+          "id": "cb8e185f-5ec6-4b49-834f-3e1c48215466",
+          "runId": "30ffb172-ecdb-4503-9c56-91e491a1d7d3",
           "name": null,
-          "timestamp": "2026-10-31T05:14:45.332Z",
+          "timestamp": "2026-10-31T05:44:09.599Z",
           "batchId": 6,
           "numInputRows": 3,
           "inputRowsPerSecond": 0.0,
-          "processedRowsPerSecond": 15.789473684210526,
+          "processedRowsPerSecond": 17.543859649122805,
           "durationMs": {
-            "addBatch": 124,
-            "commitOffsets": 21,
+            "addBatch": 119,
+            "commitOffsets": 8,
             "getBatch": 3,
-            "latestOffset": 9,
-            "queryPlanning": 18,
-            "triggerExecution": 190,
+            "latestOffset": 8,
+            "queryPlanning": 19,
+            "triggerExecution": 171,
             "walCommit": 8
           },
           "eventTime": {
@@ -884,10 +884,10 @@
               "operatorName": "dedupeWithinWatermark",
               "numRowsTotal": 2,
               "numRowsUpdated": 1,
-              "allUpdatesTimeMs": 5,
+              "allUpdatesTimeMs": 4,
               "numRowsRemoved": 0,
               "allRemovalsTimeMs": 0,
-              "commitTimeMs": 23,
+              "commitTimeMs": 17,
               "memoryUsedBytes": 1328,
               "numRowsDroppedByWatermark": 2,
               "numShufflePartitions": 2,
@@ -902,7 +902,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/input]",
               "startOffset": {
                 "logOffset": 2
               },
@@ -912,11 +912,11 @@
               "latestOffset": null,
               "numInputRows": 3,
               "inputRowsPerSecond": 0.0,
-              "processedRowsPerSecond": 15.789473684210526
+              "processedRowsPerSecond": 17.543859649122805
             }
           ],
           "sink": {
-            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
             "numOutputRows": -1
           }
         }
@@ -926,22 +926,22 @@
       "stage": "aggregate",
       "progress": [
         {
-          "id": "f2568117-fab1-47fb-9865-46884102b972",
-          "runId": "0dc6ff76-e293-40c1-ba32-33ec9a9a9b31",
+          "id": "f3df2821-6acd-4b70-9320-570c4074dfa0",
+          "runId": "1718ddcd-d6de-4b09-866a-caed427cea59",
           "name": null,
-          "timestamp": "2026-10-31T05:14:45.577Z",
+          "timestamp": "2026-10-31T05:44:09.807Z",
           "batchId": 6,
           "numInputRows": 1,
           "inputRowsPerSecond": 0.0,
-          "processedRowsPerSecond": 4.219409282700422,
+          "processedRowsPerSecond": 5.88235294117647,
           "durationMs": {
-            "addBatch": 188,
-            "commitOffsets": 9,
+            "addBatch": 127,
+            "commitOffsets": 8,
             "getBatch": 3,
-            "latestOffset": 8,
-            "queryPlanning": 13,
-            "triggerExecution": 237,
-            "walCommit": 9
+            "latestOffset": 9,
+            "queryPlanning": 11,
+            "triggerExecution": 170,
+            "walCommit": 8
           },
           "eventTime": {
             "avg": "2026-10-25T00:09:00.000Z",
@@ -954,10 +954,10 @@
               "operatorName": "stateStoreSave",
               "numRowsTotal": 2,
               "numRowsUpdated": 1,
-              "allUpdatesTimeMs": 5,
+              "allUpdatesTimeMs": 6,
               "numRowsRemoved": 0,
               "allRemovalsTimeMs": 0,
-              "commitTimeMs": 14,
+              "commitTimeMs": 18,
               "memoryUsedBytes": 1416,
               "numRowsDroppedByWatermark": 0,
               "numShufflePartitions": 2,
@@ -971,7 +971,7 @@
           ],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
               "startOffset": {
                 "logOffset": 2
               },
@@ -981,7 +981,7 @@
               "latestOffset": null,
               "numInputRows": 1,
               "inputRowsPerSecond": 0.0,
-              "processedRowsPerSecond": 4.219409282700422
+              "processedRowsPerSecond": 5.88235294117647
             }
           ],
           "sink": {
@@ -995,17 +995,17 @@
       "stage": "aggregate",
       "progress": [
         {
-          "id": "f2568117-fab1-47fb-9865-46884102b972",
-          "runId": "afc7153c-b90a-4c72-ba88-3ba387872419",
+          "id": "f3df2821-6acd-4b70-9320-570c4074dfa0",
+          "runId": "eaa7043e-ce9d-4881-9548-0df22a20e0f6",
           "name": null,
-          "timestamp": "2026-10-31T05:15:20.261Z",
+          "timestamp": "2026-10-31T05:44:50.142Z",
           "batchId": 9,
           "numInputRows": 0,
           "inputRowsPerSecond": 0.0,
           "processedRowsPerSecond": 0.0,
           "durationMs": {
             "latestOffset": 0,
-            "triggerExecution": 11
+            "triggerExecution": 5
           },
           "eventTime": {
             "watermark": "2026-10-25T00:08:20.000Z"
@@ -1013,7 +1013,7 @@
           "stateOperators": [],
           "sources": [
             {
-              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-f8f8cde4fcbe/clean]",
               "startOffset": {
                 "logOffset": 4
               },

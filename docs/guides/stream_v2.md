@@ -23,6 +23,8 @@ python3 scripts/week4.py verify-stream
 
 기본 root는 `artifacts/week4/stream_v2/main`, pipeline ID는 `main-v2`다. 각각 audit/clean/aggregate checkpoint를 사용한다. 기존 `artifacts/week4/checkpoints/main`과 snapshot 폴더를 덮어쓰지 않는다. 유한 실행은 세 쿼리를 차례로 완료하며 연속 실행은 동시에 실행한다. 어느 쿼리든 실패하면 나머지도 중지한다.
 
+정상·오류·집계 적재는 executor JDBC staging 후 DB SQL 병합으로 처리한다. 드라이버로 모든 행을 모으지 않는다. [저장 개선 상세](storage_feedback.md).
+
 집계 값은 누적 합계 자체를 저장한다. `cnt = cnt + 새값`이 아니라 `cnt = 새값`으로 교체한다. `(pipeline_id,batch_id)` 커밋 기록을 집계와 한 transaction에 저장하므로 저장 직후 실패해도 같은 batch가 통계를 다시 변경하지 않는다. 빈 배치도 완전히 소비해 Spark 상태 처리를 완료한다.
 
 DB와 파일은 하나의 transaction이 아니므로 순간적으로 진행 정도가 다를 수 있다. 재시작하면 각각의 checkpoint부터 따라잡는다. 파일 출력은 Spark 파일 sink의 `_spark_metadata`를 함께 보존한다. 같은 root의 동시 writer는 지원하지 않는다. 파일·DB·checkpoint를 함께 백업한다.

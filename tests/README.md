@@ -29,3 +29,7 @@ python3 scripts/week4.py verify
 ## 스트리밍 v2
 
 `python3 scripts/week4.py verify-stream`은 별도 DB·토픽에서 실행한다. `integration/test_streaming.py`는 실제 Spark 상태·지연·중복·commit 후 복구·연속 저장을, `integration/check_stream_sample.py`는 실제 Kafka 샘플 20건의 DB·Parquet·집계 일치와 재전송을 검증한다.
+
+## 분산 적재·증분 snapshot
+
+`python3 scripts/week4.py verify-storage`가 별도 DB에서 `integration/test_storage.py`를 실행한다. JDBC staging 재시도, reject, commit 실패 복구, 날짜별 파일 재사용, manifest 공개 전 실패와 DB 동시 변경을 검증한다.

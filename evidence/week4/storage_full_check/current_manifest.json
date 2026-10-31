@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "source_id": "70cdb997-c59b-45ed-9cd6-93e0773d6f20",
+  "created_at": "20261031T054557_519473Z-4d6db42c",
+  "timezone": "UTC",
+  "revisions": {
+    "2026-10-25": 1
+  },
+  "partitions": {
+    "2026-10-25": {
+      "edits": 3846,
+      "revision": 1,
+      "edits_path": "/workspace/artifacts/week4/parquet/versions/20261031T054557_519473Z-4d6db42c/event_date=2026-10-25/edits",
+      "hourly_wiki_path": "/workspace/artifacts/week4/parquet/versions/20261031T054557_519473Z-4d6db42c/event_date=2026-10-25/hourly_wiki"
+    }
+  },
+  "empty": {
+    "edits_path": "/workspace/artifacts/week4/parquet/versions/20261031T054557_519473Z-4d6db42c/empty/edits",
+    "hourly_wiki_path": "/workspace/artifacts/week4/parquet/versions/20261031T054557_519473Z-4d6db42c/empty/hourly_wiki"
+  },
+  "edits": 3846,
+  "rewritten_dates": [
+    "2026-10-25"
+  ]
+}

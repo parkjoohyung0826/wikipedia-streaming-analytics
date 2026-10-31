@@ -1,13 +1,11 @@
 """Stateful streaming v2; legacy process_edits remains the complete audit path."""
 import argparse
-from datetime import timezone
 import json
 import os
 from pathlib import Path
 import time
 
 from pyspark.sql import functions as F, types as T, SparkSession
-from psycopg2.extras import execute_values
 from src.process_edits import transform, EDIT_COLUMNS, connect, initialize_database, write_batch
 
 CLEAN_SCHEMA = T.StructType([
@@ -50,40 +48,9 @@ def initialize_stream_database():
         conn.close()
 
 
-def upsert_aggregates(batch, batch_id, pipeline_id, fail_after_commit=False):
-    # ⑤ Replace the current count; adding it again would double-count retries.
-    conn = connect()
-    try:
-        with conn, conn.cursor() as cur:
-            cur.execute('INSERT INTO week4.stream_batches VALUES (%s,%s) ON CONFLICT DO NOTHING RETURNING batch_id',
-                        (pipeline_id, batch_id))
-            already_committed = cur.fetchone() is None
-            if already_committed:
-                # Stateful foreachBatch output must still be completely consumed.
-                for _ in batch.toLocalIterator():
-                    pass
-                return
-            pending = []
-            def flush():
-                if pending:
-                    execute_values(cur, '''INSERT INTO week4.windowed_wiki
-                        (pipeline_id,window_start,window_end,wiki,edit_count,bot_edit_count,size_known_count,net_bytes_delta)
-                        VALUES %s ON CONFLICT (pipeline_id,window_start,wiki)
-                        DO UPDATE SET window_end=EXCLUDED.window_end,edit_count=EXCLUDED.edit_count,
-                        bot_edit_count=EXCLUDED.bot_edit_count,size_known_count=EXCLUDED.size_known_count,
-                        net_bytes_delta=EXCLUDED.net_bytes_delta,updated_at=now()''', pending)
-                    pending.clear()
-            for row in batch.toLocalIterator():
-                pending.append((pipeline_id, row.window_start.replace(tzinfo=timezone.utc),
-                                row.window_end.replace(tzinfo=timezone.utc), row.wiki,
-                                row.edit_count, row.bot_edit_count, row.size_known_count, row.net_bytes_delta))
-                if len(pending) >= 500:
-                    flush()
-            flush()
-        if fail_after_commit:
-            raise RuntimeError('Injected streaming failure AFTER aggregate commit')
-    finally:
-        conn.close()
+def upsert_aggregates(batch, batch_id, pipeline_id, fail_after_commit=False, partitions=4):
+    from src.db_sink import write_aggregates
+    return write_aggregates(batch, batch_id, pipeline_id, fail_after_commit, partitions)
 
 
 def bind_pipeline(root, pipeline_id, contract):
@@ -130,14 +97,14 @@ def start_clean(raw, root, watermark, continuous=False):
     return trigger(writer, continuous).start()
 
 
-def start_aggregate(spark, root, watermark, window, pipeline_id, continuous=False, fail=False):
+def start_aggregate(spark, root, watermark, window, pipeline_id, continuous=False, fail=False, partitions=4):
     (root / 'clean').mkdir(exist_ok=True)
     # A separate query avoids chaining two stateful operators in update mode.
     clean = spark.readStream.schema(CLEAN_SCHEMA).parquet(str(root / 'clean'))
     agg = aggregate_events(clean, watermark, window)
     writer = (agg.writeStream.outputMode('update')
               .option('checkpointLocation', str(root / 'checkpoints/aggregate'))
-              .foreachBatch(lambda df, n: upsert_aggregates(df, n, pipeline_id, fail)))
+              .foreachBatch(lambda df, n: upsert_aggregates(df, n, pipeline_id, fail, partitions)))
     return trigger(writer, continuous).start()
 
 
@@ -157,7 +124,7 @@ def run(spark, args):
     try:
         # Audit keeps valid late records and invalid originals even if clean stream drops them.
         audit = trigger(raw.writeStream.option('checkpointLocation', str(root / 'checkpoints/audit'))
-                        .foreachBatch(write_batch), args.continuous).start()
+                        .foreachBatch(lambda df, n: write_batch(df, n, partitions=args.jdbc_partitions)), args.continuous).start()
         queries.append(audit)
         if not args.continuous:
             audit.awaitTermination()
@@ -165,7 +132,7 @@ def run(spark, args):
         queries.append(clean)
         if not args.continuous:
             clean.awaitTermination()
-        agg = start_aggregate(spark, root, args.watermark, args.window, args.pipeline_id, args.continuous)
+        agg = start_aggregate(spark, root, args.watermark, args.window, args.pipeline_id, args.continuous, partitions=args.jdbc_partitions)
         queries.append(agg)
         if args.continuous:
             while True:
@@ -194,9 +161,12 @@ def main():
     p.add_argument('--pipeline-id', default='main-v2')
     p.add_argument('--watermark', default='10 minutes')
     p.add_argument('--window', default='1 minute')
+    p.add_argument('--jdbc-partitions', type=int, default=4)
     p.add_argument('--max-offsets', type=int, default=1000)
     p.add_argument('--continuous', action='store_true')
     args = p.parse_args()
+    if not 1 <= args.jdbc_partitions <= 32:
+        p.error("jdbc-partitions must be between 1 and 32")
     if args.max_offsets < 1:
         p.error('--max-offsets must be positive')
     spark = (SparkSession.builder.appName('wikipedia-stream-v2')
