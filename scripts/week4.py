@@ -111,11 +111,29 @@ def verify():
     print('PASS: transforms, post-commit recovery, checkpoint restart, replay, DB/Parquet row and aggregate equality')
 
 
+def verify_stream():
+    setup()
+    test_id = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S') + '_' + secrets.token_hex(3)
+    database, topic = 'stream_test_' + test_id, 'stream-test-' + test_id
+    root = 'artifacts/week4/tests/stream_' + test_id
+    compose('exec', '-T', 'postgres', 'psql', '-U', 'wiki', '-d', 'wiki',
+            '-v', 'ON_ERROR_STOP=1', '-c', 'CREATE DATABASE ' + database)
+    spark('tests/integration/test_streaming.py', database=database, log=root + '/stateful.log')
+    create_topic(topic)
+    for phase in ('initial', 'replay'):
+        produce('-m', 'src.producer', '--bootstrap-servers', 'kafka:29092', '--topic', topic,
+                '--input', 'samples/wikipedia_edits.jsonl', '--rate', '0')
+        spark('src/stream_edits.py', '--topic', topic, '--root', root + '/pipeline',
+              '--pipeline-id', topic, database=database, log=root + '/' + phase + '.log')
+        spark('tests/integration/check_stream_sample.py', '--root', root + '/pipeline',
+              '--pipeline-id', topic, '--phase', phase, database=database)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['setup', 'demo', 'verify', 'run', 'check', 'send', 'status', 'stop'])
+    parser.add_argument('action', choices=['setup', 'demo', 'verify', 'run', 'snapshot', 'verify-stream', 'check', 'send', 'status', 'stop'])
     args, rest = parser.parse_known_args()
-    if rest and args.action not in ('run', 'check', 'send'):
+    if rest and args.action not in ('run', 'snapshot', 'check', 'send'):
         parser.error('Unexpected arguments: ' + ' '.join(rest))
     if args.action == 'setup':
         setup()
@@ -124,7 +142,11 @@ def main():
     elif args.action == 'verify':
         verify()
     elif args.action == 'run':
+        spark('src/stream_edits.py', *rest)
+    elif args.action == 'snapshot':
         spark('src/process_edits.py', *rest)
+    elif args.action == 'verify-stream':
+        verify_stream()
     elif args.action == 'check':
         spark('scripts/check_week4.py', *rest)
     elif args.action == 'send':

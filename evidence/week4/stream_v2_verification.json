@@ -1,0 +1,1037 @@
+{
+  "verified": true,
+  "pipeline_id": "test-1d7959b47072",
+  "checked_at": "2026-10-31T05:15:20.280725+00:00",
+  "checks": [
+    "same/cross-batch duplicate removal",
+    "event-time window update 2 to 3",
+    "commit failure recovery",
+    "empty checkpoint restart",
+    "late within watermark accepted",
+    "late outside watermark dropped",
+    "null and negative delta",
+    "Parquet date partition",
+    "incompatible settings rejected",
+    "continuous writes before shutdown"
+  ],
+  "parquet_rows": 6,
+  "aggregate_counts": [
+    3,
+    1,
+    2
+  ],
+  "watermark_dropped": 2,
+  "progress": [
+    {
+      "stage": "clean",
+      "wave": 1,
+      "progress": [
+        {
+          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
+          "runId": "122b569e-0456-45b5-a287-71e63deae70b",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:39.929Z",
+          "batchId": 0,
+          "numInputRows": 3,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 1.9035532994923856,
+          "durationMs": {
+            "addBatch": 1253,
+            "commitOffsets": 15,
+            "getBatch": 34,
+            "latestOffset": 20,
+            "queryPlanning": 219,
+            "triggerExecution": 1576,
+            "walCommit": 26
+          },
+          "eventTime": {
+            "avg": "2026-10-25T00:00:13.333Z",
+            "max": "2026-10-25T00:00:20.000Z",
+            "min": "2026-10-25T00:00:10.000Z",
+            "watermark": "1970-01-01T00:00:00.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "dedupeWithinWatermark",
+              "numRowsTotal": 2,
+              "numRowsUpdated": 2,
+              "allUpdatesTimeMs": 49,
+              "numRowsRemoved": 0,
+              "allRemovalsTimeMs": 0,
+              "commitTimeMs": 28,
+              "memoryUsedBytes": 1008,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 0,
+                "loadedMapCacheMissCount": 0,
+                "numDroppedDuplicateRows": 1,
+                "stateOnCurrentVersionSizeBytes": 720
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "startOffset": null,
+              "endOffset": {
+                "logOffset": 0
+              },
+              "latestOffset": null,
+              "numInputRows": 3,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 1.9035532994923856
+            }
+          ],
+          "sink": {
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "numOutputRows": -1
+          }
+        },
+        {
+          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
+          "runId": "122b569e-0456-45b5-a287-71e63deae70b",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:41.512Z",
+          "batchId": 1,
+          "numInputRows": 0,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 0.0,
+          "durationMs": {
+            "addBatch": 174,
+            "commitOffsets": 10,
+            "getBatch": 0,
+            "latestOffset": 0,
+            "queryPlanning": 22,
+            "triggerExecution": 225,
+            "walCommit": 14
+          },
+          "eventTime": {
+            "watermark": "2026-10-24T23:58:20.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "dedupeWithinWatermark",
+              "numRowsTotal": 2,
+              "numRowsUpdated": 0,
+              "allUpdatesTimeMs": 37,
+              "numRowsRemoved": 0,
+              "allRemovalsTimeMs": 0,
+              "commitTimeMs": 43,
+              "memoryUsedBytes": 1440,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 2,
+                "loadedMapCacheMissCount": 0,
+                "numDroppedDuplicateRows": 0,
+                "stateOnCurrentVersionSizeBytes": 608
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "startOffset": {
+                "logOffset": 0
+              },
+              "endOffset": {
+                "logOffset": 0
+              },
+              "latestOffset": null,
+              "numInputRows": 0,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 0.0
+            }
+          ],
+          "sink": {
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "numOutputRows": -1
+          }
+        }
+      ]
+    },
+    {
+      "stage": "aggregate",
+      "progress": []
+    },
+    {
+      "stage": "aggregate",
+      "progress": [
+        {
+          "id": "f2568117-fab1-47fb-9865-46884102b972",
+          "runId": "0f37f30d-7672-4577-89a8-7c1723e3cbcb",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:42.676Z",
+          "batchId": 0,
+          "numInputRows": 2,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 5.970149253731343,
+          "durationMs": {
+            "addBatch": 292,
+            "commitOffsets": 9,
+            "getBatch": 7,
+            "queryPlanning": 22,
+            "triggerExecution": 335
+          },
+          "eventTime": {
+            "avg": "2026-10-25T00:00:15.000Z",
+            "max": "2026-10-25T00:00:20.000Z",
+            "min": "2026-10-25T00:00:10.000Z",
+            "watermark": "1970-01-01T00:00:00.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "stateStoreSave",
+              "numRowsTotal": 1,
+              "numRowsUpdated": 1,
+              "allUpdatesTimeMs": 8,
+              "numRowsRemoved": 0,
+              "allRemovalsTimeMs": 0,
+              "commitTimeMs": 24,
+              "memoryUsedBytes": 800,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 0,
+                "loadedMapCacheMissCount": 0,
+                "stateOnCurrentVersionSizeBytes": 512
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "startOffset": null,
+              "endOffset": {
+                "logOffset": 0
+              },
+              "latestOffset": null,
+              "numInputRows": 2,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 5.970149253731343
+            }
+          ],
+          "sink": {
+            "description": "ForeachBatchSink",
+            "numOutputRows": -1
+          }
+        },
+        {
+          "id": "f2568117-fab1-47fb-9865-46884102b972",
+          "runId": "0f37f30d-7672-4577-89a8-7c1723e3cbcb",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:43.012Z",
+          "batchId": 1,
+          "numInputRows": 0,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 0.0,
+          "durationMs": {
+            "addBatch": 286,
+            "commitOffsets": 8,
+            "getBatch": 0,
+            "latestOffset": 0,
+            "queryPlanning": 15,
+            "triggerExecution": 318,
+            "walCommit": 9
+          },
+          "eventTime": {
+            "watermark": "2026-10-24T23:58:20.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "stateStoreSave",
+              "numRowsTotal": 1,
+              "numRowsUpdated": 0,
+              "allUpdatesTimeMs": 10,
+              "numRowsRemoved": 0,
+              "allRemovalsTimeMs": 2,
+              "commitTimeMs": 24,
+              "memoryUsedBytes": 1200,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 4,
+                "loadedMapCacheMissCount": 0,
+                "stateOnCurrentVersionSizeBytes": 480
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "startOffset": {
+                "logOffset": 0
+              },
+              "endOffset": {
+                "logOffset": 0
+              },
+              "latestOffset": null,
+              "numInputRows": 0,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 0.0
+            }
+          ],
+          "sink": {
+            "description": "ForeachBatchSink",
+            "numOutputRows": -1
+          }
+        }
+      ]
+    },
+    {
+      "stage": "aggregate",
+      "progress": [
+        {
+          "id": "f2568117-fab1-47fb-9865-46884102b972",
+          "runId": "195bed44-048c-4092-b8cd-9ff6c63c0e1c",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:43.377Z",
+          "batchId": 2,
+          "numInputRows": 0,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 0.0,
+          "durationMs": {
+            "latestOffset": 0,
+            "triggerExecution": 7
+          },
+          "eventTime": {
+            "watermark": "2026-10-24T23:58:20.000Z"
+          },
+          "stateOperators": [],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "startOffset": {
+                "logOffset": 0
+              },
+              "endOffset": {
+                "logOffset": 0
+              },
+              "latestOffset": null,
+              "numInputRows": 0,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 0.0
+            }
+          ],
+          "sink": {
+            "description": "ForeachBatchSink",
+            "numOutputRows": -1
+          }
+        }
+      ]
+    },
+    {
+      "stage": "clean",
+      "wave": 2,
+      "progress": [
+        {
+          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
+          "runId": "e9c6d57b-60eb-4b0d-ad51-b50e82e95414",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:43.464Z",
+          "batchId": 2,
+          "numInputRows": 2,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 7.8431372549019605,
+          "durationMs": {
+            "addBatch": 177,
+            "commitOffsets": 13,
+            "getBatch": 4,
+            "latestOffset": 10,
+            "queryPlanning": 32,
+            "triggerExecution": 255,
+            "walCommit": 9
+          },
+          "eventTime": {
+            "avg": "2026-10-25T00:00:20.000Z",
+            "max": "2026-10-25T00:00:30.000Z",
+            "min": "2026-10-25T00:00:10.000Z",
+            "watermark": "2026-10-24T23:58:20.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "dedupeWithinWatermark",
+              "numRowsTotal": 3,
+              "numRowsUpdated": 1,
+              "allUpdatesTimeMs": 6,
+              "numRowsRemoved": 0,
+              "allRemovalsTimeMs": 0,
+              "commitTimeMs": 32,
+              "memoryUsedBytes": 1520,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 0,
+                "loadedMapCacheMissCount": 2,
+                "numDroppedDuplicateRows": 1,
+                "stateOnCurrentVersionSizeBytes": 800
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "startOffset": {
+                "logOffset": 0
+              },
+              "endOffset": {
+                "logOffset": 1
+              },
+              "latestOffset": null,
+              "numInputRows": 2,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 7.8431372549019605
+            }
+          ],
+          "sink": {
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "numOutputRows": -1
+          }
+        },
+        {
+          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
+          "runId": "e9c6d57b-60eb-4b0d-ad51-b50e82e95414",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:43.719Z",
+          "batchId": 3,
+          "numInputRows": 0,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 0.0,
+          "durationMs": {
+            "addBatch": 72,
+            "commitOffsets": 8,
+            "getBatch": 0,
+            "latestOffset": 1,
+            "queryPlanning": 7,
+            "triggerExecution": 102,
+            "walCommit": 13
+          },
+          "eventTime": {
+            "watermark": "2026-10-24T23:58:30.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "dedupeWithinWatermark",
+              "numRowsTotal": 3,
+              "numRowsUpdated": 0,
+              "allUpdatesTimeMs": 1,
+              "numRowsRemoved": 0,
+              "allRemovalsTimeMs": 0,
+              "commitTimeMs": 21,
+              "memoryUsedBytes": 1576,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 2,
+                "loadedMapCacheMissCount": 2,
+                "numDroppedDuplicateRows": 0,
+                "stateOnCurrentVersionSizeBytes": 816
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "startOffset": {
+                "logOffset": 1
+              },
+              "endOffset": {
+                "logOffset": 1
+              },
+              "latestOffset": null,
+              "numInputRows": 0,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 0.0
+            }
+          ],
+          "sink": {
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "numOutputRows": -1
+          }
+        }
+      ]
+    },
+    {
+      "stage": "aggregate",
+      "progress": [
+        {
+          "id": "f2568117-fab1-47fb-9865-46884102b972",
+          "runId": "d7cbc80e-9d57-4eb9-94ac-ffe4c61450c4",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:43.864Z",
+          "batchId": 2,
+          "numInputRows": 1,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 3.571428571428571,
+          "durationMs": {
+            "addBatch": 216,
+            "commitOffsets": 8,
+            "getBatch": 4,
+            "latestOffset": 9,
+            "queryPlanning": 20,
+            "triggerExecution": 280,
+            "walCommit": 14
+          },
+          "eventTime": {
+            "avg": "2026-10-25T00:00:30.000Z",
+            "max": "2026-10-25T00:00:30.000Z",
+            "min": "2026-10-25T00:00:30.000Z",
+            "watermark": "2026-10-24T23:58:20.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "stateStoreSave",
+              "numRowsTotal": 1,
+              "numRowsUpdated": 1,
+              "allUpdatesTimeMs": 13,
+              "numRowsRemoved": 0,
+              "allRemovalsTimeMs": 0,
+              "commitTimeMs": 16,
+              "memoryUsedBytes": 1264,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 2,
+                "loadedMapCacheMissCount": 2,
+                "stateOnCurrentVersionSizeBytes": 480
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "startOffset": {
+                "logOffset": 0
+              },
+              "endOffset": {
+                "logOffset": 1
+              },
+              "latestOffset": null,
+              "numInputRows": 1,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 3.571428571428571
+            }
+          ],
+          "sink": {
+            "description": "ForeachBatchSink",
+            "numOutputRows": -1
+          }
+        },
+        {
+          "id": "f2568117-fab1-47fb-9865-46884102b972",
+          "runId": "d7cbc80e-9d57-4eb9-94ac-ffe4c61450c4",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:44.144Z",
+          "batchId": 3,
+          "numInputRows": 0,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 0.0,
+          "durationMs": {
+            "addBatch": 217,
+            "commitOffsets": 9,
+            "getBatch": 0,
+            "latestOffset": 0,
+            "queryPlanning": 9,
+            "triggerExecution": 245,
+            "walCommit": 8
+          },
+          "eventTime": {
+            "watermark": "2026-10-24T23:58:30.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "stateStoreSave",
+              "numRowsTotal": 1,
+              "numRowsUpdated": 0,
+              "allUpdatesTimeMs": 2,
+              "numRowsRemoved": 0,
+              "allRemovalsTimeMs": 2,
+              "commitTimeMs": 16,
+              "memoryUsedBytes": 1168,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 6,
+                "loadedMapCacheMissCount": 2,
+                "stateOnCurrentVersionSizeBytes": 480
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "startOffset": {
+                "logOffset": 1
+              },
+              "endOffset": {
+                "logOffset": 1
+              },
+              "latestOffset": null,
+              "numInputRows": 0,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 0.0
+            }
+          ],
+          "sink": {
+            "description": "ForeachBatchSink",
+            "numOutputRows": -1
+          }
+        }
+      ]
+    },
+    {
+      "stage": "clean",
+      "wave": 3,
+      "progress": [
+        {
+          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
+          "runId": "f5fb44f7-57a4-4e73-844c-11c084b0b1d8",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:44.483Z",
+          "batchId": 4,
+          "numInputRows": 1,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 5.319148936170213,
+          "durationMs": {
+            "addBatch": 132,
+            "commitOffsets": 9,
+            "getBatch": 3,
+            "latestOffset": 9,
+            "queryPlanning": 21,
+            "triggerExecution": 188,
+            "walCommit": 9
+          },
+          "eventTime": {
+            "avg": "2026-10-25T00:10:00.000Z",
+            "max": "2026-10-25T00:10:00.000Z",
+            "min": "2026-10-25T00:10:00.000Z",
+            "watermark": "2026-10-24T23:58:30.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "dedupeWithinWatermark",
+              "numRowsTotal": 4,
+              "numRowsUpdated": 1,
+              "allUpdatesTimeMs": 14,
+              "numRowsRemoved": 0,
+              "allRemovalsTimeMs": 0,
+              "commitTimeMs": 23,
+              "memoryUsedBytes": 1760,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 0,
+                "loadedMapCacheMissCount": 2,
+                "numDroppedDuplicateRows": 0,
+                "stateOnCurrentVersionSizeBytes": 1000
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "startOffset": {
+                "logOffset": 1
+              },
+              "endOffset": {
+                "logOffset": 2
+              },
+              "latestOffset": null,
+              "numInputRows": 1,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 5.319148936170213
+            }
+          ],
+          "sink": {
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "numOutputRows": -1
+          }
+        },
+        {
+          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
+          "runId": "f5fb44f7-57a4-4e73-844c-11c084b0b1d8",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:44.672Z",
+          "batchId": 5,
+          "numInputRows": 0,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 0.0,
+          "durationMs": {
+            "addBatch": 78,
+            "commitOffsets": 11,
+            "getBatch": 0,
+            "latestOffset": 0,
+            "queryPlanning": 7,
+            "triggerExecution": 105,
+            "walCommit": 8
+          },
+          "eventTime": {
+            "watermark": "2026-10-25T00:08:00.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "dedupeWithinWatermark",
+              "numRowsTotal": 1,
+              "numRowsUpdated": 0,
+              "allUpdatesTimeMs": 0,
+              "numRowsRemoved": 3,
+              "allRemovalsTimeMs": 9,
+              "commitTimeMs": 27,
+              "memoryUsedBytes": 1744,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 2,
+                "loadedMapCacheMissCount": 2,
+                "numDroppedDuplicateRows": 0,
+                "stateOnCurrentVersionSizeBytes": 480
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "startOffset": {
+                "logOffset": 2
+              },
+              "endOffset": {
+                "logOffset": 2
+              },
+              "latestOffset": null,
+              "numInputRows": 0,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 0.0
+            }
+          ],
+          "sink": {
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "numOutputRows": -1
+          }
+        }
+      ]
+    },
+    {
+      "stage": "aggregate",
+      "progress": [
+        {
+          "id": "f2568117-fab1-47fb-9865-46884102b972",
+          "runId": "f48e6dbb-b7af-4016-ace8-9bf5d7ba6dcb",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:44.818Z",
+          "batchId": 4,
+          "numInputRows": 1,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 4.385964912280701,
+          "durationMs": {
+            "addBatch": 181,
+            "commitOffsets": 8,
+            "getBatch": 4,
+            "latestOffset": 8,
+            "queryPlanning": 13,
+            "triggerExecution": 228,
+            "walCommit": 8
+          },
+          "eventTime": {
+            "avg": "2026-10-25T00:10:00.000Z",
+            "max": "2026-10-25T00:10:00.000Z",
+            "min": "2026-10-25T00:10:00.000Z",
+            "watermark": "2026-10-24T23:58:30.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "stateStoreSave",
+              "numRowsTotal": 2,
+              "numRowsUpdated": 1,
+              "allUpdatesTimeMs": 7,
+              "numRowsRemoved": 0,
+              "allRemovalsTimeMs": 0,
+              "commitTimeMs": 13,
+              "memoryUsedBytes": 1416,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 2,
+                "loadedMapCacheMissCount": 2,
+                "stateOnCurrentVersionSizeBytes": 728
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "startOffset": {
+                "logOffset": 1
+              },
+              "endOffset": {
+                "logOffset": 2
+              },
+              "latestOffset": null,
+              "numInputRows": 1,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 4.385964912280701
+            }
+          ],
+          "sink": {
+            "description": "ForeachBatchSink",
+            "numOutputRows": -1
+          }
+        },
+        {
+          "id": "f2568117-fab1-47fb-9865-46884102b972",
+          "runId": "f48e6dbb-b7af-4016-ace8-9bf5d7ba6dcb",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:45.047Z",
+          "batchId": 5,
+          "numInputRows": 0,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 0.0,
+          "durationMs": {
+            "addBatch": 174,
+            "commitOffsets": 8,
+            "getBatch": 0,
+            "latestOffset": 0,
+            "queryPlanning": 9,
+            "triggerExecution": 199,
+            "walCommit": 8
+          },
+          "eventTime": {
+            "watermark": "2026-10-25T00:08:00.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "stateStoreSave",
+              "numRowsTotal": 1,
+              "numRowsUpdated": 0,
+              "allUpdatesTimeMs": 2,
+              "numRowsRemoved": 1,
+              "allRemovalsTimeMs": 4,
+              "commitTimeMs": 13,
+              "memoryUsedBytes": 1440,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 6,
+                "loadedMapCacheMissCount": 2,
+                "stateOnCurrentVersionSizeBytes": 504
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "startOffset": {
+                "logOffset": 2
+              },
+              "endOffset": {
+                "logOffset": 2
+              },
+              "latestOffset": null,
+              "numInputRows": 0,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 0.0
+            }
+          ],
+          "sink": {
+            "description": "ForeachBatchSink",
+            "numOutputRows": -1
+          }
+        }
+      ]
+    },
+    {
+      "stage": "clean",
+      "wave": 4,
+      "progress": [
+        {
+          "id": "9bde3981-05c0-49bb-9298-6bcde5f7dd84",
+          "runId": "344d690b-4bd7-4a16-b1a5-734491bed7df",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:45.332Z",
+          "batchId": 6,
+          "numInputRows": 3,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 15.789473684210526,
+          "durationMs": {
+            "addBatch": 124,
+            "commitOffsets": 21,
+            "getBatch": 3,
+            "latestOffset": 9,
+            "queryPlanning": 18,
+            "triggerExecution": 190,
+            "walCommit": 8
+          },
+          "eventTime": {
+            "avg": "2026-10-25T00:03:16.666Z",
+            "max": "2026-10-25T00:09:00.000Z",
+            "min": "2026-10-25T00:00:10.000Z",
+            "watermark": "2026-10-25T00:08:00.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "dedupeWithinWatermark",
+              "numRowsTotal": 2,
+              "numRowsUpdated": 1,
+              "allUpdatesTimeMs": 5,
+              "numRowsRemoved": 0,
+              "allRemovalsTimeMs": 0,
+              "commitTimeMs": 23,
+              "memoryUsedBytes": 1328,
+              "numRowsDroppedByWatermark": 2,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 0,
+                "loadedMapCacheMissCount": 2,
+                "numDroppedDuplicateRows": 0,
+                "stateOnCurrentVersionSizeBytes": 616
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/input]",
+              "startOffset": {
+                "logOffset": 2
+              },
+              "endOffset": {
+                "logOffset": 3
+              },
+              "latestOffset": null,
+              "numInputRows": 3,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 15.789473684210526
+            }
+          ],
+          "sink": {
+            "description": "FileSink[/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+            "numOutputRows": -1
+          }
+        }
+      ]
+    },
+    {
+      "stage": "aggregate",
+      "progress": [
+        {
+          "id": "f2568117-fab1-47fb-9865-46884102b972",
+          "runId": "0dc6ff76-e293-40c1-ba32-33ec9a9a9b31",
+          "name": null,
+          "timestamp": "2026-10-31T05:14:45.577Z",
+          "batchId": 6,
+          "numInputRows": 1,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 4.219409282700422,
+          "durationMs": {
+            "addBatch": 188,
+            "commitOffsets": 9,
+            "getBatch": 3,
+            "latestOffset": 8,
+            "queryPlanning": 13,
+            "triggerExecution": 237,
+            "walCommit": 9
+          },
+          "eventTime": {
+            "avg": "2026-10-25T00:09:00.000Z",
+            "max": "2026-10-25T00:09:00.000Z",
+            "min": "2026-10-25T00:09:00.000Z",
+            "watermark": "2026-10-25T00:08:00.000Z"
+          },
+          "stateOperators": [
+            {
+              "operatorName": "stateStoreSave",
+              "numRowsTotal": 2,
+              "numRowsUpdated": 1,
+              "allUpdatesTimeMs": 5,
+              "numRowsRemoved": 0,
+              "allRemovalsTimeMs": 0,
+              "commitTimeMs": 14,
+              "memoryUsedBytes": 1416,
+              "numRowsDroppedByWatermark": 0,
+              "numShufflePartitions": 2,
+              "numStateStoreInstances": 2,
+              "customMetrics": {
+                "loadedMapCacheHitCount": 2,
+                "loadedMapCacheMissCount": 2,
+                "stateOnCurrentVersionSizeBytes": 720
+              }
+            }
+          ],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "startOffset": {
+                "logOffset": 2
+              },
+              "endOffset": {
+                "logOffset": 3
+              },
+              "latestOffset": null,
+              "numInputRows": 1,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 4.219409282700422
+            }
+          ],
+          "sink": {
+            "description": "ForeachBatchSink",
+            "numOutputRows": -1
+          }
+        }
+      ]
+    },
+    {
+      "stage": "aggregate",
+      "progress": [
+        {
+          "id": "f2568117-fab1-47fb-9865-46884102b972",
+          "runId": "afc7153c-b90a-4c72-ba88-3ba387872419",
+          "name": null,
+          "timestamp": "2026-10-31T05:15:20.261Z",
+          "batchId": 9,
+          "numInputRows": 0,
+          "inputRowsPerSecond": 0.0,
+          "processedRowsPerSecond": 0.0,
+          "durationMs": {
+            "latestOffset": 0,
+            "triggerExecution": 11
+          },
+          "eventTime": {
+            "watermark": "2026-10-25T00:08:20.000Z"
+          },
+          "stateOperators": [],
+          "sources": [
+            {
+              "description": "FileStreamSource[file:/workspace/artifacts/week4/tests/test-1d7959b47072/clean]",
+              "startOffset": {
+                "logOffset": 4
+              },
+              "endOffset": {
+                "logOffset": 4
+              },
+              "latestOffset": null,
+              "numInputRows": 0,
+              "inputRowsPerSecond": 0.0,
+              "processedRowsPerSecond": 0.0
+            }
+          ],
+          "sink": {
+            "description": "ForeachBatchSink",
+            "numOutputRows": -1
+          }
+        }
+      ]
+    }
+  ]
+}

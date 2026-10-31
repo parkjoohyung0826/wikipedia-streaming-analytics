@@ -25,6 +25,12 @@ Wikimedia SSE → 원본 JSONL → Producer → Kafka
 → Parquet snapshot
 ```
 
+## 새 스트리밍 경로 (3·4·5단계 보완)
+
+`python3 scripts/week4.py run`은 이제 watermark·중복 제거 → 날짜별 Parquet append → 1분 window 집계 → PostgreSQL upsert를 실행한다. 계속 처리하려면 `--continuous`를 붙인다. 기존 snapshot 코드는 `python3 scripts/week4.py snapshot`으로 유지한다.
+
+[실행·결과·지연 정책 안내](docs/guides/stream_v2.md). 새 검증은 `python3 scripts/week4.py verify-stream`으로 수행한다. 아래 3,846건 기록은 기존 snapshot 경로의 검증이다.
+
 ## 구현과 검증 상태
 
 - 수집·Kafka 전송: 구현돼 있으며, 3회차 전체 3,846건의 전송·수신 검증 기록이 있다.

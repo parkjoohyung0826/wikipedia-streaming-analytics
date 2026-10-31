@@ -64,6 +64,6 @@ services:
       - 1g
       - --conf
       - spark.jars.ivy=/tmp/week4-ivy
-    command: ["src/process_edits.py"]
+    command: ["src/stream_edits.py"]
 volumes:
   week4-postgres:

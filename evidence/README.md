@@ -25,3 +25,10 @@ week4/
 ```
 
 PostgreSQL이 기준 저장소이며, 이 폴더의 CSV·JSONL은 확인용 내보내기 파일이다. Parquet 원본은 프로젝트의 `artifacts/week4/parquet/`에 있다. 보관된 JSON 내부 경로는 과거 실행 기록으로 유지했으며, 이동 내역은 전체 실행 폴더의 `metadata/layout_changes.json`에 있다.
+
+## 스트리밍 v2 검증
+
+- [상태·중복·지연·복구](week4/stream_v2_verification.json)
+- [실제 샘플 20건 최초 처리](week4/stream_v2_sample_initial.json)
+- [같은 샘플 재전송](week4/stream_v2_sample_replay.json)
+

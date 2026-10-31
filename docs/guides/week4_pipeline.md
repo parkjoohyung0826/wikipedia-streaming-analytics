@@ -1,5 +1,7 @@
 # 4회차 과제: Spark 전처리와 저장
 
+> 이 문서는 기존 snapshot 경로 설명이다. 새 3·4·5단계 스트리밍 구현과 기본 run 명령은 [stream_v2.md](stream_v2.md)를 따른다.
+
 ## 범위와 현재 검증 상태
 
 3회차의 Wikimedia 편집 메시지를 Kafka에서 읽고, Spark Structured Streaming으로
@@ -88,7 +90,7 @@ PostgreSQL은 호스트 포트를 공개하지 않는다. Compose 내부의 `pos
 
 ```bash
 python scripts/week4.py send --input data/실제수집폴더/events.jsonl --rate 200
-python scripts/week4.py run
+python scripts/week4.py snapshot
 python scripts/week4.py check --expected-input data/실제수집폴더/events.jsonl --report evidence/week4/full_verification.json
 ```
 
@@ -188,7 +190,7 @@ DB에서는 유일한 편집 이력을 집계하는 view로 제공한다. NULL �
 - **Parquet:** 컬럼 단위 분석·압축·Spark 재처리에 적합하다. DB의 정상 이력을 날짜별로 내보낸다.
   `CURRENT.json`에 기록된 **한 snapshot만** 읽는다. snapshots 전체를 한꺼번에 읽으면 같은 이력이 중복된다.
 - 두 저장소에 동시 커밋하는 분산 transaction은 사용하지 않는다. DB를 기준으로 Parquet을 다시 만들 수 있다.
-  DB 저장 후 파일 export가 실패하면 `python scripts/week4.py run --export-only`로 재시도한다.
+  DB 저장 후 파일 export가 실패하면 `python scripts/week4.py snapshot --export-only`로 재시도한다.
 - Parquet은 새 경로에 모두 쓴 뒤 `CURRENT.json`을 원자적으로 교체한다. 중단된 snapshot은
   manifest에 게시되지 않는다. 파일 export는 한 작업씩 실행하며 snapshot 보존·삭제 자동화는 후속 범위다.
 
@@ -209,7 +211,7 @@ checkpoint를 지우면 Kafka를 처음부터 읽을 수 있다. DB PK는 중복
 기본 실행은 유한 입력 검증용이다. 계속 수신하려면:
 
 ```bash
-python scripts/week4.py run --continuous
+python scripts/week4.py snapshot --continuous
 ```
 
 연속 실행 중 DB는 갱신되지만 Parquet snapshot은 주기적으로 생성하지 않는다. 정상 종료 뒤 또는

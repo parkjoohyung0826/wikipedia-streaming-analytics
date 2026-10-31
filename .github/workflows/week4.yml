@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'src/process_edits.py'
+      - 'src/stream_edits.py'
       - 'compose.week4.yml'
       - 'docker/**'
       - 'sql/**'
@@ -29,6 +30,8 @@ jobs:
         run: python scripts/week4.py verify
       - name: Process real collected sample and compare source records
         run: python scripts/week4.py demo
+      - name: Stateful streaming verification
+        run: python scripts/week4.py verify-stream
       - name: Existing collector and producer regression tests
         run: docker compose -f docker-compose.yml -f compose.week4.yml run --rm -T producer -m unittest discover -s tests/unit -v
       - name: Upload verification evidence and logs
