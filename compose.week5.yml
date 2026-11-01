@@ -1,0 +1,83 @@
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: docker/airflow.Dockerfile
+  image: wikipedia-streaming-analytics-airflow:2.10.5
+  user: "${LAB_UID:-50000}:0"
+  environment: &airflow-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow_local_lab@airflow-db/airflow
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+    AIRFLOW__CORE__DEFAULT_TIMEZONE: Asia/Seoul
+    AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: Asia/Seoul
+    AIRFLOW__CORE__PARALLELISM: "2"
+    AIRFLOW__WEBSERVER__WORKERS: "1"
+    AIRFLOW__WEBSERVER__SECRET_KEY: ${WIKI_AIRFLOW_SECRET:?run scripts/week5.py setup}
+    AIRFLOW__API__AUTH_BACKENDS: airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session
+    PYTHONPATH: /workspace
+    WIKI_WORKSPACE_HOST: ${WIKI_WORKSPACE_HOST:?run scripts/week5.py setup}
+    WIKI_SPARK_IMAGE: wikipedia-streaming-analytics-spark:latest
+    WIKI_DOCKER_NETWORK: wikipedia-streaming-analytics_default
+    WIKI_JOB_USER: "${LAB_UID:-1000}:${LAB_GID:-1000}"
+    PGHOST: postgres
+    PGPORT: "5432"
+    PGDATABASE: wiki
+    PGUSER: wiki
+    PGPASSWORD: ${WIKI_DB_PASSWORD:-wiki_local_lab}
+    DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL:-}
+  volumes:
+    - ./dags:/opt/airflow/dags:ro
+    - .:/workspace
+    - week5-airflow-logs:/opt/airflow/logs
+    - /var/run/docker.sock:/var/run/docker.sock
+  depends_on:
+    airflow-db:
+      condition: service_healthy
+    postgres:
+      condition: service_healthy
+services:
+  airflow-db:
+    image: postgres:16.6
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow_local_lab
+      POSTGRES_DB: airflow
+    volumes:
+      - week5-airflow-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  airflow-init:
+    <<: *airflow-common
+    profiles: ["week5-init"]
+    command:
+      - bash
+      - -c
+      - >-
+        airflow db migrate &&
+        (airflow users list -o json | python -c 'import sys,json; sys.exit(not any(u["username"] == "airflow" for u in json.load(sys.stdin)))'
+        || airflow users create --username airflow --password airflow --firstname Wiki --lastname Lab --role Admin --email wiki@example.invalid)
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    healthcheck:
+      test: ["CMD-SHELL", 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"']
+      interval: 15s
+      timeout: 10s
+      retries: 20
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "127.0.0.1:18080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+volumes:
+  week5-airflow-db:
+  week5-airflow-logs:

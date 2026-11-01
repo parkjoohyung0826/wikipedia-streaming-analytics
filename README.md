@@ -6,6 +6,7 @@ Wikimedia 실시간 편집 기록을 수집하고, Kafka → Spark → PostgreSQ
 
 | 문서 | 용도 |
 |---|---|
+| [5회차 README](docs/submissions/week5.md) | Airflow 일일 처리·재시도·품질 검사·게시 |
 | [4회차 README](docs/submissions/week4.md) | 과제의 다섯 항목: 흐름·입출력 예시·스키마·저장 포맷·실행 안내 |
 | [3회차 README](docs/archive/week3.md) | Producer와 Kafka 수집 |
 | [2회차 설계](docs/archive/week2.md) | 데이터·전체 구조·기술 선택 |
