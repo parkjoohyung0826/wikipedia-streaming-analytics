@@ -46,15 +46,20 @@ def run_spark(action,target_date,context):
     client=docker.from_env(timeout=30)
     run_id=context['run_id']
     work=work_path(run_id,target_date)
-    environment={k:os.environ[k] for k in ('PGHOST','PGPORT','PGDATABASE','PGUSER','PGPASSWORD')}
+    environment={k:os.environ[k] for k in ('PGHOST','PGPORT','PGDATABASE','PGUSER','PGPASSWORD') if k in os.environ}
+    s3=os.getenv('WIKI_STORAGE')=='s3'
+    volumes={os.environ['WIKI_WORKSPACE_HOST']:{'bind':'/workspace','mode':'rw'}}
+    if s3:
+        volumes[os.environ['WIKI_AWS_HOST']]={'bind':'/home/spark/.aws','mode':'ro'}
+        environment.update(AWS_SHARED_CREDENTIALS_FILE='/home/spark/.aws/credentials',AWS_CONFIG_FILE='/home/spark/.aws/config',AWS_PROFILE=os.getenv('AWS_PROFILE','default'),AWS_CREDENTIAL_PROFILES_FILE='/home/spark/.aws/credentials')
     environment.update(PYTHONPATH='/workspace',HOME='/tmp',SPARK_LOCAL_IP='127.0.0.1',TZ='UTC')
     container=None
     try:
         container=client.containers.run(os.environ['WIKI_SPARK_IMAGE'],
             command=['driver','--master','local[2]','--driver-memory','1g','--conf','spark.jars.ivy=/tmp/week5-ivy',
-                     'src/daily_jobs.py',action,'--date',target_date,'--work',work],
+                     'src/spark_s3.py' if s3 else 'src/daily_jobs.py',action,'--date',target_date,'--work',work],
             entrypoint='/opt/entrypoint.sh',working_dir='/workspace',environment=environment,
-            volumes={os.environ['WIKI_WORKSPACE_HOST']:{'bind':'/workspace','mode':'rw'}},
+            volumes=volumes,
             network=os.environ['WIKI_DOCKER_NETWORK'],user=os.environ['WIKI_JOB_USER'],
             detach=True,labels={'wiki.week5.run':hashlib.sha256(run_id.encode()).hexdigest()[:20]})
         log=Path('/workspace')/work/(action+'.log');log.parent.mkdir(parents=True,exist_ok=True)

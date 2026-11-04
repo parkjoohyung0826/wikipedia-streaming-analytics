@@ -1,0 +1,7 @@
+{
+  "bucket": "YOUR_PRIVATE_BUCKET",
+  "account_id": "YOUR_AWS_ACCOUNT_ID",
+  "region": "ap-northeast-2",
+  "profile": null,
+  "prefix": "wikipedia"
+}

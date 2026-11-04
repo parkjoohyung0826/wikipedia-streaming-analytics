@@ -1,42 +1,15 @@
-# 실행 결과 안내
+# 현재 기본 파이프라인
 
-**전체 전처리 결과 3,846건**은 [Spark 전체 실행 보고서](week4/full_run_20261028T221020Z/README.md)에서 확인한다.
+- [Kafka · Spark · Airflow + S3 실제 검증](spark_s3/README.md)
 
-| 보고 싶은 내용 | 파일 |
-|---|---|
-| 처리 후 전체 데이터 | [processed_edits.csv](week4/full_run_20261028T221020Z/outputs/processed_edits.csv) |
-| 시간·위키별 집계 | [hourly_wiki.csv](week4/full_run_20261028T221020Z/outputs/hourly_wiki.csv) |
-| 같은 이벤트의 처리 전·후 | [input_output_examples.json](week4/full_run_20261028T221020Z/examples/input_output_examples.json) |
-| 검증 요약 | [summary.json](week4/full_run_20261028T221020Z/checks/summary.json) |
+아래는 이전 Python-only S3 실험과 백업 기록입니다.
 
-```text
-week3/                         # 이전 Kafka 검증
-week4/
-├── ci_verification.json        # 기존 CI 검증
-├── demo_verification.json      # 샘플 20건 검증
-└── full_run_20261028T221020Z/   # 전체 3,846건 처리
-    ├── README.md              # 실행 결과 보고서
-    ├── inputs/                # 실제 입력
-    ├── outputs/               # 전체 CSV·JSONL 및 집계
-    ├── examples/              # 입출력 비교
-    ├── checks/                # 검증·재전송 결과
-    ├── logs/                  # 실행 로그
-    └── metadata/              # 출처·파일 해시·이전 결과
-```
+# 검증 결과
 
-PostgreSQL이 기준 저장소이며, 이 폴더의 CSV·JSONL은 확인용 내보내기 파일이다. Parquet 원본은 프로젝트의 `artifacts/week4/parquet/`에 있다. 보관된 JSON 내부 경로는 과거 실행 기록으로 유지했으며, 이동 내역은 전체 실행 폴더의 `metadata/layout_changes.json`에 있다.
+- [10분 실제 수집](s3/20261104T125959_017ae9.json): 원본 42,188건, 정상 편집 3,541건
+- [S3 저장 검증](s3/README.md)
+- [6회차 부하·장애 실험](week6_s3/README.md)
+- [기존 원본의 S3 백업](s3_archives/README.md)
+- [이번 정리 목록](cleanup.json) · [로컬 백업 복원](../docs/legacy_restore.md)
 
-## 스트리밍 v2 검증
-
-- [상태·중복·지연·복구](week4/stream_v2_verification.json)
-- [실제 샘플 20건 최초 처리](week4/stream_v2_sample_initial.json)
-- [같은 샘플 재전송](week4/stream_v2_sample_replay.json)
-
-
-## 저장 구조 개선 검증
-
-[분산 staging·증분 snapshot 검증](week4/storage_feedback_verification.json): 합성 2,401건 입력, 재시도·실패 복구·변경 날짜만 쓰기를 확인한다. 처리 속도 측정 결과는 아니다.
-
-[기존 DB 3,846건의 새 snapshot 검증](week4/storage_full_check/README.md): 원본·DB·Parquet 및 집계 일치, 이전 manifest 보관.
-
-- [5회차 Airflow 검증](week5/README.md)
+이전 방식의 상세 로그와 S3 예비 실험은 로컬 백업으로 옮겼습니다. 현재 결과 요약과 주요 검증 자료만 유지합니다.

@@ -1,99 +1,37 @@
-# Wikipedia Streaming Analytics
+# Wikipedia 실시간 데이터 파이프라인
 
-Wikimedia 실시간 편집 기록을 수집하고, Kafka → Spark → PostgreSQL·Parquet으로 처리하는 프로젝트
-
-## 문서 안내
-
-| 문서 | 용도 |
-|---|---|
-| [5회차 README](docs/submissions/week5.md) | Airflow 일일 처리·재시도·품질 검사·게시 |
-| [4회차 README](docs/submissions/week4.md) | 과제의 다섯 항목: 흐름·입출력 예시·스키마·저장 포맷·실행 안내 |
-| [3회차 README](docs/archive/week3.md) | Producer와 Kafka 수집 |
-| [2회차 설계](docs/archive/week2.md) | 데이터·전체 구조·기술 선택 |
-| [4회차 상세 문서](docs/guides/week4_pipeline.md) | 기존 구현·복구·실행 방법의 상세 설명 |
-| [수집 측정 결과](docs/reports/collection_result.md) | 실제 10분 수집 규모 |
-
-## 데이터와 전체 흐름
-
-[Wikimedia recentchange](https://stream.wikimedia.org/v2/stream/recentchange)를 2026-10-25 한국시간 19:04:23~19:14:23에 수신했다. 전체 25,860건·JSONL 36.80MB 중 Wikipedia 편집 3,846건을 선택했다. 이는 해당 10분에 수신한 데이터 기준이다.
+**Kafka · Spark · Airflow를 유지하고 데이터 저장소를 S3로 사용합니다.**
 
 ```text
-Wikimedia SSE → 원본 JSONL → Producer → Kafka
-→ Spark 검증·시각 변환·크기 변화량 계산
-→ PostgreSQL 정상·오류 기록 / 시간·위키별 집계
-→ Parquet snapshot
+Wikimedia API → Producer → Kafka → Spark 전처리 → S3 Parquet
+                                          ↓
+Airflow 매일 03:00 KST → Spark 날짜별 중복 제거·집계·검증 → S3 게시
 ```
 
-## 새 스트리밍 경로 (3·4·5단계 보완)
-
-`python3 scripts/week4.py run`은 이제 watermark·중복 제거 → 날짜별 Parquet append → 1분 window 집계 → PostgreSQL upsert를 실행한다. 계속 처리하려면 `--continuous`를 붙인다. 기존 snapshot 코드는 `python3 scripts/week4.py snapshot`으로 유지한다.
-
-[실행·결과·지연 정책 안내](docs/guides/stream_v2.md). 새 검증은 `python3 scripts/week4.py verify-stream`으로 수행한다. 아래 3,846건 기록은 기존 snapshot 경로의 검증이다.
-
-## 저장 성능 구조 보완
-
-모든 행을 드라이버로 가져오는 대신 executor JDBC staging과 DB 일괄 병합을 사용한다. snapshot은 변경 날짜만 다시 쓰고 나머지 날짜의 파일은 재사용한다. [설명·검증·운영 범위](docs/guides/storage_feedback.md). 검증 명령은 `python3 scripts/week4.py verify-storage`다.
-
-## 구현과 검증 상태
-
-- 수집·Kafka 전송: 구현돼 있으며, 3회차 전체 3,846건의 전송·수신 검증 기록이 있다.
-- Spark·DB·Parquet: `src/process_edits.py`와 `sql/week4.sql`에 구현돼 있다.
-- 저장소의 [CI 보고서](evidence/week4/ci_verification.json): 실제 샘플 20건의 DB·Parquet 일치, 합성 입력의 변환·실패 복구·재시작·재전송 검증 결과를 포함한다. Linux Docker CI 결과다.
-- **로컬 전체 실행 완료:** Wikipedia 편집 3,846건을 Spark로 처리해 PostgreSQL·Parquet에 저장했고, 전체 재전송 후에도 3,846건과 모든 DB 열이 유지됨을 확인했다. [입출력 예시와 실행 결과](evidence/week4/full_run_20261028T221020Z/README.md)
-
-## 실제 DB 조회 결과
-
-정상 편집 기록 **3,846건**, 오류 기록 **0건**을 조회했다. 아래 화면은 정상 테이블의 최근 편집 10건과 시간·위키별 집계 상위 10개를 함께 확인한 결과다. 전체 집계 그룹은 82개이며 편집 수 합계는 3,846건이다.
-
-![PostgreSQL 저장 건수, 최근 편집과 시간·위키별 집계 조회](docs/images/week4-db-query.png)
-
-[이미지 원본 보기](docs/images/week4-db-query.png) · [전처리·저장 보고서](docs/submissions/week4.md) · [전체 데이터 및 검증 결과](evidence/week4/full_run_20261028T221020Z/README.md)
+Kafka는 메시지 전달과 임시 보관, Spark는 실제 데이터 처리, Airflow는 실행 순서·스케줄·재시도를 담당합니다. S3는 원문을 포함한 처리 결과, 오류 사유, 체크포인트와 날짜별 집계를 보관합니다.
 
 ## 실행
 
-Compose 프로젝트 이름은 `wikipedia-streaming-analytics`다. 이전 `wikipedia-week3`와 다른 컨테이너·볼륨을 사용한다.
-
-Docker Desktop을 시작한 뒤 이 프로젝트 폴더에서 실행한다. 호스트 Python은 실행 도구용이며 Spark·Java·패키지는 컨테이너에 포함된다.
+Docker, 기존 AWS CLI 인증, `config/s3.local.json` 설정이 필요합니다. 먼저 [권한 연결 설정](docs/guides/kafka_spark_s3.md)을 확인하세요. 실제 Kafka → Spark → S3 저장과 Airflow 5개 작업을 검증했습니다.
 
 ```bash
-cd wikipedia-streaming-analytics
-python3 scripts/week4.py demo
-python3 scripts/week4.py verify
+python3 scripts/operations.py start
+python3 scripts/operations.py status
+python3 scripts/operations.py trigger --date 2026-11-04
+python3 scripts/operations.py sleep
 ```
 
-`demo`는 실제 샘플 20건 전송·처리·검증, `verify`는 별도 DB·토픽에서 장애 복구를 확인한다. 처음 실행 시 이미지와 의존성 다운로드가 필요하다. `python3 scripts/week4.py stop`은 이 Compose 구성의 서비스를 중지하므로 실행 중인 작업이 있는지 확인한 뒤 사용한다.
+`compose.s3.yml`을 사용하는 실행 경로입니다. 기존 PostgreSQL 데이터 저장용 서비스는 띄우지 않지만 **Airflow 메타데이터 DB는 유지**합니다. Kafka 메시지 볼륨도 유지합니다. Spark를 로컬 2개 스레드로 실행하고 Airflow 동시 작업은 1개로 제한합니다. 노트북과 Docker가 꺼져 있으면 새 데이터 수집·예약 처리는 실행되지 않습니다.
 
-## 폴더
+실측 결과: 기존 Kafka 편집 **12,947건**을 S3로 저장하고, Airflow에서 **위키별 집계 121개**를 게시했습니다. [검증 기록](evidence/spark_s3/README.md)
 
-```text
-├── README.md                 # 전체 안내: 여기서 시작
-├── src/                      # 실제 파이프라인 코드
-├── scripts/                  # 실행·검증 명령 도구
-├── tests/
-│   ├── unit/                 # Kafka·Spark 없이 실행하는 단위 테스트
-│   ├── integration/          # Spark 변환 테스트
-│   └── fixtures/             # 테스트용 입력 생성기
-├── docs/
-│   ├── submissions/          # 4회차 제출 README
-│   ├── guides/               # 수집·Kafka·Spark 실행 안내
-│   ├── reports/              # 수집 규모 보고서
-│   └── archive/              # 이전 회차·이전 버전 문서
-├── evidence/
-│   ├── week3/                # Kafka 검증 기록
-│   └── week4/                # Spark 검증과 전체 처리 결과
-├── samples/                  # 실행용 작은 샘플
-├── data/                     # 원본 수집 데이터 (Git 제외)
-├── artifacts/                # checkpoint·Parquet·실행 중간 파일 (Git 제외)
-├── docker/                   # 컨테이너 빌드 설정
-├── sql/                      # DB 테이블·뷰 정의
-├── docker-compose.yml
-├── compose.week4.yml
-└── requirements.txt
-```
+## 코드와 결과
 
-- **과제 문서:** [4회차 제출 README](docs/submissions/week4.md)
-- **실행 결과:** [결과 폴더 안내](evidence/README.md)
-- **실행 방법:** [문서 안내](docs/README.md)
-- **테스트:** [테스트 안내](tests/README.md)
+- `src/live_producer.py`: API → Kafka, 전송 확인 후 커서 갱신
+- `src/spark_s3.py`: Kafka → Spark → S3, 날짜별 집계·품질 검사·게시
+- `dags/wikipedia_daily.py`: 기존 5개 작업과 03:00 KST 스케줄
+- `src/airflow_support.py`: Spark 작업 컨테이너 실행과 실패 처리
+- `tests/`: 단위·통합 검증
+- [S3 저장 방식](docs/guides/kafka_spark_s3.md)
 
-`data/`와 `artifacts/`의 경로, DB volume은 유지했다. 기존 checkpoint와 Parquet snapshot을 계속 사용할 수 있다. 보관된 JSON 검증 기록의 경로는 당시 실행 위치를 나타내므로 그대로 보존했다. 최신 파일 배치는 각 결과 폴더의 README에서 확인한다.
+`python3 scripts/s3.py run`은 Kafka·Spark·Airflow를 거치지 않는 별도 실험 도구입니다. 과제의 기본 실행 경로가 아닙니다. 해당 도구로 얻은 10분 42,188건 수집과 803,000건 부하 실험 결과를 새 파이프라인 검증 결과로 해석하면 안 됩니다.

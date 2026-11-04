@@ -5,3 +5,10 @@ artifacts
 dist
 *.zip
 **/__pycache__
+
+.env
+.env.*
+.aws
+config/*.local.json
+backups
+evidence

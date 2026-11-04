@@ -1,3 +1,5 @@
+> 저장소 변경 안내: 현재 실행은 `compose.s3.yml`과 `scripts/operations.py`를 사용합니다. DAG 순서와 03:00 스케줄은 유지하며 데이터는 PostgreSQL 대신 S3에 저장합니다. 아래 PostgreSQL 검증 수치·화면은 이전 구현 기록입니다. [현재 구조](../guides/kafka_spark_s3.md) · [실제 검증](../../evidence/spark_s3/README.md)
+
 # Wikipedia 일일 데이터 처리 — Airflow
 
 Wikimedia 실시간 편집 API에서 **10분 동안 25,860건·36.80MB**를 수집했다. 이 중 전처리를 거친 Wikipedia 편집 **3,846건**을 이번 작업의 입력으로 사용했다.
@@ -114,7 +116,7 @@ flowchart TD
 
 실행마다 중간 파일 경로는 새로 생성된다. 동일하게 유지되는 대상은 **게시된 결과**다.
 
-> 검증은 Airflow `dag.test()`에서 실제 Spark 컨테이너와 DB 작업을 실행한 결과다. 정시 자동 실행과 외부 웹훅 알림은 아직 검증하지 않았다. 검증 종료 시 DAG는 일시 정지 상태로 두었다.
+> 검증은 Airflow `dag.test()`에서 실제 Spark 컨테이너와 DB 작업을 실행한 결과다. 당시에는 정시 자동 실행과 외부 웹훅 알림을 검증하지 않았고 DAG를 일시 정지해 두었다. 이후 2026-11-02에 실시간 수집과 정기 실행을 활성화했다. 현재 운영 방법은 [자동 운영 안내](../guides/daily_operations.md)를 참고한다.
 
 [검증 결과 JSON](../../evidence/week5/verification.json) · [DAG 코드](../../dags/wikipedia_daily.py) · [실제 처리 코드](../../src/daily_jobs.py) · [날짜·알림·실행 연결 코드](../../src/airflow_support.py)
 
@@ -155,5 +157,5 @@ python3 scripts/week5.py stop
 
 DB에서 `SELECT * FROM week5.daily_wiki ORDER BY target_date, edit_count DESC;`로 확인할 수 있다.
 
-같은 입력 버전은 다시 게시하지 않고, 바뀐 데이터는 해당 날짜만 upsert한다. 이번 규모에서는 compaction을 파일 하나로 모았다. 대규모 환경에서는 파일 크기에 따라 분할 수를 조정해야 한다. 6회차 부하 테스트는 이번 과제 범위에 포함하지 않았다.
+같은 입력 버전은 다시 게시하지 않고, 바뀐 데이터는 해당 날짜만 upsert한다. 이번 규모에서는 compaction을 파일 하나로 모았다. 대규모 환경에서는 파일 크기에 따라 분할 수를 조정해야 한다. 6회차 부하 테스트는 별도 문서와 격리된 환경에서 관리한다.
 

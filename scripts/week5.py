@@ -18,7 +18,7 @@ def call(*args):
     subprocess.run(compose(*args),cwd=ROOT,check=True)
 
 
-def setup():
+def ensure_env():
     path=ROOT/'.env.week5'
     if not path.exists():
         path.write_text('WIKI_WORKSPACE_HOST='+json.dumps(str(ROOT),ensure_ascii=False)+'\n'
@@ -26,6 +26,10 @@ def setup():
                         +'LAB_GID='+str(os.getgid() if hasattr(os,'getgid') else 0)+'\n'
                         +'WIKI_AIRFLOW_SECRET='+secrets.token_hex(32)+'\n')
         path.chmod(0o600)
+
+
+def setup():
+    ensure_env()
     call('build','spark','airflow-scheduler')
     call('up','-d','--wait','postgres','airflow-db')
     call('run','--rm','-T','airflow-init')

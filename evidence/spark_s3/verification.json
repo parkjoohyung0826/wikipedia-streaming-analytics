@@ -1,0 +1,75 @@
+{
+  "target_date": "2026-11-02",
+  "same_results": {
+    "clean": true,
+    "aggregate": true
+  },
+  "clean_rows": 12947,
+  "aggregate_rows": 121,
+  "stream_commits": [
+    {
+      "batch_id": 0,
+      "dates": [
+        "2026-11-02"
+      ],
+      "path": "s3a://wikipedia-batch-978642868203-1f375cce/wikipedia/spark-v1/stream/attempts/c73b3504-fb26-45e1-a330-8c62f29b88de",
+      "rows": 9998
+    },
+    {
+      "batch_id": 1,
+      "dates": [
+        "2026-11-02"
+      ],
+      "path": "s3a://wikipedia-batch-978642868203-1f375cce/wikipedia/spark-v1/stream/attempts/6fe58b4e-686b-46f6-a811-d707e3720c46",
+      "rows": 2949
+    },
+    {
+      "batch_id": 2,
+      "dates": [
+        "2026-11-05"
+      ],
+      "path": "s3a://wikipedia-batch-978642868203-1f375cce/wikipedia/spark-v1/stream/attempts/7857b064-947d-4bb9-bd4c-8430a5f9ca26",
+      "rows": 30
+    },
+    {
+      "batch_id": 3,
+      "dates": [
+        "2026-11-05"
+      ],
+      "path": "s3a://wikipedia-batch-978642868203-1f375cce/wikipedia/spark-v1/stream/attempts/ffb80191-1c04-456f-a1d5-42e1beba18be",
+      "rows": 79
+    },
+    {
+      "batch_id": 4,
+      "dates": [
+        "2026-11-05"
+      ],
+      "path": "s3a://wikipedia-batch-978642868203-1f375cce/wikipedia/spark-v1/stream/attempts/8c65416c-9794-44f3-8705-db77d7d3963b",
+      "rows": 177
+    },
+    {
+      "batch_id": 5,
+      "dates": [
+        "2026-11-05"
+      ],
+      "path": "s3a://wikipedia-batch-978642868203-1f375cce/wikipedia/spark-v1/stream/attempts/d66f1eca-1f29-46cb-9256-ba1595d22e77",
+      "rows": 183
+    },
+    {
+      "batch_id": 6,
+      "dates": [
+        "2026-11-05"
+      ],
+      "path": "s3a://wikipedia-batch-978642868203-1f375cce/wikipedia/spark-v1/stream/attempts/eb7dda39-6b32-48cb-a9c7-a12e07f6cf64",
+      "rows": 178
+    }
+  ],
+  "stream_total_rows": 13594,
+  "live_dates": [
+    "2026-11-02",
+    "2026-11-05"
+  ],
+  "unit_tests_passed": 20,
+  "local_spark_integration_passed": true,
+  "checkpoint_restart_added_batches": 0
+}

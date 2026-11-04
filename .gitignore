@@ -12,3 +12,10 @@ dist/
 .env.*
 !.env.example
 
+
+# Local S3 destination (credentials remain in the AWS CLI credential chain)
+config/s3.local.json
+
+# Local recovery copies
+backups/
+restored-legacy/

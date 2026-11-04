@@ -8,7 +8,7 @@ spark = SparkSession.builder.appName('week4-build-dependencies').getOrCreate()
 try:
     # Force loading of the two runtime integrations before publishing the image.
     loader = spark._jvm.java.lang.Thread.currentThread().getContextClassLoader()
-    for name in ('org.apache.spark.sql.kafka010.KafkaSourceProvider', 'org.postgresql.Driver'):
+    for name in ('org.apache.spark.sql.kafka010.KafkaSourceProvider', 'org.postgresql.Driver', 'org.apache.hadoop.fs.s3a.S3AFileSystem'):
         loader.loadClass(name)
 finally:
     spark.stop()

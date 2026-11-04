@@ -1,0 +1,49 @@
+{
+  "bucket": "wikipedia-batch-978642868203-1f375cce",
+  "encryption": {
+    "ServerSideEncryptionConfiguration": {
+      "Rules": [
+        {
+          "ApplyServerSideEncryptionByDefault": {
+            "SSEAlgorithm": "AES256"
+          },
+          "BlockedEncryptionTypes": {
+            "EncryptionType": [
+              "SSE-C"
+            ]
+          },
+          "BucketKeyEnabled": false
+        }
+      ]
+    }
+  },
+  "object_versions": 12,
+  "ownership": {
+    "OwnershipControls": {
+      "Rules": [
+        {
+          "ObjectOwnership": "BucketOwnerEnforced"
+        }
+      ]
+    }
+  },
+  "policy_status": {
+    "PolicyStatus": {
+      "IsPublic": false
+    }
+  },
+  "public_access_block": {
+    "PublicAccessBlockConfiguration": {
+      "BlockPublicAcls": true,
+      "BlockPublicPolicy": true,
+      "IgnorePublicAcls": true,
+      "RestrictPublicBuckets": true
+    }
+  },
+  "region": "ap-northeast-2",
+  "same_input_reupload_created_no_versions": true,
+  "verified": true,
+  "versioning": {
+    "Status": "Enabled"
+  }
+}

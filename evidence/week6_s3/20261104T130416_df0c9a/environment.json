@@ -1,0 +1,7 @@
+{
+  "python": "3.14.7",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "cpu_count": 10,
+  "containers_used": 0,
+  "note": "Actual 600-second SSE collection ran concurrently during the first part; it finished before the 3000/s phase."
+}

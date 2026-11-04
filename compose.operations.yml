@@ -1,0 +1,55 @@
+x-log: &bounded-log
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "3"
+services:
+  kafka:
+    logging: *bounded-log
+    restart: unless-stopped
+  postgres:
+    logging: *bounded-log
+    restart: unless-stopped
+  airflow-db:
+    logging: *bounded-log
+    restart: unless-stopped
+  airflow-scheduler:
+    logging: *bounded-log
+    restart: unless-stopped
+  airflow-webserver:
+    logging: *bounded-log
+    restart: unless-stopped
+  live-producer:
+    logging: *bounded-log
+    image: wikipedia-streaming-analytics-producer:latest
+    user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
+    working_dir: /workspace
+    volumes: [".:/workspace"]
+    environment:
+      PYTHONPATH: /workspace
+      PYTHONUNBUFFERED: "1"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os,time; assert time.time()-os.stat('/workspace/artifacts/live/cursor.json').st_mtime < 180"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
+    command: ["python", "-m", "src.live_producer"]
+    restart: unless-stopped
+    depends_on:
+      kafka:
+        condition: service_healthy
+  live-spark:
+    logging: *bounded-log
+    extends:
+      file: compose.week4.yml
+      service: spark
+    profiles: []
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import os,time; assert time.time()-os.stat('/workspace/artifacts/live/stream/metrics.jsonl').st_mtime < 180"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
+    command: ["src/monitored_stream.py", "--trigger", "5"]
+    restart: unless-stopped
