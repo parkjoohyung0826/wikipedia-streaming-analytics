@@ -1,63 +1,43 @@
-# Kafka · Spark · Airflow + S3
+# 최소 컨테이너 운영
 
-## 역할
+## 실행 순서
 
-| 구성 | 담당 |
-|---|---|
-| Producer | SSE 편집 이벤트를 Kafka에 전달하고 확인된 커서 보관 |
-| Kafka | 메시지 임시 보관·순서·재처리 입력 |
-| Spark Streaming | 기존 스키마 검증, 정상·오류 행과 원문을 S3 Parquet로 저장 |
-| Airflow | 날짜 선택 → compact_raw → daily_agg → quality_check → publish |
-| S3 | 처리 결과·오류·체크포인트·검증된 일일 결과 |
-| Airflow PostgreSQL | 스케줄·실행 상태만 보관; 편집 데이터 저장소가 아님 |
+`wikipedia_ingest`는 10분마다 Spark를 실행합니다. Spark Structured Streaming의 availableNow로 시작 시점까지의 Kafka 메시지를 처리하고 종료합니다. 처리 중 새로 들어온 메시지는 다음 실행에서 읽습니다. offset과 처리 상태는 S3 체크포인트로 이어받습니다.
 
-## 저장 구조
-
-`config/s3.local.json`의 prefix 아래 `spark-v1/`을 사용하므로 이전 Python 실험 객체와 섞이지 않습니다.
+`wikipedia_daily`는 매일 03:00 KST에 실행합니다.
 
 ```text
-spark-v1/
-├── stream/checkpoint/       # Kafka offset과 Spark 실행 상태
-├── stream/attempts/<UUID>/  # event_date 파티션별 원문·정상 필드·error_reason 포함 Parquet
-├── stream/commits/<batch>.json  # 성공한 배치 경로만 공개
-├── daily/work/<날짜>/<실행>/   # 입력 목록·전처리·집계·품질 검사
-└── daily/published/<날짜>/current.json  # 검증 완료 경로
+날짜 선택 → Kafka 잔여 처리 → 중복 제거 → 위키별 집계 → 품질 검사 → 게시
 ```
 
-반쯤 작성된 Parquet는 읽지 않습니다. Spark 쓰기가 성공한 뒤 commit 객체를 만들고, 일일 처리는 commit에 기록된 경로만 읽습니다. 실패한 시도의 객체는 증거로 남아 저장 비용이 생길 수 있습니다. 체크포인트와 commits는 함께 보존해야 하며, 같은 체크포인트로 스트림을 두 개 실행하면 안 됩니다.
+두 DAG의 Spark 작업은 `spark_jobs` pool 1개 슬롯을 공유합니다. 같은 체크포인트를 동시에 사용하지 않으며, 일일 집계 전에 잔여 Kafka 메시지를 먼저 저장합니다. Spark는 작업마다 생성되고 finally에서 제거됩니다. 웹 화면은 예약 실행에 필요하지 않아 기본적으로 꺼 둡니다.
 
-스트림에는 Kafka 원문(raw_value)과 topic·partition·offset, 검증 필드·오류 사유가 남습니다. 중복 event_id는 일일 compact_raw에서 Spark로 제거합니다. 전체 행을 Python 드라이버로 가져오지 않습니다. 일일 입력 목록은 해당 Airflow 실행의 첫 단계에서 고정하며, 같은 실행을 재시도할 때 유지합니다. 늦게 도착한 데이터는 해당 날짜를 새 실행으로 재처리해야 포함됩니다.
+## 처리 날짜와 재시도
 
-집계는 한국시간 event_date와 wiki별 edit_count, bot_edit_count, size_known_count, net_bytes_delta입니다. quality_check가 중복·건수·집계 합계를 검사한 뒤 publish가 날짜별 current.json 한 객체를 갱신합니다. 같은 날짜 재실행은 결과를 덧붙이지 않고 참조를 교체합니다. 입력이 없으면 기존 게시 결과를 덮어쓰지 않고 실패합니다.
+일일 처리는 data_interval_end를 한국시간으로 바꾼 날짜의 전날입니다. 수동 `target_date`가 있으면 우선합니다. catchup=False이므로 생성되지 않은 과거 실행은 날짜를 지정해 처리해야 합니다.
 
-## 스케줄·재시도
+일시적인 전송·실행 오류는 최대 3회 재시도하고 지수 백오프를 적용합니다. 날짜·품질 오류는 즉시 실패합니다. 실패 기록은 `artifacts/airflow/alerts.jsonl`과 Airflow 로그에 남습니다.
 
-기존 DAG와 같이 03:00 KST, catchup=False입니다. data_interval_end의 한국 날짜에서 하루를 뺀 날짜를 처리하고 target_date를 우선합니다. 날짜·품질 오류는 바로 실패하며, 작업은 기본 최대 3회 추가 재시도와 지수 백오프를 사용합니다. S3 SlowDown·RequestTimeout·InternalError·ServiceUnavailable은 재시도 대상으로 분류합니다. 외부 메시지 발송은 설정하지 않습니다.
+## S3 저장
 
-## 운영 조건
+설정 prefix 아래 `spark-v1/`에 저장합니다.
 
-Kafka 데이터 볼륨, Producer 재연결 커서, Airflow 운영 DB는 로컬에 필요합니다. 데이터 저장을 S3로 바꿔도 Kafka나 Airflow 내부 상태까지 S3로 대체할 수는 없습니다. 과제용 Kafka 단일 브로커는 장애 이중화 구성이 아닙니다.
-
-AWS 인증은 코드·이미지에 넣지 않습니다. 이번 환경에서는 사용자의 허용을 받아 AWS 폴더 읽기 전용 연결과 Airflow의 Docker 소켓 연결을 사용합니다. `.dockerignore`로 로컬 인증 설정과 환경 파일을 빌드 컨텍스트에서 제외했습니다.
-
-기존 Python-only 부하 실험은 별도 경로의 결과입니다. 이 구조의 실제 검증은 [검증 기록](../../evidence/spark_s3/README.md)에 별도로 남깁니다.
-
-## 실행 전 연결 설정
-
-권한 연결을 허용한 환경에서만 다음 경로를 설정합니다. AWS 폴더는 Spark에 읽기 전용으로 전달되며 Docker 소켓은 Airflow가 Spark 작업 컨테이너를 생성할 때 사용합니다.
-
-```bash
-export WIKI_AWS_HOST="$HOME/.aws"
-export WIKI_DOCKER_SOCKET=/var/run/docker.sock
-python3 scripts/operations.py start
+```text
+stream/checkpoint/                 Kafka offset·Spark 상태
+stream/attempts/<UUID>/event_date=…/  원문·검증 필드·오류 사유 Parquet
+stream/commits/<batch>.json         완료된 배치 경로
+daily/work/<날짜>/<실행>/            입력 목록·전처리·집계·검사
+daily/published/<날짜>/current.json  검증된 최종 결과 경로
 ```
 
-Docker 소켓 위치가 다른 환경에서는 실제 위치로 변경합니다. 설정하지 않으면 실행 도구가 중단됩니다.
+완료 표시가 있는 배치만 읽으므로 실패한 Parquet 파일은 최종 결과에 섞이지 않습니다. 체크포인트와 commits는 함께 보존해야 합니다. 일일 처리는 대상 날짜의 파티션만 읽고 event_id 중복을 제거합니다. Spark가 분산 처리하며 전체 데이터를 Python 드라이버로 가져오지 않습니다.
 
-## 이번 수정의 검증 상태
+입력 목록은 DAG 실행마다 고정합니다. 같은 실행을 재시도할 때는 동일 입력을 사용합니다. 늦게 도착한 데이터는 해당 날짜를 새로 실행해 반영합니다. 품질 검사는 중복·건수·집계 합계를 확인하며, 성공한 뒤 current.json을 갱신합니다. 입력이 없으면 이전 결과를 덮어쓰지 않습니다.
 
-- 단위 테스트 20개 통과, Python 구문과 Compose 구성 검증 통과.
-- 실제 Docker 이미지 빌드·Kafka → Spark → S3 저장 및 Airflow 5개 작업 성공을 확인했습니다.
-- Spark 통합 검증 코드: `tests/integration/test_spark_s3.py`. 날짜 격리, 중복 제거, 오류 제외, 집계, 재실행, 품질 검사 전 게시 차단을 확인합니다. Spark 컨테이너에서 실행하여 통과했습니다.
+## 리소스와 보관
 
-S3 경로는 원자적 디렉토리 rename을 전제로 하지 않고, 고유 시도 경로를 쓴 뒤 완료 참조를 게시합니다. 참고: [Hadoop S3 커밋 설명](https://hadoop.apache.org/docs/r3.3.4/hadoop-aws/tools/hadoop-aws/committers.html).
+상시 4개 컨테이너, Spark 실행 중 1개 추가입니다. Spark는 local[2]와 driver memory 1g, Kafka heap은 512MB로 설정했습니다. 컨테이너 로그는 파일당 10MB, 2개로 제한합니다. 컨테이너 수 감소가 고정적인 메모리 감소량을 보장하지는 않습니다.
+
+Kafka는 임시 메시지, Airflow DB는 운영 상태를 보관하므로 로컬 볼륨이 필요합니다. Producer의 재연결 커서도 로컬에 유지합니다. 분석 데이터와 Spark 체크포인트는 S3입니다. 이전 환경 파일은 보관만 하고 현재 `.env.local`을 사용합니다.
+
+AWS 폴더는 읽기 전용으로 Spark에 연결하며, Airflow는 승인된 Docker 소켓으로 Spark 컨테이너를 생성합니다. 인증 정보는 이미지·Git에 포함하지 않습니다. 이전 S3 데이터와 백업 ZIP은 이번 정리에서 삭제하지 않았습니다.

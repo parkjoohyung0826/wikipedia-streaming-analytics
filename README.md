@@ -1,37 +1,60 @@
-# Wikipedia 실시간 데이터 파이프라인
+# Wikipedia → Kafka → Spark → S3
 
-**Kafka · Spark · Airflow를 유지하고 데이터 저장소를 S3로 사용합니다.**
+**Kafka·Spark·Airflow를 사용하면서 상시 컨테이너는 4개만 실행합니다.**
 
 ```text
-Wikimedia API → Producer → Kafka → Spark 전처리 → S3 Parquet
-                                          ↓
-Airflow 매일 03:00 KST → Spark 날짜별 중복 제거·집계·검증 → S3 게시
+Wikimedia → 수집기 → Kafka
+                     ↓ Airflow가 10분마다 실행
+                   Spark → S3 저장 후 종료
+                     ↓ 매일 03:00 KST
+              날짜별 집계·품질 검사 → S3 게시
 ```
 
-Kafka는 메시지 전달과 임시 보관, Spark는 실제 데이터 처리, Airflow는 실행 순서·스케줄·재시도를 담당합니다. S3는 원문을 포함한 처리 결과, 오류 사유, 체크포인트와 날짜별 집계를 보관합니다.
+| 구성 | 실행 방식 |
+|---|---|
+| Kafka | 상시: 메시지 임시 보관 |
+| Producer | 상시: Wikimedia 편집 수집 |
+| Airflow scheduler | 상시: 10분 주기 처리와 일일 집계 예약 |
+| Airflow DB | 상시: 실행 상태 보관 |
+| Spark | 작업할 때만 생성, 완료·실패 후 제거 |
+| Airflow 웹 화면 | 필요할 때만 실행 |
+
+Spark 처리 중에는 일시적으로 5개, 웹 화면까지 켜면 최대 6개가 됩니다. 두 DAG는 공유 pool을 사용하므로 Spark 작업은 한 번에 하나만 실행합니다. S3 반영은 10분 주기와 작업 시간만큼 지연될 수 있습니다. 노트북과 Docker가 꺼지면 수집·처리도 중단됩니다.
 
 ## 실행
 
-Docker, 기존 AWS CLI 인증, `config/s3.local.json` 설정이 필요합니다. 먼저 [권한 연결 설정](docs/guides/kafka_spark_s3.md)을 확인하세요. 실제 Kafka → Spark → S3 저장과 Airflow 5개 작업을 검증했습니다.
+Python 3, Docker, AWS 인증과 `config/s3.local.json`이 필요합니다. 기존에 승인한 인증 폴더·Docker 소켓 연결을 명시합니다.
 
 ```bash
-python3 scripts/operations.py start
-python3 scripts/operations.py status
-python3 scripts/operations.py trigger --date 2026-11-04
-python3 scripts/operations.py sleep
+export WIKI_AWS_HOST="$HOME/.aws"
+export WIKI_DOCKER_SOCKET=/var/run/docker.sock
+
+python3 scripts/operations.py start       # 상시 4개 시작
+python3 scripts/operations.py status      # 상태 확인
+python3 scripts/operations.py ingest      # 10분을 기다리지 않고 즉시 처리
+python3 scripts/operations.py trigger --date 2026-11-02
+python3 scripts/operations.py ui          # 웹 화면 켜기: localhost:18080
+python3 scripts/operations.py ui-stop     # 웹 화면 끄기
+python3 scripts/operations.py sleep       # 프로젝트 서비스 정지
 ```
 
-`compose.s3.yml`을 사용하는 실행 경로입니다. 기존 PostgreSQL 데이터 저장용 서비스는 띄우지 않지만 **Airflow 메타데이터 DB는 유지**합니다. Kafka 메시지 볼륨도 유지합니다. Spark를 로컬 2개 스레드로 실행하고 Airflow 동시 작업은 1개로 제한합니다. 노트북과 Docker가 꺼져 있으면 새 데이터 수집·예약 처리는 실행되지 않습니다.
+Compose는 **docker-compose.yml 하나**만 사용합니다. 환경 설정은 Git에서 제외되는 `.env.local`입니다. 이전 `.env.week5`는 보관만 하며 실행에 사용하지 않습니다. Kafka·Airflow의 기존 데이터 볼륨은 그대로 사용합니다.
 
-실측 결과: 기존 Kafka 편집 **12,947건**을 S3로 저장하고, Airflow에서 **위키별 집계 121개**를 게시했습니다. [검증 기록](evidence/spark_s3/README.md)
+## 폴더
 
-## 코드와 결과
+| 경로 | 내용 |
+|---|---|
+| `src/` | Producer, Spark 전처리·S3 저장, Airflow 실행 도우미 |
+| `dags/` | 10분 주기 처리·일일 집계 DAG |
+| `scripts/operations.py` | 시작·중지·수동 실행 명령 |
+| `docker/` | 현재 이미지 빌드 파일 |
+| `tests/` | 현재 코드의 단위·Spark 통합 테스트 |
+| `samples/` | 테스트 입력 |
+| `docs/` | 현재 운영 안내 |
+| `evidence/spark_s3/` | 현재 방식의 핵심 검증 결과만 보관 |
+| `backups/` | 정리 전 로컬 ZIP, Git 제외 |
+| `artifacts/` | 임시 실행 로그·수집 커서, Git 제외 |
 
-- `src/live_producer.py`: API → Kafka, 전송 확인 후 커서 갱신
-- `src/spark_s3.py`: Kafka → Spark → S3, 날짜별 집계·품질 검사·게시
-- `dags/wikipedia_daily.py`: 기존 5개 작업과 03:00 KST 스케줄
-- `src/airflow_support.py`: Spark 작업 컨테이너 실행과 실패 처리
-- `tests/`: 단위·통합 검증
-- [S3 저장 방식](docs/guides/kafka_spark_s3.md)
+이전 주차 코드·문서, PostgreSQL 데이터 저장 코드, Python-only S3 실험과 상세 증빙은 정리했습니다. 삭제 전 로컬 ZIP을 검증했으며, S3 객체와 Docker 데이터 볼륨은 삭제하지 않았습니다.
 
-`python3 scripts/s3.py run`은 Kafka·Spark·Airflow를 거치지 않는 별도 실험 도구입니다. 과제의 기본 실행 경로가 아닙니다. 해당 도구로 얻은 10분 42,188건 수집과 803,000건 부하 실험 결과를 새 파이프라인 검증 결과로 해석하면 안 됩니다.
+[저장·재시도 방식](docs/guides/kafka_spark_s3.md) · [검증 기록](evidence/spark_s3/README.md)

@@ -1,12 +1,12 @@
-"""Run using spark-submit inside the week4 service; no Kafka or DB mutation."""
+"""Run using spark-submit inside the Spark service; no Kafka or DB mutation."""
 import json
 from pyspark.sql import SparkSession, types as T
-from tests.fixtures.week4_fixture import records
-from src.process_edits import transform
+from tests.fixtures.edit_fixture import records
+from src.transform import transform
 
 
 def main():
-    spark = (SparkSession.builder.master('local[2]').appName('week4-transform-tests')
+    spark = (SparkSession.builder.master('local[2]').appName('transform-tests')
              .config('spark.sql.session.timeZone', 'UTC')
              .config('spark.sql.ansi.enabled', 'false').getOrCreate())
     spark.sparkContext.setLogLevel('WARN')

@@ -1,10 +1,52 @@
+x-log: &bounded-log
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "2"
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: docker/airflow.Dockerfile
+  image: wikipedia-streaming-analytics-airflow:2.10.5
+  user: "${LAB_UID:-50000}:0"
+  environment: &airflow-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow_local_lab@airflow-db/airflow
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+    AIRFLOW__CORE__DEFAULT_TIMEZONE: Asia/Seoul
+    AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: Asia/Seoul
+    AIRFLOW__CORE__PARALLELISM: "1"
+    AIRFLOW__WEBSERVER__WORKERS: "1"
+    AIRFLOW__WEBSERVER__SECRET_KEY: ${WIKI_AIRFLOW_SECRET:?run scripts/operations.py setup}
+    AIRFLOW__API__AUTH_BACKENDS: airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session
+    PYTHONPATH: /workspace
+    WIKI_WORKSPACE_HOST: ${WIKI_WORKSPACE_HOST:?run scripts/operations.py setup}
+    WIKI_SPARK_IMAGE: wikipedia-streaming-analytics-spark:latest
+    WIKI_DOCKER_NETWORK: wikipedia-streaming-analytics_default
+    WIKI_JOB_USER: "${LAB_UID:-1000}:${LAB_GID:-1000}"
+    WIKI_STORAGE: s3
+    WIKI_AWS_HOST: ${WIKI_AWS_HOST:?AWS mount requires explicit configuration}
+    AWS_PROFILE: ${AWS_PROFILE:-default}
+    DISCORD_WEBHOOK_URL: ""
+  volumes:
+    - ./dags:/opt/airflow/dags:ro
+    - .:/workspace
+    - week5-airflow-logs:/opt/airflow/logs
+    - ${WIKI_DOCKER_SOCKET:?Docker access requires explicit configuration}:/var/run/docker.sock
+  depends_on:
+    airflow-db:
+      condition: service_healthy
 name: wikipedia-streaming-analytics
 services:
   kafka:
+    logging: *bounded-log
+    mem_limit: 1g
     image: apache/kafka:3.8.0
     ports:
       - "127.0.0.1:9092:9092"
     environment:
+      KAFKA_HEAP_OPTS: -Xms256m -Xmx512m
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
       KAFKA_LISTENERS: INTERNAL://:29092,EXTERNAL://:9092,CONTROLLER://:9093
@@ -27,5 +69,101 @@ services:
       interval: 10s
       timeout: 10s
       retries: 12
+  producer:
+    logging: *bounded-log
+    build:
+      context: .
+      dockerfile: docker/producer.Dockerfile
+    image: wikipedia-streaming-analytics-producer:latest
+    profiles: [tools]
+    working_dir: /workspace
+    volumes: [".:/workspace"]
+    environment:
+      PYTHONPATH: /workspace
+    entrypoint: [python]
+  live-producer:
+    logging: *bounded-log
+    image: wikipedia-streaming-analytics-producer:latest
+    user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
+    working_dir: /workspace
+    volumes: [".:/workspace"]
+    environment:
+      PYTHONPATH: /workspace
+      WIKI_STORAGE: s3
+    command: [python, -m, src.live_producer]
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: unless-stopped
+  spark:
+    logging: *bounded-log
+    build:
+      context: .
+      dockerfile: docker/spark.Dockerfile
+    image: wikipedia-streaming-analytics-spark:latest
+    profiles: [tools]
+    user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
+    working_dir: /workspace
+    environment:
+      PYTHONPATH: /workspace
+      HOME: /home/spark
+      AWS_SHARED_CREDENTIALS_FILE: /home/spark/.aws/credentials
+      AWS_CONFIG_FILE: /home/spark/.aws/config
+      AWS_CREDENTIAL_PROFILES_FILE: /home/spark/.aws/credentials
+      AWS_PROFILE: ${AWS_PROFILE:-default}
+      SPARK_LOCAL_IP: 127.0.0.1
+    volumes:
+      - .:/workspace
+      - ${WIKI_AWS_HOST:?AWS mount requires explicit configuration}:/home/spark/.aws:ro
+    entrypoint: [/opt/entrypoint.sh, driver, --master, "local[2]", --driver-memory, 1g, --conf, spark.jars.ivy=/tmp/spark-ivy]
+    command: [src/spark_s3.py, stream, --once]
+  airflow-db:
+    logging: *bounded-log
+    image: postgres:16.6
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow_local_lab
+      POSTGRES_DB: airflow
+    volumes:
+      - week5-airflow-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  airflow-init:
+    logging: *bounded-log
+    <<: *airflow-common
+    profiles: [tools]
+    command:
+      - bash
+      - -c
+      - >-
+        airflow db migrate &&
+        (airflow users list -o json | python -c 'import sys,json; sys.exit(not any(u["username"] == "airflow" for u in json.load(sys.stdin)))'
+        || airflow users create --username airflow --password airflow --firstname Wiki --lastname Lab --role Admin --email wiki@example.invalid)
+  airflow-scheduler:
+    logging: *bounded-log
+    <<: *airflow-common
+    command: scheduler
+    healthcheck:
+      test: ["CMD-SHELL", 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"']
+      interval: 15s
+      timeout: 10s
+      retries: 20
+  airflow-webserver:
+    profiles: [ui]
+    logging: *bounded-log
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "127.0.0.1:18080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
 volumes:
   kafka-data:
+  week5-airflow-db:
+  week5-airflow-logs:

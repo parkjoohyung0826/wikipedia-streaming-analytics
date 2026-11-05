@@ -1,0 +1,62 @@
+{
+  "verified_at": "2026-11-05T03:46:00.081142+00:00",
+  "always_on_services": [
+    "kafka",
+    "live-producer",
+    "airflow-scheduler",
+    "airflow-db"
+  ],
+  "compose_file": "docker-compose.yml",
+  "spark_schedule": "*/10 * * * *",
+  "spark_pool_slots": 1,
+  "web_ui_default": "off",
+  "unit_tests_passed": 13,
+  "spark_transform_test": "passed",
+  "spark_daily_test": "passed",
+  "ingest": [
+    {
+      "task_id": "drain_kafka",
+      "state": "success",
+      "start_date": "2026-11-05T03:43:00.578511+00:00",
+      "end_date": "2026-11-05T03:45:13.581675+00:00"
+    }
+  ],
+  "daily": [
+    {
+      "task_id": "compact_raw",
+      "state": "success",
+      "start_date": "2026-11-05T03:39:45.185533+00:00",
+      "end_date": "2026-11-05T03:41:33.242877+00:00"
+    },
+    {
+      "task_id": "daily_agg",
+      "state": "success",
+      "start_date": "2026-11-05T03:41:34.966154+00:00",
+      "end_date": "2026-11-05T03:42:22.811146+00:00"
+    },
+    {
+      "task_id": "drain_kafka",
+      "state": "success",
+      "start_date": "2026-11-05T03:38:09.550462+00:00",
+      "end_date": "2026-11-05T03:39:43.059265+00:00"
+    },
+    {
+      "task_id": "quality_check",
+      "state": "success",
+      "start_date": "2026-11-05T03:42:24.339424+00:00",
+      "end_date": "2026-11-05T03:42:59.003168+00:00"
+    },
+    {
+      "task_id": "publish",
+      "state": "success",
+      "start_date": "2026-11-05T03:45:15.371720+00:00",
+      "end_date": "2026-11-05T03:45:18.957792+00:00"
+    },
+    {
+      "task_id": "resolve_target_date",
+      "state": "success",
+      "start_date": "2026-11-05T03:38:07.556917+00:00",
+      "end_date": "2026-11-05T03:38:07.772797+00:00"
+    }
+  ]
+}

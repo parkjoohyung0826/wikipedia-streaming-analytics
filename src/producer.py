@@ -9,7 +9,7 @@ import time
 
 from confluent_kafka import Producer
 
-DEFAULT_INPUT = "data/20261025T100423_674945Z/events.jsonl"
+DEFAULT_INPUT = "samples/wikipedia_edits.jsonl"
 
 
 def now():

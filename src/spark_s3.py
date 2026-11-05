@@ -49,7 +49,7 @@ def session():
 
 def stream(spark,store,once):
     from pyspark.sql import functions as F
-    from src.process_edits import transform
+    from src.transform import transform
     # Losing checkpoints must not silently reuse old batch IDs and skip new rows.
     commits=store.client.list_objects_v2(Bucket=store.bucket,Prefix=store.key("stream/commits/"),MaxKeys=1)
     offsets=store.client.list_objects_v2(Bucket=store.bucket,Prefix=store.key("stream/checkpoint/offsets/"),MaxKeys=1)

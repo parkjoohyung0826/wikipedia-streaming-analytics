@@ -19,9 +19,6 @@ def main():
         result['stream_commits']=commits
         result['stream_total_rows']=sum(c['rows'] for c in commits)
         result['live_dates']=sorted({d for c in commits for d in c.get('dates',[])})
-        result['unit_tests_passed']=20
-        result['local_spark_integration_passed']=True
-        result['checkpoint_restart_added_batches']=0
         (root/'verification.json').write_text(json.dumps(result,indent=2)+'\n')
         print('PASS: actual S3 clean rows and aggregates are identical after Airflow replay')
     finally:spark.stop()

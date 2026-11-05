@@ -1,3 +1,14 @@
+# 최소 컨테이너 구성 검증 (현재)
+
+- 상시 4개: Kafka, Producer, Airflow scheduler, Airflow DB.
+- Spark는 10분 주기로 실행하고 완료 후 컨테이너를 제거합니다. 공유 pool 1개 슬롯으로 동시 실행을 제한합니다.
+- 웹 화면은 기본 중지, 필요할 때만 실행합니다.
+- 현재 단위 테스트 13개와 Spark 전처리·날짜별 처리 통합 테스트 통과.
+- 실제 수동 수집 작업과 일일 처리 6개 작업 모두 성공했습니다.
+- [실행 상태 기록](minimal_runtime.json)
+
+이전 주차 자료는 로컬 `backups/before-minimal-20261105T122545.zip`에 보관한 뒤 정리했습니다. 백업은 Git에 포함하지 않습니다. 아래는 같은 S3 데이터 처리 로직의 이전 검증 기록입니다.
+
 # Kafka · Spark · Airflow + S3 검증
 
 2026-11-05 실제 Docker와 AWS S3에서 확인했습니다.
@@ -14,4 +25,4 @@
 
 이 결과는 기능·재실행 검증입니다. 이전 Python-only 실험의 803,000건 처리량 결과를 이 구조의 부하 테스트 결과로 사용하지 않습니다.
 
-검증 중 macOS UID의 Spark Ivy 경로 오류와 여러 배치 파티션의 경로 충돌을 수정했습니다. 초기 실패한 Airflow 실행 이력은 남겨 두었습니다. 상세 실행 로그는 Git 제외 경로인 `artifacts/s3_stack_verify/`와 `artifacts/week5/runs/`에 있습니다.
+검증 중 macOS UID의 Spark Ivy 경로 오류와 여러 배치 파티션의 경로 충돌을 수정했습니다. 초기 실패한 Airflow 실행 이력은 남겨 두었습니다. 이 검증의 작은 요약만 유지하며, 과거 주차 실행 로그는 정리했습니다. 현재 실행 로그는 `artifacts/airflow/`에 저장합니다.
