@@ -1,161 +1,94 @@
-> 해당 주차 제출 당시의 구현·결과를 보존한 기록입니다. 현재 운영 방식은 [6주차](week6.md)를 참고하세요. 코드·증빙 링크는 가능한 경우 당시 Git 버전으로 연결했습니다.
+# 5주차 제출 — Airflow 작업 흐름과 안정적인 재실행
 
-# Wikipedia 일일 데이터 처리 — Airflow
+Wikimedia 실시간 변경 API에서 처음 **10분간 25,860건·36.80MB**를 수집했고, 그중 Wikipedia 편집은 **3,846건**이었다. 현재 S3 방식은 별도의 **2026-11-02 편집 12,947건 → 날짜·위키별 집계 121개**로 검증했다. 두 입력은 서로 다르며 날짜별 집계가 하루 전체 수집을 뜻하지는 않는다.
 
-Wikimedia 실시간 편집 API에서 **10분 동안 25,860건·36.80MB**를 수집했다. 이 중 전처리를 거친 Wikipedia 편집 **3,846건**을 이번 작업의 입력으로 사용했다.
+## 1. DAG 구조 — 각 Task가 하는 일
 
-**처리 결과: 2026-10-25 편집 3,846건 → 위키별 일일 집계 82개**
-
-> 해당 날짜에 수집한 10분 분량을 날짜 기준으로 집계한 결과다. 하루 전체 편집량을 의미하지 않는다.
-
-## 1. DAG 구조
-
-Airflow는 작업의 순서와 실행 상태를 관리하고, 실제 데이터 처리는 Spark가 수행한다.
+Airflow가 순서와 실패를 관리하고, 실제 처리는 Spark가 한다. 결과는 S3에 저장한다. 집계 전에 `drain_kafka`로 Kafka 잔여 데이터를 저장하고, 총 6개 Task를 순서대로 실행한다.
 
 ```mermaid
 flowchart TD
-    A[resolve_target_date: 날짜 결정] --> B[compact_raw: 파일 정리]
-    B --> C[daily_agg: 일일 집계]
-    C --> D[quality_check: 품질 검사]
-    D -->|통과| E[publish: 결과 게시]
-    D -->|실패| F[게시 차단 · 이전 결과 유지]
+    A[resolve_target_date: 데이터 날짜 선택] --> B[drain_kafka: Kafka 잔여 데이터를 S3로 저장]
+    B --> C[compact_raw: 해당 날짜 데이터 정리·중복 제거]
+    C --> D[daily_agg: 날짜·위키별 집계]
+    D --> E[quality_check: 중복·건수·집계 합계 확인]
+    E -->|성공| F[publish: 검증 결과 게시]
+    E -->|실패| G[게시 차단·기존 결과 유지]
 ```
 
-| Task | 하는 일 | 결과 |
+| Task | 하는 일 | 출력 |
 |---|---|---|
-| `resolve_target_date` | 처리할 한국 날짜를 정한다. | `target_date` |
-| `compact_raw` | 정상 데이터의 Parquet snapshot을 갱신하고 해당 날짜 파일을 모은다. | 날짜별 처리용 Parquet |
-| `daily_agg` | 위키별 편집 수·봇 편집 수·크기 정보 건수·변화량 합계를 계산한다. | 위키별 일일 집계 |
-| `quality_check` | 빈 결과·필수값 누락·중복·원본 및 집계 불일치를 검사한다. | 검사 결과 |
-| `publish` | 통과한 집계와 게시 정보를 PostgreSQL에 함께 반영한다. | `week5.daily_wiki`, `week5.publications` |
+| `resolve_target_date` | 처리할 한국 날짜 결정 | `target_date` |
+| `drain_kafka` | 체크포인트에서 Kafka를 읽어 Spark로 검증·저장 | S3 Parquet·완료 commit·체크포인트 |
+| `compact_raw` | 대상 날짜 파티션을 읽고 정상 행의 `event_id` 중복 제거 | 실행별 정상 데이터 Parquet |
+| `daily_agg` | 위키별 편집 수·봇 편집 수·크기 정보 건수·변화량 합계 계산 | 집계 Parquet |
+| `quality_check` | 저장 건수·고유 ID 수·집계 합계 대조 | 검사 통과 기록 |
+| `publish` | 검사한 경로가 변경되지 않았는지 확인 후 게시 | 날짜별 `current.json` |
 
-### 품질 검사 후 게시
+### 결과를 내보내기 전에 검사
 
-처리 중인 파일은 실행별 경로에 저장하고, **품질 검사에 통과한 결과만 게시**한다. 집계와 게시 정보는 하나의 DB 트랜잭션으로 반영한다. 비교 기준은 원본 25,860건이 아니라 전처리된 정상 편집 데이터다.
+중간 결과는 실행별 경로에 쓴다. **품질 검사를 통과한 결과만 `current.json`으로 공개**한다. 실패한 Parquet 경로는 완료 commit에 포함되지 않는다. 기존 결과를 먼저 삭제하지 않으므로 중간 실패로 이전 게시물이 사라지지 않는다.
 
-![Airflow Grid 성공과 품질 검사 실패](https://raw.githubusercontent.com/parkjoohyung0826/wikipedia-streaming-analytics/aab781f192bd16ec9256c16256daac2132131732/evidence/week5/airflow-grid.jpg)
+빈 날짜는 `compact_raw`에서 실패한다. 필수값·형식 검사는 앞단 Spark 변환에서 수행하고 오류 행은 정상 집계에서 제외한다. 현재 품질 Task에는 **필수값 null 비율이나 전일 대비 급감 비율을 별도 계산하는 검사는 없다.**
 
-| 화면의 열 — 왼쪽부터 | 실행 결과 |
-|---|---|
-| 첫 번째 | 초기 Spark 환경 설정 오류. Ivy 경로 수정 완료 |
-| 두 번째·세 번째 | 같은 날짜를 두 번 실행하여 모든 Task 성공 |
-| 네 번째 | 집계 날짜를 일부러 변경 → 품질 검사 실패 → publish 차단 |
+### Airflow Grid 화면
 
-마지막 실행의 `publish`는 `upstream_failed` 상태이며, 이전 정상 게시 결과는 유지됐다. 화면의 Duration은 테스트용 실행 날짜의 영향을 받으므로 성능 측정값으로 사용하지 않는다.
+![일일 DAG의 6개 Task 성공](images/week5-airflow-grid.png)
+
+2026-11-05 캡처. 맨 오른쪽 열은 `minimal_daily_20261105T1234`이며 6개 Task가 모두 초록색이다. 오른쪽 상세 상태도 `success`다. 왼쪽의 과거 실패 이력은 삭제하지 않았다. 화면의 10분 35초에는 작업 대기가 포함되며, 이벤트 지연 p95가 아니다.
+
+[해당 실행의 Task 상태](../../evidence/spark_s3/minimal_runtime.json) · [현재 DAG 코드](../../dags/wikipedia_daily.py)
 
 ## 2. retry·backoff와 실패 알림
 
-**일시적인 연결 오류는 기다렸다가 다시 시도하고, 입력이나 설정을 고쳐야 하는 오류는 즉시 실패시킨다.**
+**일시 통신 오류는 재시도하고, 같은 입력으로 반복해도 해결되지 않는 오류는 바로 실패시킨다.**
 
-| 대상 | 대응 | 이유 |
-|---|---|---|
-| 파일 정리·집계·게시의 일시적인 DB·Docker 연결 오류 | 최대 3회 재시도 | 잠시 기다리면 복구될 수 있음 |
-| 위 작업에서 잘못된 데이터·설정 등으로 분류한 오류 | 재시도 없이 실패 | 같은 조건으로 반복해도 해결되지 않음 |
-| 날짜 결정 `resolve_target_date` | 재시도 없음 | 날짜 입력을 확인해야 함 |
-| 품질 검사 `quality_check` | 재시도 없음 | 원인을 확인하고 결과를 수정해야 함 |
-
-| 설정 | 값 |
+| Task·실패 종류 | 현재 대응 |
 |---|---|
-| 재시도 횟수 | 최초 실행 이후 최대 3회 |
-| 기본 대기 | 1분 |
-| 대기 방식 | 지수 백오프: 반복 실패할수록 대기 시간을 늘림 |
-| 최대 대기 | 10분 |
+| `drain_kafka`, `compact_raw`, `daily_agg`, `publish`의 알려진 일시 S3·Docker 오류 | 최대 3회 추가 재시도 |
+| 위 작업의 권한·설정·데이터 오류 등 영구 오류 | `AirflowFailException`으로 즉시 실패 |
+| `resolve_target_date`의 잘못된 날짜 | `retries=0`, 즉시 실패 |
+| `quality_check` | `retries=0`, 불일치 시 실패하고 게시 차단 |
 
-실제 대기 시간은 Airflow가 계산한다. 현재 품질 검사 Task는 일시 연결 오류가 발생해도 자동 재시도하지 않는다.
+기본 대기는 1분, 지수 백오프를 사용하며 최대 10분으로 제한한다. 약 1→2→4분처럼 늘어나는 방식이지만 실제 대기는 Airflow가 계산한다. **품질 Task는 일시 통신 오류가 나도 현재 자동 재시도하지 않는다.**
 
-### 실패를 확인하는 방법
+### 누가, 어떻게 실패를 아는가?
 
-```text
-최종 실패 → Airflow 실패 상태 + 작업 로그 + alerts.jsonl 기록
-```
+현재 담당자는 프로젝트 운영자이며, Airflow 화면과 `artifacts/airflow/alerts.jsonl`을 직접 확인한다. 최종 실패 callback은 DAG·Task·실행 ID·시도 번호·발생 시각을 기록한다.
 
-- 담당자가 Airflow 화면과 `artifacts/week5/alerts.jsonl`을 확인한다.
-- 기록 내용: DAG·Task·실행 ID·시도 번호·발생 시각.
-
-**재시도 검증:** 일시 오류 예외를 한 번 주입한 뒤 다음 시도에서 성공했다. 테스트에서만 대기를 1초로 줄였으며, 실제 DB 서버를 중단한 실험은 아니다.
+Discord 등 외부 메시지 발송은 연결하지 않았다. 현재 실패 여부는 운영자가 화면과 로그에서 직접 확인한다.
 
 ## 3. 스케줄·처리 날짜·의존성
 
-### 실행 날짜와 데이터 날짜
-
-**매일 한국시간 03:00에 전날 00:00~24:00 데이터를 처리한다.**
-
-| 구분 | 예시 |
+| 항목 | 설정·의미 |
 |---|---|
-| 실행 시각 | 2026-11-02 03:00 KST |
-| 처리할 날짜 | 2026-11-01 |
-| 데이터 범위 | 11월 1일 00:00 이상 ~ 11월 2일 00:00 미만, 한국시간 |
-| 과거 날짜 재처리 | `target_date=2026-10-25` 지정 |
+| 일일 집계 | `0 3 * * *`, 한국시간 매일 03시 |
+| 데이터 날짜 | `data_interval_end`를 한국시간으로 바꾼 날짜의 전날 |
+| 수동 재처리 | `target_date`를 지정하면 해당 날짜 우선 |
+| 과거 구간 | `catchup=False`; 생성되지 않은 과거 구간은 수동 지정 |
+| 동시 실행 | DAG별 실행 1개, 모든 Spark Task가 `spark_jobs` 1개 슬롯 공유 |
+| 별도 수집 DAG | `wikipedia_ingest`가 10분마다 Kafka→Spark→S3 처리 |
 
-날짜는 현재 시각이 아니라 **`data_interval_end`를 한국시간으로 바꾼 날짜의 전날**로 정한다. 실행이 늦어져도 처리 날짜가 바뀌지 않는다. `target_date`를 지정하면 그 날짜를 우선한다.
+예를 들어 **11월 5일 03시를 기준으로 만들어진 실행은 11월 4일 데이터**를 처리한다. 실제 실행이 늦어져도 이 기준은 바뀌지 않는다. 과거 데이터는 실행 날짜를 과거로 바꾸지 않고 `target_date`로 지정한다.
 
-| 실행 설정 | 목적 |
-|---|---|
-| `schedule='0 3 * * *'`, `Asia/Seoul` | 매일 한국시간 03시 실행 |
-| `catchup=False` | 누락된 과거 구간 전체가 한꺼번에 자동 실행되지 않도록 설정 |
-| `max_active_runs=1` | DAG 실행이 겹치지 않도록 제한 |
+이 순서는 **날짜를 정하고 → 잔여 입력을 저장하고 → 같은 날짜를 정리·집계하고 → 검사한 다음 게시**하기 위한 것이다.
 
-### 이 순서로 실행하는 이유
+### 같은 날짜를 두 번 실행한 결과
 
-**날짜 확정 → 같은 날짜의 파일 준비 → 집계 → 결과 검사 → 게시**
+같은 입력으로 재실행한 정상 데이터 12,947행과 집계 121행을 Spark `exceptAll`로 양방향 비교했고, 전체 값이 같았다. 다만 실행별 파일 경로와 `current.json`이 가리키는 경로는 달라질 수 있다. **보장하는 것은 데이터 내용의 동일성이며, 파일 경로나 갱신 시각의 동일성이 아니다.**
 
-앞 단계가 성공해야 다음 단계가 실행된다. 특히 검사 전에 게시하지 않도록 `quality_check → publish` 의존성을 설정했다.
+[재실행 대조 기록](../../evidence/spark_s3/verification.json)
 
-### 같은 날짜를 두 번 실행해도 안전한가?
-
-- **같은 입력 버전:** 다시 게시하지 않아 기존 결과를 유지한다.
-- **입력이 변경된 경우:** 해당 날짜의 집계를 갱신한다.
-- **검사 실패:** 새 결과를 게시하지 않고 이전 결과를 유지한다.
-
-| 검증 항목 | 확인 결과 |
-|---|---|
-| 동일 날짜 두 번 실행 | 집계 값·갱신 시각·게시 정보 모두 동일 |
-| 품질 오류 주입 | quality_check 실패, publish 차단 |
-| 실패 전후 비교 | 이전 게시 결과 유지 |
-| 실패 기록 | 로컬 알림 파일에 기록됨 |
-
-실행마다 중간 파일 경로는 새로 생성된다. 동일하게 유지되는 대상은 **게시된 결과**다.
-
-> 검증은 Airflow `dag.test()`에서 실제 Spark 컨테이너와 DB 작업을 실행한 결과다. 당시에는 정시 자동 실행과 외부 웹훅 알림을 검증하지 않았고 DAG를 일시 정지해 두었다. 이후 2026-11-02에 실시간 수집과 정기 실행을 활성화했다. 현재 운영 방법은 [자동 운영 안내](https://github.com/parkjoohyung0826/wikipedia-streaming-analytics/blob/43cb52dbf200937d8d85e16e0ca8aa5206fa38e5/docs/guides/daily_operations.md)를 참고한다.
-
-[검증 결과 JSON](https://github.com/parkjoohyung0826/wikipedia-streaming-analytics/blob/aab781f192bd16ec9256c16256daac2132131732/evidence/week5/verification.json) · [DAG 코드](https://github.com/parkjoohyung0826/wikipedia-streaming-analytics/blob/d48d1b49a427a002084654b43d34524a46a478af/dags/wikipedia_daily.py) · [실제 처리 코드](https://github.com/parkjoohyung0826/wikipedia-streaming-analytics/blob/aab781f192bd16ec9256c16256daac2132131732/src/daily_jobs.py) · [날짜·알림·실행 연결 코드](https://github.com/parkjoohyung0826/wikipedia-streaming-analytics/blob/d48d1b49a427a002084654b43d34524a46a478af/src/airflow_support.py)
-
----
-
-## 참고: 실행과 결과 확인
-
-프로젝트 폴더에서 Docker Desktop을 실행한 뒤:
+## 실행
 
 ```bash
-python3 scripts/week5.py setup
-python3 scripts/week5.py verify
+export WIKI_AWS_HOST="$HOME/.aws"
+export WIKI_DOCKER_SOCKET=/var/run/docker.sock
+python3 scripts/operations.py trigger --date 2026-11-02
+python3 scripts/operations.py ui
+python3 scripts/operations.py ui-stop
 ```
 
-검증은 기존 2026-10-25 정상 편집 3,846건이 저장된 환경을 기준으로 한다. 새 환경에서는 먼저 기존 수집 데이터의 Kafka→Spark→DB 처리가 필요하다. 샘플 20건만으로는 이 전체 데이터 검증을 통과하지 않는다.
+현재 기본 서비스가 실행 중인 환경에서 사용하는 명령이다. 웹 화면은 확인할 때만 켠다.
 
-화면: http://localhost:18080 · 로컬 실습 계정: `airflow` / `airflow`
-
-스케줄러를 통한 수동 실행:
-
-```bash
-python3 scripts/week5.py trigger --date 2026-10-25
-python3 scripts/week5.py status
-```
-
-`trigger`는 DAG의 일시 정지도 해제한다. 이후 매일 정기 실행되므로 실습 종료 후 화면에서 DAG를 다시 정지하거나 아래 명령을 사용한다. 데이터가 없는 날짜는 품질 검사에서 실패하는 것이 정상이다.
-
-```bash
-python3 scripts/week5.py stop
-```
-
-결과 위치:
-
-- `artifacts/week5/runs/<실행 ID 해시>/2026-10-25/`: 단계별 JSON·Parquet·로그
-- `evidence/week5/verification.json`: 성공·재실행·실패 차단 검증 기록
-- `week5.daily_wiki`: 날짜·위키별 집계. `(target_date, wiki)`가 기본키다.
-- `week5.publications`: 품질 검사를 통과한 게시 버전과 파일 위치
-
-DB에서 `SELECT * FROM week5.daily_wiki ORDER BY target_date, edit_count DESC;`로 확인할 수 있다.
-
-같은 입력 버전은 다시 게시하지 않고, 바뀐 데이터는 해당 날짜만 upsert한다. 이번 규모에서는 compaction을 파일 하나로 모았다. 대규모 환경에서는 파일 크기에 따라 분할 수를 조정해야 한다. 6회차 부하 테스트는 별도 문서와 격리된 환경에서 관리한다.
-
+[날짜·재시도 연결 코드](../../src/airflow_support.py) · [실제 처리 코드](../../src/spark_s3.py) · [6주차 동작·검증 결과](week6.md)

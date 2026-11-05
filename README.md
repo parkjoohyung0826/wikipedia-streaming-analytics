@@ -63,4 +63,4 @@ Compose는 **docker-compose.yml 하나**만 사용합니다. 환경 설정은 Gi
 
 [4주차](docs/submissions/week4.md) · [5주차](docs/submissions/week5.md) · [6주차](docs/submissions/week6.md)
 
-제출 문서는 보존합니다. 4·5주차는 당시 기록이며, 6주차는 현재 최소 컨테이너 구성과 검증 결과를 담았습니다.
+주차별 처리 과정과 실행 결과는 위 문서에서 확인할 수 있습니다.
