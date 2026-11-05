@@ -58,3 +58,9 @@ Compose는 **docker-compose.yml 하나**만 사용합니다. 환경 설정은 Gi
 이전 주차 코드·문서, PostgreSQL 데이터 저장 코드, Python-only S3 실험과 상세 증빙은 정리했습니다. 삭제 전 로컬 ZIP을 검증했으며, S3 객체와 Docker 데이터 볼륨은 삭제하지 않았습니다.
 
 [저장·재시도 방식](docs/guides/kafka_spark_s3.md) · [검증 기록](evidence/spark_s3/README.md)
+
+## 주차별 제출 문서
+
+[4주차](docs/submissions/week4.md) · [5주차](docs/submissions/week5.md) · [6주차](docs/submissions/week6.md)
+
+제출 문서는 보존합니다. 4·5주차는 당시 기록이며, 6주차는 현재 최소 컨테이너 구성과 검증 결과를 담았습니다.
