@@ -1,0 +1,28 @@
+test_advance_only_after_ack (test_live_producer.LiveTests.test_advance_only_after_ack) ... Reconnecting in 1s: SSE connection ended
+ok
+test_failed_delivery_does_not_advance (test_live_producer.LiveTests.test_failed_delivery_does_not_advance) ... Reconnecting in 1s: Kafka delivery not confirmed
+ok
+test_only_complete_frames (test_live_producer.LiveTests.test_only_complete_frames) ... ok
+test_delivery_failure_is_not_success (test_producer.ProducerTests.test_delivery_failure_is_not_success) ... ok
+test_duplicate_and_filtered_records (test_producer.ProducerTests.test_duplicate_and_filtered_records) ... ok
+test_invalid_json_is_recorded (test_producer.ProducerTests.test_invalid_json_is_recorded) ... ok
+test_missing_identity_is_rejected (test_producer.ProducerTests.test_missing_identity_is_rejected) ... ok
+test_scope_key_and_original_time (test_producer.ProducerTests.test_scope_key_and_original_time) ... ok
+test_transient_versus_permanent (test_spark_s3_store.RetryTests.test_transient_versus_permanent) ... ok
+test_batch_commit_is_immutable (test_spark_s3_store.StoreTests.test_batch_commit_is_immutable) ... ok
+test_daily_publication_replaces_reference (test_spark_s3_store.StoreTests.test_daily_publication_replaces_reference) ... ok
+test_missing_is_distinct_from_denied (test_spark_s3_store.StoreTests.test_missing_is_distinct_from_denied) ... ok
+test_separate_namespace (test_spark_s3_store.StoreTests.test_separate_namespace) ... ok
+test_unrelated_query_error_is_not_marked_transient (test_spark_s3_store.StreamRetryTests.test_unrelated_query_error_is_not_marked_transient) ... ok
+test_wrapped_callback_preserves_retryable_cause (test_spark_s3_store.StreamRetryTests.test_wrapped_callback_preserves_retryable_cause) ... ok
+test_incomplete_run_does_not_claim_success (test_week6_report.ReportTests.test_incomplete_run_does_not_claim_success) ... ok
+test_trend_uses_elapsed_time (test_week6_report.ReportTests.test_trend_uses_elapsed_time) ... ok
+test_warmup_excluded_from_measurement (test_week6_report.ReportTests.test_warmup_excluded_from_measurement) ... ok
+test_committed_ignores_partial_append_and_duplicate_batch (test_week6_runner.RunnerTests.test_committed_ignores_partial_append_and_duplicate_batch) ... ok
+test_pacing_never_polls_negative_timeout (test_week6_runner.RunnerTests.test_pacing_never_polls_negative_timeout) ... 2026-11-07T12:45:26.997749+00:00 pace: acknowledged 2, 100.0/s
+ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.011s
+
+OK

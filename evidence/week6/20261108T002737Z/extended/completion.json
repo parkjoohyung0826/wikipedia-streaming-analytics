@@ -1,0 +1,61 @@
+{
+  "run": "20261108T002737Z",
+  "scope": "one small-data pass; Airflow stage alone rerun after username configuration fix",
+  "input_rows": 5600,
+  "stored_rows": 5600,
+  "unique_offsets": 5600,
+  "missing_ids": 0,
+  "unexpected_ids": 0,
+  "kafka": {
+    "pause_requested_seconds": 60,
+    "acknowledged": 3000,
+    "delivery_errors": 0,
+    "recovery_to_zero_lag_s": null,
+    "timing_note": "Exact recovery timer was not saved before the later Airflow setup failure. No timing value is claimed."
+  },
+  "invalid_storm": {
+    "valid": 1000,
+    "rejected": 1000,
+    "ratio": 0.5
+  },
+  "s3_injection": {
+    "kind": "ServiceUnavailable after real Parquet write; AWS itself remained online",
+    "injected_seconds": 60,
+    "expected_exit_75_assertion": "passed before subsequent phases",
+    "restart_submission_to_commit_s": 16.994401931762695,
+    "previous_publication_preserved": true
+  },
+  "daily_retry": {
+    "fault": "retryable SlowDown after compact_raw write",
+    "same_work_id": true,
+    "previous_publication_preserved": true,
+    "differences": {
+      "clean": 0,
+      "aggregate": 0
+    },
+    "rows": 4600,
+    "retry_executor": "test harness, not Airflow scheduler"
+  },
+  "airflow": {
+    "state": "success",
+    "attempts": [
+      {
+        "try_number": 1,
+        "exit_code": 75
+      },
+      {
+        "try_number": 2,
+        "exit_code": 0
+      }
+    ],
+    "execution": "Airflow 2.10.5 DAG.test with TaskInstance retries; isolated SQLite, no production scheduler"
+  },
+  "airflow_equality": {
+    "differences": {
+      "clean": 0,
+      "aggregate": 0
+    },
+    "rows": 4600
+  },
+  "external_notification": "not connected or received"
+}

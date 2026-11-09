@@ -61,6 +61,6 @@ Compose는 **docker-compose.yml 하나**만 사용합니다. 환경 설정은 Gi
 
 ## 주차별 제출 문서
 
-[4주차](docs/submissions/week4.md) · [5주차](docs/submissions/week5.md) · [6주차](docs/submissions/week6.md)
+[4주차](docs/submissions/week4.md) · [5주차](docs/submissions/week5.md) · [6주차](docs/submissions/week6.md) · [7주차 B안](docs/submissions/week7.md)
 
 주차별 처리 과정과 실행 결과는 위 문서에서 확인할 수 있습니다.

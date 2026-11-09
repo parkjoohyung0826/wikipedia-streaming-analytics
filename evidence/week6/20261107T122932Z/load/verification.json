@@ -1,0 +1,100 @@
+{
+  "stages": [
+    {
+      "source": "synthetic-week6-r1-rate300",
+      "rows": 36000,
+      "unique_ids": 36000,
+      "rejected": 0,
+      "mean_payload_bytes": 399.5913888888889,
+      "latency_p50_p95_s": [
+        22.756963968276978,
+        36.538275957107544
+      ],
+      "min_latency_s": 7.481429815292358,
+      "max_latency_s": 38.600120067596436
+    },
+    {
+      "source": "synthetic-week6-r1-rate600",
+      "rows": 72000,
+      "unique_ids": 72000,
+      "rejected": 0,
+      "mean_payload_bytes": 399.74569444444444,
+      "latency_p50_p95_s": [
+        61.115209102630615,
+        105.16759014129639
+      ],
+      "min_latency_s": 10.630529165267944,
+      "max_latency_s": 121.8863730430603
+    },
+    {
+      "source": "synthetic-week6-r2-rate100",
+      "rows": 12000,
+      "unique_ids": 12000,
+      "rejected": 0,
+      "mean_payload_bytes": 398.9741666666667,
+      "latency_p50_p95_s": [
+        22.349763870239258,
+        35.98410487174988
+      ],
+      "min_latency_s": 7.169229030609131,
+      "max_latency_s": 38.16986894607544
+    },
+    {
+      "source": "synthetic-week6-r2-rate600",
+      "rows": 72000,
+      "unique_ids": 72000,
+      "rejected": 0,
+      "mean_payload_bytes": 399.74569444444444,
+      "latency_p50_p95_s": [
+        59.97673797607422,
+        104.06593918800354
+      ],
+      "min_latency_s": 10.14510202407837,
+      "max_latency_s": 120.93051290512085
+    },
+    {
+      "source": "synthetic-week6-warmup",
+      "rows": 12000,
+      "unique_ids": 12000,
+      "rejected": 0,
+      "mean_payload_bytes": 390.9741666666667,
+      "latency_p50_p95_s": [
+        20.920804977416992,
+        36.536274909973145
+      ],
+      "min_latency_s": 7.425827980041504,
+      "max_latency_s": 39.38526487350464
+    },
+    {
+      "source": "synthetic-week6-r1-rate100",
+      "rows": 12000,
+      "unique_ids": 12000,
+      "rejected": 0,
+      "mean_payload_bytes": 398.9741666666667,
+      "latency_p50_p95_s": [
+        22.450477123260498,
+        36.280587911605835
+      ],
+      "min_latency_s": 7.089654922485352,
+      "max_latency_s": 38.910706996917725
+    },
+    {
+      "source": "synthetic-week6-r2-rate300",
+      "rows": 36000,
+      "unique_ids": 36000,
+      "rejected": 0,
+      "mean_payload_bytes": 399.5913888888889,
+      "latency_p50_p95_s": [
+        23.029554843902588,
+        36.69564199447632
+      ],
+      "min_latency_s": 6.878676891326904,
+      "max_latency_s": 40.58616781234741
+    }
+  ],
+  "rows": 252000,
+  "distinct_kafka_offsets": 252000,
+  "commits": 42,
+  "missing_ids": 0,
+  "unexpected_ids": 0
+}

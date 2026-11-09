@@ -1,0 +1,16 @@
+{
+  "tested_at": "2026-11-08T07:48:44.381900+00:00",
+  "run_id": "notification_test_20261108T074844Z",
+  "status": "sent",
+  "method": "Direct invocation of production notify_failure callback with simulated final task failure; real Discord HTTPS delivery; no Airflow task executed.",
+  "replay_result": {
+    "sent": 1,
+    "pending": 0
+  },
+  "delivered_at": "2026-11-08T07:48:54.591208+00:00",
+  "duplicate_check": "duplicate",
+  "receipt_verified": "Discord desktop app: Wikipedia alert / #일반",
+  "screenshot": "docs/submissions/images/week6-discord-alert.jpg",
+  "initial_delivery": "HTTPError; retained in outbox",
+  "fix": "Set explicit User-Agent before replay"
+}

@@ -28,7 +28,8 @@ x-airflow-common: &airflow-common
     WIKI_STORAGE: s3
     WIKI_AWS_HOST: ${WIKI_AWS_HOST:?AWS mount requires explicit configuration}
     AWS_PROFILE: ${AWS_PROFILE:-default}
-    DISCORD_WEBHOOK_URL: ""
+    DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL:-}
+    WIKI_MAX_OFFSETS: ${WIKI_MAX_OFFSETS:-50000}
   volumes:
     - ./dags:/opt/airflow/dags:ro
     - .:/workspace
@@ -112,6 +113,7 @@ services:
       AWS_CREDENTIAL_PROFILES_FILE: /home/spark/.aws/credentials
       AWS_PROFILE: ${AWS_PROFILE:-default}
       SPARK_LOCAL_IP: 127.0.0.1
+      WIKI_MAX_OFFSETS: ${WIKI_MAX_OFFSETS:-50000}
     volumes:
       - .:/workspace
       - ${WIKI_AWS_HOST:?AWS mount requires explicit configuration}:/home/spark/.aws:ro

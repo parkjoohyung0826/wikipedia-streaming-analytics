@@ -1,0 +1,745 @@
+{
+  "before": {
+    "run": "20261108T104012Z",
+    "environment": {
+      "docker": {
+        "ServerVersion": "29.2.0",
+        "NCPU": 10,
+        "MemTotal": 8217382912,
+        "OperatingSystem": "Docker Desktop",
+        "Architecture": "aarch64"
+      },
+      "spark_master": "local[2]",
+      "driver_memory": "1g",
+      "spark_container_memory": "2g",
+      "kafka_partitions": 3,
+      "kafka_memory": "1g",
+      "shuffle_partitions": 2,
+      "parameters": {
+        "rates": [
+          600
+        ],
+        "seconds": 120,
+        "warmup": 60,
+        "repetitions": 1,
+        "max_offsets": 10000,
+        "skip_faults": true,
+        "extended_only": false,
+        "crash_only": false
+      },
+      "storage": "actual AWS S3",
+      "production_services": "untouched",
+      "other_running_containers": [
+        "k8s_nginx_nginx-deployment-857d9f6c74-vxlsn_default_9293855b-69b3-4093-ac64-6536dfd92587_25",
+        "k8s_nginx_nginx-deployment-857d9f6c74-fks4d_default_a9ea84d4-a430-4654-8ad4-55af1065ec6b_27",
+        "k8s_nginx_nginx-deployment-857d9f6c74-28n44_default_0442e533-e1e4-499c-9caf-8eb8471e8f86_28",
+        "k8s_statsd_airflow-statsd-697864869f-4jtvk_airflow-parkjoohyung_808fb44b-0107-4810-a0df-47812c7f25e1_25",
+        "k8s_postgresql_airflow-postgresql-0_airflow-parkjoohyung_e532ed4c-194e-4fb7-bb51-36c9f2415980_24"
+      ],
+      "spark_image_id": "sha256:360563c8c057d7d681f060deaf7f7bdb886411da826678b7ab92d279f06781c9"
+    },
+    "summary": {
+      "run": "20261108T104012Z",
+      "execution": {
+        "run": "20261108T104012Z",
+        "target_date": "2026-11-08",
+        "success": true,
+        "parameters": {
+          "rates": [
+            600
+          ],
+          "seconds": 120,
+          "warmup": 60,
+          "repetitions": 1,
+          "max_offsets": 10000,
+          "skip_faults": true,
+          "extended_only": false,
+          "crash_only": false
+        },
+        "output": "/Users/parkjoohyung/Documents/wikipedia-streaming-analytics/artifacts/week6/20261108T104012Z"
+      },
+      "mode": "continuous 30-second trigger; excludes Airflow scheduling delay",
+      "latency_definition": "producer ingest_time to S3 batch commit; p50/p95 include backlog and trigger waiting",
+      "lag_definition": "Kafka end offsets minus S3 committed offsets; sampled every 5 seconds",
+      "measurement_notes": [
+        "Warmup excluded from stages and Spark timings.",
+        "Each stage drains before the next stage; window throughput is not whole-run throughput.",
+        "Short windows and 30-second commits cause lag sawtooth; inspect raw trend and repeated p95.",
+        "No end-to-end Airflow or external notification verification is implied."
+      ],
+      "stages": [
+        {
+          "stage": "r1-rate600",
+          "target_per_s": 600,
+          "actual_input_per_s": 600.0045989951822,
+          "input_rows": 72000,
+          "input_elapsed_s": 119.99908020801377,
+          "errors": [],
+          "pending": 0,
+          "window_completion_per_s": 333.2700714324063,
+          "lag_first": 2990,
+          "lag_last": 39105,
+          "lag_max": 39105,
+          "lag_slope_per_s": 280.42078717268805,
+          "verification": {
+            "source": "synthetic-week6-r1-rate600",
+            "rows": 72000,
+            "unique_ids": 72000,
+            "rejected": 0,
+            "mean_payload_bytes": 399.74569444444444,
+            "latency_p50_p95_s": [
+              61.13246202468872,
+              105.79102516174316
+            ],
+            "min_latency_s": 11.173434019088745,
+            "max_latency_s": 126.86611485481262
+          }
+        }
+      ],
+      "spark_progress": {
+        "addBatch": {
+          "mean_ms": 7848.625,
+          "max_ms": 12758,
+          "samples": 8
+        },
+        "commitOffsets": {
+          "mean_ms": 729.5,
+          "max_ms": 798,
+          "samples": 8
+        },
+        "getBatch": {
+          "mean_ms": 0.25,
+          "max_ms": 1,
+          "samples": 8
+        },
+        "latestOffset": {
+          "mean_ms": 23,
+          "max_ms": 35,
+          "samples": 8
+        },
+        "queryPlanning": {
+          "mean_ms": 29.875,
+          "max_ms": 39,
+          "samples": 8
+        },
+        "triggerExecution": {
+          "mean_ms": 9418,
+          "max_ms": 14324,
+          "samples": 8
+        },
+        "walCommit": {
+          "mean_ms": 779.875,
+          "max_ms": 803,
+          "samples": 8
+        }
+      },
+      "batch_components": {
+        "commit_ms": {
+          "mean_ms": 89.07110912502958,
+          "total_ms": 712.5688730002366,
+          "samples": 8
+        },
+        "metadata_ms": {
+          "mean_ms": 114.96078649997798,
+          "total_ms": 919.6862919998239,
+          "samples": 8
+        },
+        "parquet_write_ms": {
+          "mean_ms": 7001.091441000028,
+          "total_ms": 56008.73152800022,
+          "samples": 8
+        },
+        "transform_count_ms": {
+          "mean_ms": 418.12422924999737,
+          "total_ms": 3344.993833999979,
+          "samples": 8
+        }
+      },
+      "load_verification": {
+        "stages": [
+          {
+            "source": "synthetic-week6-r1-rate600",
+            "rows": 72000,
+            "unique_ids": 72000,
+            "rejected": 0,
+            "mean_payload_bytes": 399.74569444444444,
+            "latency_p50_p95_s": [
+              61.13246202468872,
+              105.79102516174316
+            ],
+            "min_latency_s": 11.173434019088745,
+            "max_latency_s": 126.86611485481262
+          },
+          {
+            "source": "synthetic-week6-warmup",
+            "rows": 6000,
+            "unique_ids": 6000,
+            "rejected": 0,
+            "mean_payload_bytes": 390.715,
+            "latency_p50_p95_s": [
+              19.661079168319702,
+              35.88921308517456
+            ],
+            "min_latency_s": 7.653133153915405,
+            "max_latency_s": 38.88927602767944
+          }
+        ],
+        "rows": 78000,
+        "distinct_kafka_offsets": 78000,
+        "commits": 12,
+        "missing_ids": 0,
+        "unexpected_ids": 0
+      },
+      "recovery": null,
+      "external_notification": "not configured or tested",
+      "extended_faults": null,
+      "last_sampled_lag": 2012,
+      "verified_unstored_input_rows": 0,
+      "progress_coverage": {
+        "measured_batches": 8,
+        "recorded_batches": 8,
+        "missing_batch_ids": []
+      }
+    },
+    "measured_batches": [
+      {
+        "batch_id": 4,
+        "rows": 9998,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 5388
+          },
+          {
+            "partition": 1,
+            "end_offset": 5756
+          },
+          {
+            "partition": 0,
+            "end_offset": 4854
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 416.0454170000776,
+          "parquet_write_ms": 6230.274002999977,
+          "metadata_ms": 114.75804200017592,
+          "commit_ms": 80.13241700018625
+        },
+        "committed_at": "2026-11-08T10:42:07.920825+00:00"
+      },
+      {
+        "batch_id": 5,
+        "rows": 9998,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 8755
+          },
+          {
+            "partition": 1,
+            "end_offset": 9354
+          },
+          {
+            "partition": 0,
+            "end_offset": 7887
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 355.31924999986586,
+          "parquet_write_ms": 6341.691420000188,
+          "metadata_ms": 117.52491600009307,
+          "commit_ms": 81.1425000001691
+        },
+        "committed_at": "2026-11-08T10:42:37.965756+00:00"
+      },
+      {
+        "batch_id": 6,
+        "rows": 9998,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 12122
+          },
+          {
+            "partition": 1,
+            "end_offset": 12953
+          },
+          {
+            "partition": 0,
+            "end_offset": 10919
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 291.4128749998781,
+          "parquet_write_ms": 6209.365337000236,
+          "metadata_ms": 127.45945899996514,
+          "commit_ms": 89.39416599969263
+        },
+        "committed_at": "2026-11-08T10:43:07.726429+00:00"
+      },
+      {
+        "batch_id": 7,
+        "rows": 9998,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 15488
+          },
+          {
+            "partition": 1,
+            "end_offset": 16552
+          },
+          {
+            "partition": 0,
+            "end_offset": 13952
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 290.3262499999073,
+          "parquet_write_ms": 6295.539127999746,
+          "metadata_ms": 177.1216669999376,
+          "commit_ms": 85.2591670000038
+        },
+        "committed_at": "2026-11-08T10:43:37.849751+00:00"
+      },
+      {
+        "batch_id": 8,
+        "rows": 9998,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 18853
+          },
+          {
+            "partition": 1,
+            "end_offset": 20153
+          },
+          {
+            "partition": 0,
+            "end_offset": 16984
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 232.09079099979135,
+          "parquet_write_ms": 6547.577837000063,
+          "metadata_ms": 100.06745800001227,
+          "commit_ms": 107.5505830003749
+        },
+        "committed_at": "2026-11-08T10:44:08.065054+00:00"
+      },
+      {
+        "batch_id": 9,
+        "rows": 9999,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 22218
+          },
+          {
+            "partition": 1,
+            "end_offset": 23754
+          },
+          {
+            "partition": 0,
+            "end_offset": 20017
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 248.30912500010527,
+          "parquet_write_ms": 6463.281585999994,
+          "metadata_ms": 79.87391599999683,
+          "commit_ms": 77.60941600008664
+        },
+        "committed_at": "2026-11-08T10:44:37.923256+00:00"
+      },
+      {
+        "batch_id": 10,
+        "rows": 9999,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 25583
+          },
+          {
+            "partition": 1,
+            "end_offset": 27355
+          },
+          {
+            "partition": 0,
+            "end_offset": 23050
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 371.0042500001691,
+          "parquet_write_ms": 6741.229086000203,
+          "metadata_ms": 120.16854199964655,
+          "commit_ms": 86.95741599967732
+        },
+        "committed_at": "2026-11-08T10:45:08.493195+00:00"
+      },
+      {
+        "batch_id": 11,
+        "rows": 2012,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 26260
+          },
+          {
+            "partition": 1,
+            "end_offset": 28080
+          },
+          {
+            "partition": 0,
+            "end_offset": 23660
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 1140.4858760001844,
+          "parquet_write_ms": 11179.77313099982,
+          "metadata_ms": 82.71229199999652,
+          "commit_ms": 104.523208000046
+        },
+        "committed_at": "2026-11-08T10:45:43.574916+00:00"
+      }
+    ],
+    "mean_batch_rows": 9000.0
+  },
+  "after": {
+    "run": "20261108T122611Z",
+    "environment": {
+      "docker": {
+        "ServerVersion": "29.2.0",
+        "NCPU": 10,
+        "MemTotal": 8217382912,
+        "OperatingSystem": "Docker Desktop",
+        "Architecture": "aarch64"
+      },
+      "spark_master": "local[2]",
+      "driver_memory": "1g",
+      "spark_container_memory": "2g",
+      "kafka_partitions": 3,
+      "kafka_memory": "1g",
+      "shuffle_partitions": 2,
+      "parameters": {
+        "rates": [
+          600
+        ],
+        "seconds": 120,
+        "warmup": 60,
+        "repetitions": 1,
+        "max_offsets": 50000,
+        "skip_faults": true,
+        "extended_only": false,
+        "crash_only": false
+      },
+      "storage": "actual AWS S3",
+      "production_services": "untouched",
+      "other_running_containers": [
+        "k8s_wait-for-airflow-migrations_airflow-scheduler-0_airflow-parkjoohyung_60e21116-f882-4526-a7ac-f061a7194dd7_149",
+        "k8s_wait-for-airflow-migrations_airflow-webserver-d654c98cb-g4hgf_airflow-parkjoohyung_55be4d7b-ab6d-4aa8-b591-1cf4dff24579_148",
+        "k8s_nginx_nginx-deployment-857d9f6c74-vxlsn_default_9293855b-69b3-4093-ac64-6536dfd92587_25",
+        "k8s_nginx_nginx-deployment-857d9f6c74-fks4d_default_a9ea84d4-a430-4654-8ad4-55af1065ec6b_27",
+        "k8s_nginx_nginx-deployment-857d9f6c74-28n44_default_0442e533-e1e4-499c-9caf-8eb8471e8f86_28",
+        "k8s_statsd_airflow-statsd-697864869f-4jtvk_airflow-parkjoohyung_808fb44b-0107-4810-a0df-47812c7f25e1_25",
+        "k8s_postgresql_airflow-postgresql-0_airflow-parkjoohyung_e532ed4c-194e-4fb7-bb51-36c9f2415980_24"
+      ],
+      "spark_image_id": "sha256:360563c8c057d7d681f060deaf7f7bdb886411da826678b7ab92d279f06781c9"
+    },
+    "summary": {
+      "run": "20261108T122611Z",
+      "execution": {
+        "run": "20261108T122611Z",
+        "target_date": "2026-11-08",
+        "success": true,
+        "parameters": {
+          "rates": [
+            600
+          ],
+          "seconds": 120,
+          "warmup": 60,
+          "repetitions": 1,
+          "max_offsets": 50000,
+          "skip_faults": true,
+          "extended_only": false,
+          "crash_only": false
+        },
+        "output": "/Users/parkjoohyung/Documents/wikipedia-streaming-analytics/artifacts/week6/20261108T122611Z"
+      },
+      "mode": "continuous 30-second trigger; excludes Airflow scheduling delay",
+      "latency_definition": "producer ingest_time to S3 batch commit; p50/p95 include backlog and trigger waiting",
+      "lag_definition": "Kafka end offsets minus S3 committed offsets; sampled every 5 seconds",
+      "measurement_notes": [
+        "Warmup excluded from stages and Spark timings.",
+        "Each stage drains before the next stage; window throughput is not whole-run throughput.",
+        "Short windows and 30-second commits cause lag sawtooth; inspect raw trend and repeated p95.",
+        "No end-to-end Airflow or external notification verification is implied."
+      ],
+      "stages": [
+        {
+          "stage": "r1-rate600",
+          "target_per_s": 600,
+          "actual_input_per_s": 600.0060567260001,
+          "input_rows": 72000,
+          "input_elapsed_s": 119.99878866702784,
+          "errors": [],
+          "pending": 0,
+          "window_completion_per_s": 530.6881761129556,
+          "lag_first": 2947,
+          "lag_last": 5364,
+          "lag_max": 20364,
+          "lag_slope_per_s": 58.60457111816924,
+          "verification": {
+            "source": "synthetic-week6-r1-rate600",
+            "rows": 72000,
+            "unique_ids": 72000,
+            "rejected": 0,
+            "mean_payload_bytes": 399.74569444444444,
+            "latency_p50_p95_s": [
+              22.96515417098999,
+              36.65422201156616
+            ],
+            "min_latency_s": 7.922528028488159,
+            "max_latency_s": 38.73618698120117
+          }
+        }
+      ],
+      "spark_progress": {
+        "addBatch": {
+          "mean_ms": 7163,
+          "max_ms": 7232,
+          "samples": 4
+        },
+        "commitOffsets": {
+          "mean_ms": 717.5,
+          "max_ms": 783,
+          "samples": 4
+        },
+        "getBatch": {
+          "mean_ms": 0,
+          "max_ms": 0,
+          "samples": 4
+        },
+        "latestOffset": {
+          "mean_ms": 11.25,
+          "max_ms": 20,
+          "samples": 4
+        },
+        "queryPlanning": {
+          "mean_ms": 21.5,
+          "max_ms": 29,
+          "samples": 4
+        },
+        "triggerExecution": {
+          "mean_ms": 8693.75,
+          "max_ms": 8773,
+          "samples": 4
+        },
+        "walCommit": {
+          "mean_ms": 774.25,
+          "max_ms": 792,
+          "samples": 4
+        }
+      },
+      "batch_components": {
+        "commit_ms": {
+          "mean_ms": 97.23876679981913,
+          "total_ms": 486.19383399909566,
+          "samples": 5
+        },
+        "metadata_ms": {
+          "mean_ms": 144.41126699985034,
+          "total_ms": 722.0563349992517,
+          "samples": 5
+        },
+        "parquet_write_ms": {
+          "mean_ms": 6253.8988946000245,
+          "total_ms": 31269.494473000123,
+          "samples": 5
+        },
+        "transform_count_ms": {
+          "mean_ms": 606.3107922002018,
+          "total_ms": 3031.553961001009,
+          "samples": 5
+        }
+      },
+      "load_verification": {
+        "stages": [
+          {
+            "source": "synthetic-week6-r1-rate600",
+            "rows": 72000,
+            "unique_ids": 72000,
+            "rejected": 0,
+            "mean_payload_bytes": 399.74569444444444,
+            "latency_p50_p95_s": [
+              22.96515417098999,
+              36.65422201156616
+            ],
+            "min_latency_s": 7.922528028488159,
+            "max_latency_s": 38.73618698120117
+          },
+          {
+            "source": "synthetic-week6-warmup",
+            "rows": 6000,
+            "unique_ids": 6000,
+            "rejected": 0,
+            "mean_payload_bytes": 390.715,
+            "latency_p50_p95_s": [
+              19.917304039001465,
+              36.1226019859314
+            ],
+            "min_latency_s": 7.412764072418213,
+            "max_latency_s": 39.12259888648987
+          }
+        ],
+        "rows": 78000,
+        "distinct_kafka_offsets": 78000,
+        "commits": 9,
+        "missing_ids": 0,
+        "unexpected_ids": 0
+      },
+      "recovery": null,
+      "external_notification": "not configured or tested",
+      "extended_faults": null,
+      "last_sampled_lag": 8318,
+      "verified_unstored_input_rows": 0,
+      "progress_coverage": {
+        "measured_batches": 5,
+        "recorded_batches": 4,
+        "missing_batch_ids": [
+          8
+        ]
+      }
+    },
+    "measured_batches": [
+      {
+        "batch_id": 4,
+        "rows": 9685,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 5283
+          },
+          {
+            "partition": 0,
+            "end_offset": 4758
+          },
+          {
+            "partition": 1,
+            "end_offset": 5644
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 416.5307089997441,
+          "parquet_write_ms": 6165.745169999354,
+          "metadata_ms": 242.70262499976525,
+          "commit_ms": 119.50858399995923
+        },
+        "committed_at": "2026-11-08T12:28:07.987055+00:00"
+      },
+      {
+        "batch_id": 5,
+        "rows": 18005,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 11345
+          },
+          {
+            "partition": 0,
+            "end_offset": 10219
+          },
+          {
+            "partition": 1,
+            "end_offset": 12126
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 475.7814590002454,
+          "parquet_write_ms": 6211.751585999991,
+          "metadata_ms": 151.72562600037054,
+          "commit_ms": 88.99762500004726
+        },
+        "committed_at": "2026-11-08T12:28:37.942296+00:00"
+      },
+      {
+        "batch_id": 6,
+        "rows": 17989,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 17400
+          },
+          {
+            "partition": 0,
+            "end_offset": 15675
+          },
+          {
+            "partition": 1,
+            "end_offset": 18604
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 404.57112500007497,
+          "parquet_write_ms": 6325.262586000463,
+          "metadata_ms": 123.71125099980418,
+          "commit_ms": 80.28033299979143
+        },
+        "committed_at": "2026-11-08T12:29:07.947312+00:00"
+      },
+      {
+        "batch_id": 7,
+        "rows": 18003,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 23463
+          },
+          {
+            "partition": 0,
+            "end_offset": 21135
+          },
+          {
+            "partition": 1,
+            "end_offset": 25084
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 458.15404200038756,
+          "parquet_write_ms": 6389.877003000038,
+          "metadata_ms": 94.60199999921315,
+          "commit_ms": 86.04774999912479
+        },
+        "committed_at": "2026-11-08T12:29:38.026631+00:00"
+      },
+      {
+        "batch_id": 8,
+        "rows": 8318,
+        "offsets": [
+          {
+            "partition": 2,
+            "end_offset": 26260
+          },
+          {
+            "partition": 0,
+            "end_offset": 23660
+          },
+          {
+            "partition": 1,
+            "end_offset": 28080
+          }
+        ],
+        "timings_ms": {
+          "transform_count_ms": 1276.5166260005572,
+          "parquet_write_ms": 6176.858128000276,
+          "metadata_ms": 109.31483300009859,
+          "commit_ms": 111.35954200017295
+        },
+        "committed_at": "2026-11-08T12:30:08.744344+00:00"
+      }
+    ],
+    "mean_batch_rows": 14400.0
+  },
+  "controls": "Only max_offsets changes; fresh topic, checkpoint and prefix per run",
+  "limitations": "One sequential pair, fixed input rate, other host workloads uncontrolled; no maximum throughput claim."
+}

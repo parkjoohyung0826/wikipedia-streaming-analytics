@@ -1,0 +1,40 @@
+{
+  "docker": {
+    "ServerVersion": "29.2.0",
+    "NCPU": 10,
+    "MemTotal": 8217382912,
+    "OperatingSystem": "Docker Desktop",
+    "Architecture": "aarch64"
+  },
+  "spark_master": "local[2]",
+  "driver_memory": "1g",
+  "spark_container_memory": "2g",
+  "kafka_partitions": 3,
+  "kafka_memory": "1g",
+  "shuffle_partitions": 2,
+  "parameters": {
+    "rates": [
+      600
+    ],
+    "seconds": 60,
+    "warmup": 60,
+    "repetitions": 1,
+    "max_offsets": 50000,
+    "skip_faults": true,
+    "extended_only": false,
+    "crash_only": false
+  },
+  "storage": "actual AWS S3",
+  "production_services": "untouched",
+  "other_running_containers": [
+    "k8s_wait-for-airflow-migrations_airflow-scheduler-0_airflow-parkjoohyung_60e21116-f882-4526-a7ac-f061a7194dd7_118",
+    "k8s_wait-for-airflow-migrations_airflow-triggerer-0_airflow-parkjoohyung_1804f975-b323-4534-91d7-d1f916aaf6ef_117",
+    "k8s_wait-for-airflow-migrations_airflow-webserver-d654c98cb-g4hgf_airflow-parkjoohyung_55be4d7b-ab6d-4aa8-b591-1cf4dff24579_117",
+    "k8s_nginx_nginx-deployment-857d9f6c74-28n44_default_0442e533-e1e4-499c-9caf-8eb8471e8f86_27",
+    "k8s_nginx_nginx-deployment-857d9f6c74-vxlsn_default_9293855b-69b3-4093-ac64-6536dfd92587_24",
+    "k8s_nginx_nginx-deployment-857d9f6c74-fks4d_default_a9ea84d4-a430-4654-8ad4-55af1065ec6b_26",
+    "k8s_statsd_airflow-statsd-697864869f-4jtvk_airflow-parkjoohyung_808fb44b-0107-4810-a0df-47812c7f25e1_24",
+    "k8s_postgresql_airflow-postgresql-0_airflow-parkjoohyung_e532ed4c-194e-4fb7-bb51-36c9f2415980_23"
+  ],
+  "spark_image_id": "sha256:360563c8c057d7d681f060deaf7f7bdb886411da826678b7ab92d279f06781c9"
+}

@@ -1,0 +1,20 @@
+{
+  "run": "20261108T002737Z",
+  "target_date": "2026-11-08",
+  "success": false,
+  "parameters": {
+    "rates": [
+      100,
+      300,
+      600
+    ],
+    "seconds": 120,
+    "warmup": 120,
+    "repetitions": 2,
+    "max_offsets": 10000,
+    "skip_faults": false,
+    "extended_only": true,
+    "crash_only": false
+  },
+  "output": "/Users/parkjoohyung/Documents/wikipedia-streaming-analytics/artifacts/week6/20261108T002737Z"
+}

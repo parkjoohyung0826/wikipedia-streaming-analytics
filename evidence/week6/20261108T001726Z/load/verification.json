@@ -1,0 +1,35 @@
+{
+  "stages": [
+    {
+      "source": "synthetic-week6-r1-rate600",
+      "rows": 36000,
+      "unique_ids": 36000,
+      "rejected": 0,
+      "mean_payload_bytes": 399.5913888888889,
+      "latency_p50_p95_s": [
+        23.22226595878601,
+        36.935643911361694
+      ],
+      "min_latency_s": 7.9055469036102295,
+      "max_latency_s": 38.9678521156311
+    },
+    {
+      "source": "synthetic-week6-warmup",
+      "rows": 6000,
+      "unique_ids": 6000,
+      "rejected": 0,
+      "mean_payload_bytes": 390.715,
+      "latency_p50_p95_s": [
+        19.735294103622437,
+        35.749938011169434
+      ],
+      "min_latency_s": 7.754612922668457,
+      "max_latency_s": 38.74994492530823
+    }
+  ],
+  "rows": 42000,
+  "distinct_kafka_offsets": 42000,
+  "commits": 6,
+  "missing_ids": 0,
+  "unexpected_ids": 0
+}

@@ -1,11 +1,11 @@
 """Lightweight Airflow helpers; Spark and S3 I/O happen only inside tasks."""
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, timedelta
 from zoneinfo import ZoneInfo
 import hashlib
-import json
 import logging
 import os
 from pathlib import Path
+from src.alerts import notify_failure
 
 
 def resolve_date(override, interval_end):
@@ -22,15 +22,6 @@ def work_path(run_id, target_date):
     return 'artifacts/airflow/runs/'+token+'/'+target_date
 
 
-def notify_failure(context):
-    ti=context['task_instance']
-    alert=dict(dag_id=ti.dag_id,task_id=ti.task_id,run_id=ti.run_id,
-               try_number=ti.try_number,at=datetime.now(timezone.utc).isoformat())
-    # Keep an inspectable local failure record.
-    path=Path('/workspace/artifacts/airflow/alerts.jsonl');path.parent.mkdir(parents=True,exist_ok=True)
-    with path.open('a') as handle:handle.write(json.dumps(alert)+'\n')
-    logging.error('[ALERT] %s',alert)
-
 
 def run_spark(action,target_date,context):
     import docker
@@ -42,6 +33,7 @@ def run_spark(action,target_date,context):
     volumes={os.environ['WIKI_WORKSPACE_HOST']:{'bind':'/workspace','mode':'rw'}}
     volumes[os.environ['WIKI_AWS_HOST']]={'bind':'/home/spark/.aws','mode':'ro'}
     environment.update(AWS_SHARED_CREDENTIALS_FILE='/home/spark/.aws/credentials',AWS_CONFIG_FILE='/home/spark/.aws/config',AWS_PROFILE=os.getenv('AWS_PROFILE','default'),AWS_CREDENTIAL_PROFILES_FILE='/home/spark/.aws/credentials')
+    environment['WIKI_MAX_OFFSETS']=os.getenv('WIKI_MAX_OFFSETS','50000')
     environment.update(PYTHONPATH='/workspace',HOME='/tmp',SPARK_LOCAL_IP='127.0.0.1',TZ='UTC')
     container=None
     try:

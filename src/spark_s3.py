@@ -4,11 +4,12 @@ import hashlib
 import json
 import os
 import uuid
-from datetime import date
+import time
+from datetime import date, datetime, timezone
 
 
 def settings():
-    with open('config/s3.local.json') as f: return json.load(f)
+    with open(os.getenv('WIKI_S3_CONFIG', 'config/s3.local.json')) as f: return json.load(f)
 
 
 class Store:
@@ -38,7 +39,7 @@ def session():
     from pyspark.sql import SparkSession
     c=settings()
     spark=(SparkSession.builder.appName('wikipedia-s3').config('spark.sql.session.timeZone','UTC')
-        .config('spark.sql.shuffle.partitions','2')
+        .config('spark.sql.shuffle.partitions',os.getenv('WIKI_SHUFFLE_PARTITIONS','2'))
         .config('spark.hadoop.fs.s3a.aws.credentials.provider','com.amazonaws.auth.profile.ProfileCredentialsProvider')
         .config('spark.hadoop.fs.s3a.endpoint','s3.'+c['region']+'.amazonaws.com')
         .config('spark.hadoop.fs.s3a.server-side-encryption-algorithm','AES256')
@@ -56,11 +57,12 @@ def stream(spark,store,once):
     if commits.get("KeyCount",0) and not offsets.get("KeyCount",0):
         raise ValueError("Checkpoint missing while commits exist; restore both or use a new prefix")
     # Keep this checkpoint and commit namespace together. Never reset one alone.
-    raw=(spark.readStream.format('kafka').option('kafka.bootstrap.servers','kafka:29092')
-        .option('subscribe','wikipedia-live').option('startingOffsets','earliest')
-        .option('failOnDataLoss','true').option('maxOffsetsPerTrigger',10000).load()
+    raw=(spark.readStream.format('kafka').option('kafka.bootstrap.servers',os.getenv('WIKI_KAFKA_BOOTSTRAP','kafka:29092'))
+        .option('subscribe',os.getenv('WIKI_KAFKA_TOPIC','wikipedia-live')).option('startingOffsets','earliest')
+        .option('failOnDataLoss','true').option('maxOffsetsPerTrigger',int(os.getenv('WIKI_MAX_OFFSETS','50000'))).load()
         .selectExpr('CAST(value AS STRING) raw_value','CAST(key AS STRING) message_key',
                     'topic source_topic','partition source_partition','offset source_offset'))
+    callback_errors=[]
     def save(batch,batch_id):
         key=f'stream/commits/{batch_id:020d}.json'
         if store.get(key): return
@@ -68,15 +70,57 @@ def stream(spark,store,once):
         # Preserve rejected rows and raw payload in the same atomic batch boundary.
         data=transform(batch).withColumn('event_date',F.to_date(F.from_utc_timestamp('event_time','Asia/Seoul'))).persist()
         try:
+            timings={}
+            started=time.monotonic()
             count=data.count()
+            timings['transform_count_ms']=(time.monotonic()-started)*1000
+            started=time.monotonic()
             if count: data.write.mode('errorifexists').partitionBy('event_date').parquet(path)
+            timings['parquet_write_ms']=(time.monotonic()-started)*1000
+            started=time.monotonic()
             dates=[str(row.event_date) for row in data.select('event_date').distinct().collect() if row.event_date is not None]
             # A failed write has no commit. Readers only follow committed paths.
-            store.put(key,dict(batch_id=batch_id,path=path if count else None,rows=count,dates=dates),immutable=True)
+            offsets=[dict(partition=r.source_partition, end_offset=r.end_offset)
+                     for r in data.groupBy('source_partition').agg((F.max('source_offset')+1).alias('end_offset')).collect()]
+            timings['metadata_ms']=(time.monotonic()-started)*1000
+            started=time.monotonic()
+            store.put(key,dict(batch_id=batch_id,path=path if count else None,rows=count,dates=dates,
+                               offsets=offsets, timings_ms=timings, completed_at=datetime.now(timezone.utc).isoformat()),immutable=True)
+            timings['commit_ms']=(time.monotonic()-started)*1000
+            metrics=os.getenv('WIKI_STREAM_METRICS')
+            if metrics:
+                with open(metrics,'a') as handle:
+                    handle.write(json.dumps(dict(batch_id=batch_id,rows=count,offsets=offsets,timings_ms=timings,
+                                                 committed_at=datetime.now(timezone.utc).isoformat()))+'\n')
+        except Exception as exc:
+            # PySpark wraps foreachBatch errors; retain the original retry classification.
+            callback_errors.append(exc)
+            raise
         finally: data.unpersist()
     writer=raw.writeStream.foreachBatch(save).option('checkpointLocation',store.uri('stream/checkpoint'))
     query=(writer.trigger(availableNow=True) if once else writer.trigger(processingTime='30 seconds')).start()
-    query.awaitTermination()
+    await_query(query,os.getenv('WIKI_STREAM_METRICS'),callback_errors)
+
+def await_query(query,metrics,callback_errors):
+    try:
+        if not metrics:
+            query.awaitTermination()
+        else:
+            # Driver-local telemetry is optional; S3 commit/checkpoint remains authoritative.
+            seen=set()
+            while True:
+                ended=query.awaitTermination(1)
+                for progress in query.recentProgress:
+                    identity=(progress['batchId'],progress['timestamp'])
+                    if identity not in seen:
+                        with open(metrics+'.progress.jsonl','a') as handle:
+                            handle.write(json.dumps(progress)+'\n')
+                        seen.add(identity)
+                if ended:break
+    except Exception as exc:
+        if callback_errors:
+            raise callback_errors[-1] from exc
+        raise
 
 
 def daily(spark,store,action,target,run_id):

@@ -1,0 +1,76 @@
+{
+  "stages": [
+    {
+      "source": null,
+      "rows": 500,
+      "unique_ids": 0,
+      "rejected": 500,
+      "mean_payload_bytes": 13.0,
+      "latency_p50_p95_s": null,
+      "min_latency_s": null,
+      "max_latency_s": null
+    },
+    {
+      "source": "synthetic-week6-invalid-storm",
+      "rows": 1500,
+      "unique_ids": 1500,
+      "rejected": 500,
+      "mean_payload_bytes": 404.82666666666665,
+      "latency_p50_p95_s": [
+        21.23863697052002,
+        22.5886390209198
+      ],
+      "min_latency_s": 18.742629051208496,
+      "max_latency_s": 22.738622903823853
+    },
+    {
+      "source": "synthetic-week6-seed",
+      "rows": 100,
+      "unique_ids": 100,
+      "rejected": 0,
+      "mean_payload_bytes": 384.8,
+      "latency_p50_p95_s": [
+        18.721543073654175,
+        19.17354989051819
+      ],
+      "min_latency_s": 18.233649015426636,
+      "max_latency_s": 19.223646879196167
+    },
+    {
+      "source": "synthetic-week6-broker-outage",
+      "rows": 3000,
+      "unique_ids": 3000,
+      "rejected": 0,
+      "mean_payload_bytes": 404.53,
+      "latency_p50_p95_s": [
+        62.50794219970703,
+        76.00906109809875
+      ],
+      "min_latency_s": 47.51894998550415,
+      "max_latency_s": 77.50905299186707
+    },
+    {
+      "source": "synthetic-week6-sink-outage",
+      "rows": 500,
+      "unique_ids": 500,
+      "rejected": 0,
+      "mean_payload_bytes": 399.68,
+      "latency_p50_p95_s": [
+        96.28123593330383,
+        98.52951002120972
+      ],
+      "min_latency_s": 93.79076504707336,
+      "max_latency_s": 98.7812340259552
+    }
+  ],
+  "rows": 5600,
+  "distinct_kafka_offsets": 5600,
+  "commits": 4,
+  "missing_ids": 0,
+  "unexpected_ids": 0,
+  "published": {
+    "rows": 100,
+    "unique_ids": 100,
+    "aggregate_sum": 100
+  }
+}

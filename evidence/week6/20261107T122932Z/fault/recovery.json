@@ -1,0 +1,62 @@
+{
+  "signal": "SIGKILL",
+  "exit_code": 137,
+  "killed_at": 1794055984.545913,
+  "restarted_at": 1794055984.816329,
+  "stream_completed_at": 1794056002.846584,
+  "recovery_s": 18.03025507926941,
+  "uncommitted_objects": 7,
+  "old_publication_preserved": true,
+  "input_rows": 1220,
+  "valid_unique": 1100,
+  "duplicate_input": 100,
+  "rejected_input": 20,
+  "stages": [
+    {
+      "source": null,
+      "rows": 10,
+      "unique_ids": 0,
+      "rejected": 10,
+      "mean_payload_bytes": 13.0,
+      "latency_p50_p95_s": null,
+      "min_latency_s": null,
+      "max_latency_s": null
+    },
+    {
+      "source": "synthetic-week6-baseline",
+      "rows": 100,
+      "unique_ids": 100,
+      "rejected": 0,
+      "mean_payload_bytes": 392.8,
+      "latency_p50_p95_s": [
+        17.77506399154663,
+        18.22820496559143
+      ],
+      "min_latency_s": 17.28819704055786,
+      "max_latency_s": 18.27818202972412
+    },
+    {
+      "source": "synthetic-week6-recovery",
+      "rows": 1110,
+      "unique_ids": 1010,
+      "rejected": 10,
+      "mean_payload_bytes": 393.72522522522524,
+      "latency_p50_p95_s": [
+        35.027294874191284,
+        35.527299880981445
+      ],
+      "min_latency_s": 34.46428894996643,
+      "max_latency_s": 35.58228778839111
+    }
+  ],
+  "rows": 1220,
+  "distinct_kafka_offsets": 1220,
+  "commits": 2,
+  "missing_ids": 0,
+  "unexpected_ids": 0,
+  "published": {
+    "rows": 1100,
+    "unique_ids": 1100,
+    "aggregate_sum": 1100
+  }
+}

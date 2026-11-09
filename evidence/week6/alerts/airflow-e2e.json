@@ -1,0 +1,28 @@
+{
+  "dag_id": "week6_real_failure_alert",
+  "run_id": "manual__2026-11-08T09:53:03.193393+00:00",
+  "dag_state": "failed",
+  "attempts": [
+    {
+      "try_number": 1,
+      "alerts_before_attempt": 0
+    },
+    {
+      "try_number": 2,
+      "alerts_before_attempt": 0
+    }
+  ],
+  "automatic_failure_callback": true,
+  "sent_alert_count": 1,
+  "sent_at": "2026-11-08T09:53:05.048177+00:00",
+  "alert": {
+    "dag_id": "week6_real_failure_alert",
+    "task_id": "intentional_failure",
+    "run_id": "manual__2026-11-08T09:53:03.193393+00:00",
+    "try_number": 2,
+    "at": "2026-11-08T09:53:04.642530+00:00"
+  },
+  "scope": "Real Airflow DAG.test TaskInstance failure and retry with automatic production callback; isolated SQLite, not production scheduler.",
+  "discord_receipt_verified": true,
+  "screenshot": "docs/submissions/images/week6-airflow-auto-alert.jpg"
+}

@@ -1,0 +1,11 @@
+{
+  "fault": "retryable SlowDown after compact_raw write",
+  "same_work_id": true,
+  "previous_publication_preserved": true,
+  "differences": {
+    "clean": 0,
+    "aggregate": 0
+  },
+  "rows": 4600,
+  "retry_executor": "test harness, not Airflow scheduler"
+}

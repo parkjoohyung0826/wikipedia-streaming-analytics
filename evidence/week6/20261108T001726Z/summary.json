@@ -1,0 +1,158 @@
+{
+  "run": "20261108T001726Z",
+  "execution": {
+    "run": "20261108T001726Z",
+    "target_date": "2026-11-08",
+    "success": true,
+    "parameters": {
+      "rates": [
+        600
+      ],
+      "seconds": 60,
+      "warmup": 60,
+      "repetitions": 1,
+      "max_offsets": 50000,
+      "skip_faults": true,
+      "extended_only": false,
+      "crash_only": false
+    },
+    "output": "/Users/parkjoohyung/Documents/wikipedia-streaming-analytics/artifacts/week6/20261108T001726Z"
+  },
+  "mode": "continuous 30-second trigger; excludes Airflow scheduling delay",
+  "latency_definition": "producer ingest_time to S3 batch commit; p50/p95 include backlog and trigger waiting",
+  "lag_definition": "Kafka end offsets minus S3 committed offsets; sampled every 5 seconds",
+  "measurement_notes": [
+    "Warmup excluded from stages and Spark timings.",
+    "Each stage drains before the next stage; window throughput is not whole-run throughput.",
+    "Short windows and 30-second commits cause lag sawtooth; inspect raw trend and repeated p95.",
+    "No end-to-end Airflow or external notification verification is implied."
+  ],
+  "stages": [
+    {
+      "stage": "r1-rate600",
+      "target_per_s": 600,
+      "actual_input_per_s": 600.0085205409399,
+      "input_rows": 36000,
+      "input_elapsed_s": 59.99914795800578,
+      "errors": [],
+      "pending": 0,
+      "window_completion_per_s": 507.788843867511,
+      "lag_first": 2960,
+      "lag_last": 20539,
+      "lag_max": 20539,
+      "lag_slope_per_s": 260.49810464542406,
+      "verification": {
+        "source": "synthetic-week6-r1-rate600",
+        "rows": 36000,
+        "unique_ids": 36000,
+        "rejected": 0,
+        "mean_payload_bytes": 399.5913888888889,
+        "latency_p50_p95_s": [
+          23.22226595878601,
+          36.935643911361694
+        ],
+        "min_latency_s": 7.9055469036102295,
+        "max_latency_s": 38.9678521156311
+      }
+    }
+  ],
+  "spark_progress": {
+    "addBatch": {
+      "mean_ms": 7337,
+      "max_ms": 7648,
+      "samples": 2
+    },
+    "commitOffsets": {
+      "mean_ms": 794,
+      "max_ms": 808,
+      "samples": 2
+    },
+    "getBatch": {
+      "mean_ms": 1,
+      "max_ms": 1,
+      "samples": 2
+    },
+    "latestOffset": {
+      "mean_ms": 12,
+      "max_ms": 14,
+      "samples": 2
+    },
+    "queryPlanning": {
+      "mean_ms": 42.5,
+      "max_ms": 55,
+      "samples": 2
+    },
+    "triggerExecution": {
+      "mean_ms": 9026.5,
+      "max_ms": 9330,
+      "samples": 2
+    },
+    "walCommit": {
+      "mean_ms": 834,
+      "max_ms": 840,
+      "samples": 2
+    }
+  },
+  "batch_components": {
+    "commit_ms": {
+      "mean_ms": 94.00690266665872,
+      "total_ms": 282.02070799997614,
+      "samples": 3
+    },
+    "metadata_ms": {
+      "mean_ms": 152.06747233334758,
+      "total_ms": 456.2024170000427,
+      "samples": 3
+    },
+    "parquet_write_ms": {
+      "mean_ms": 6288.235003333336,
+      "total_ms": 18864.70501000001,
+      "samples": 3
+    },
+    "transform_count_ms": {
+      "mean_ms": 815.3356813333422,
+      "total_ms": 2446.0070440000263,
+      "samples": 3
+    }
+  },
+  "load_verification": {
+    "stages": [
+      {
+        "source": "synthetic-week6-r1-rate600",
+        "rows": 36000,
+        "unique_ids": 36000,
+        "rejected": 0,
+        "mean_payload_bytes": 399.5913888888889,
+        "latency_p50_p95_s": [
+          23.22226595878601,
+          36.935643911361694
+        ],
+        "min_latency_s": 7.9055469036102295,
+        "max_latency_s": 38.9678521156311
+      },
+      {
+        "source": "synthetic-week6-warmup",
+        "rows": 6000,
+        "unique_ids": 6000,
+        "rejected": 0,
+        "mean_payload_bytes": 390.715,
+        "latency_p50_p95_s": [
+          19.735294103622437,
+          35.749938011169434
+        ],
+        "min_latency_s": 7.754612922668457,
+        "max_latency_s": 38.74994492530823
+      }
+    ],
+    "rows": 42000,
+    "distinct_kafka_offsets": 42000,
+    "commits": 6,
+    "missing_ids": 0,
+    "unexpected_ids": 0
+  },
+  "recovery": null,
+  "external_notification": "not configured or tested",
+  "extended_faults": null,
+  "last_sampled_lag": 5533,
+  "verified_unstored_input_rows": 0
+}

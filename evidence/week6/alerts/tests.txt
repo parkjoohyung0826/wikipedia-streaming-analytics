@@ -1,0 +1,16 @@
+2026-11-08 | Unit tests: HTTP mocked. Real delivery evidence: delivery-test.json and Discord screenshot.
+test_different_runs_are_separate (test_alerts.AlertsTest.test_different_runs_are_separate) ... ERROR:root:[ALERT] Final failure: dag=wiki task=daily
+ERROR:root:[ALERT] Final failure: dag=wiki task=daily
+ok
+test_failure_then_replay_then_duplicate (test_alerts.AlertsTest.test_failure_then_replay_then_duplicate) ... ok
+test_http_payload_and_timeout (test_alerts.AlertsTest.test_http_payload_and_timeout) ... ERROR:root:[ALERT] Final failure: dag=wiki task=daily
+ok
+test_no_channel_keeps_one_pending_record (test_alerts.AlertsTest.test_no_channel_keeps_one_pending_record) ... ERROR:root:[ALERT] Final failure: dag=wiki task=daily
+ok
+test_storage_error_does_not_escape_callback (test_alerts.AlertsTest.test_storage_error_does_not_escape_callback) ... ERROR:root:Alert callback error (PermissionError); inspect alert storage permissions
+ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.010s
+
+OK

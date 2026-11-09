@@ -1,0 +1,14 @@
+{
+  "state": "success",
+  "attempts": [
+    {
+      "try_number": 1,
+      "exit_code": 75
+    },
+    {
+      "try_number": 2,
+      "exit_code": 0
+    }
+  ],
+  "execution": "Airflow 2.10.5 DAG.test with TaskInstance retries; isolated SQLite, no production scheduler"
+}

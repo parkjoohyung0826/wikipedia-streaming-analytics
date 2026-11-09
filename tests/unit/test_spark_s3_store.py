@@ -2,7 +2,7 @@
 import io
 import json
 import unittest
-from src.spark_s3 import Store,retryable
+from src.spark_s3 import Store,retryable,await_query
 
 class Error(Exception):
     def __init__(self,code):self.response={'Error':{'Code':code}}
@@ -41,3 +41,16 @@ class RetryTests(unittest.TestCase):
         self.assertTrue(retryable(Error('SlowDown')))
         self.assertFalse(retryable(Error('AccessDenied')))
         self.assertFalse(retryable(ValueError('Invalid data')))
+
+class StreamRetryTests(unittest.TestCase):
+    def test_wrapped_callback_preserves_retryable_cause(self):
+        cause=Error('ServiceUnavailable')
+        class Query:
+            def awaitTermination(self,*args):raise RuntimeError('PySpark wrapper')
+        with self.assertRaises(Error) as raised:await_query(Query(),None,[cause])
+        self.assertIs(raised.exception,cause)
+        self.assertTrue(retryable(raised.exception))
+    def test_unrelated_query_error_is_not_marked_transient(self):
+        class Query:
+            def awaitTermination(self,*args):raise ValueError('Kafka configuration invalid')
+        with self.assertRaises(ValueError):await_query(Query(),None,[])

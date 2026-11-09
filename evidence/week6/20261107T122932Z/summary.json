@@ -1,0 +1,420 @@
+{
+  "run": "20261107T122932Z",
+  "execution": {
+    "run": "20261107T122932Z",
+    "target_date": "2026-11-07",
+    "success": true,
+    "parameters": {
+      "rates": [
+        100,
+        300,
+        600
+      ],
+      "seconds": 120,
+      "warmup": 120,
+      "repetitions": 2,
+      "max_offsets": 10000,
+      "skip_faults": false,
+      "extended_only": false
+    },
+    "output": "/Users/parkjoohyung/Documents/wikipedia-streaming-analytics/artifacts/week6/20261107T122932Z"
+  },
+  "mode": "continuous 30-second trigger; excludes Airflow scheduling delay",
+  "latency_definition": "producer ingest_time to S3 batch commit; p50/p95 include backlog and trigger waiting",
+  "lag_definition": "Kafka end offsets minus S3 committed offsets; sampled every 5 seconds",
+  "measurement_notes": [
+    "Warmup excluded from stages and Spark timings.",
+    "Each stage drains before the next stage; window throughput is not whole-run throughput.",
+    "Short windows and 30-second commits cause lag sawtooth; inspect raw trend and repeated p95.",
+    "No end-to-end Airflow or external notification verification is implied."
+  ],
+  "stages": [
+    {
+      "stage": "r1-rate100",
+      "target_per_s": 100,
+      "actual_input_per_s": 100.00776209577978,
+      "input_rows": 12000,
+      "input_elapsed_s": 119.99068620800972,
+      "errors": [],
+      "pending": 0,
+      "window_completion_per_s": 91.84787627763346,
+      "lag_first": 0,
+      "lag_last": 3500,
+      "lag_max": 3500,
+      "lag_slope_per_s": 15.4214166366632,
+      "verification": {
+        "source": "synthetic-week6-r1-rate100",
+        "rows": 12000,
+        "unique_ids": 12000,
+        "rejected": 0,
+        "mean_payload_bytes": 398.9741666666667,
+        "latency_p50_p95_s": [
+          22.450477123260498,
+          36.280587911605835
+        ],
+        "min_latency_s": 7.089654922485352,
+        "max_latency_s": 38.910706996917725
+      }
+    },
+    {
+      "stage": "r1-rate300",
+      "target_per_s": 300,
+      "actual_input_per_s": 300.00486726649285,
+      "input_rows": 36000,
+      "input_elapsed_s": 119.99805312498938,
+      "errors": [],
+      "pending": 0,
+      "window_completion_per_s": 275.31838044422057,
+      "lag_first": 0,
+      "lag_last": 10570,
+      "lag_max": 10570,
+      "lag_slope_per_s": 46.5257106098978,
+      "verification": {
+        "source": "synthetic-week6-r1-rate300",
+        "rows": 36000,
+        "unique_ids": 36000,
+        "rejected": 0,
+        "mean_payload_bytes": 399.5913888888889,
+        "latency_p50_p95_s": [
+          22.756963968276978,
+          36.538275957107544
+        ],
+        "min_latency_s": 7.481429815292358,
+        "max_latency_s": 38.600120067596436
+      }
+    },
+    {
+      "stage": "r1-rate600",
+      "target_per_s": 600,
+      "actual_input_per_s": 600.0060450609495,
+      "input_rows": 72000,
+      "input_elapsed_s": 119.99879099999089,
+      "errors": [],
+      "pending": 0,
+      "window_completion_per_s": 333.28335518509294,
+      "lag_first": 0,
+      "lag_last": 39311,
+      "lag_max": 39311,
+      "lag_slope_per_s": 287.8461999958564,
+      "verification": {
+        "source": "synthetic-week6-r1-rate600",
+        "rows": 72000,
+        "unique_ids": 72000,
+        "rejected": 0,
+        "mean_payload_bytes": 399.74569444444444,
+        "latency_p50_p95_s": [
+          61.115209102630615,
+          105.16759014129639
+        ],
+        "min_latency_s": 10.630529165267944,
+        "max_latency_s": 121.8863730430603
+      }
+    },
+    {
+      "stage": "r2-rate100",
+      "target_per_s": 100,
+      "actual_input_per_s": 100.00661186044309,
+      "input_rows": 12000,
+      "input_elapsed_s": 119.992066292034,
+      "errors": [],
+      "pending": 0,
+      "window_completion_per_s": 91.42179759927309,
+      "lag_first": 0,
+      "lag_last": 3596,
+      "lag_max": 3596,
+      "lag_slope_per_s": 16.00614108710454,
+      "verification": {
+        "source": "synthetic-week6-r2-rate100",
+        "rows": 12000,
+        "unique_ids": 12000,
+        "rejected": 0,
+        "mean_payload_bytes": 398.9741666666667,
+        "latency_p50_p95_s": [
+          22.349763870239258,
+          35.98410487174988
+        ],
+        "min_latency_s": 7.169229030609131,
+        "max_latency_s": 38.16986894607544
+      }
+    },
+    {
+      "stage": "r2-rate300",
+      "target_per_s": 300,
+      "actual_input_per_s": 300.00536395092104,
+      "input_rows": 36000,
+      "input_elapsed_s": 119.99785445799353,
+      "errors": [],
+      "pending": 0,
+      "window_completion_per_s": 274.0188247732747,
+      "lag_first": 190,
+      "lag_last": 10893,
+      "lag_max": 10893,
+      "lag_slope_per_s": 48.22186091597734,
+      "verification": {
+        "source": "synthetic-week6-r2-rate300",
+        "rows": 36000,
+        "unique_ids": 36000,
+        "rejected": 0,
+        "mean_payload_bytes": 399.5913888888889,
+        "latency_p50_p95_s": [
+          23.029554843902588,
+          36.69564199447632
+        ],
+        "min_latency_s": 6.878676891326904,
+        "max_latency_s": 40.58616781234741
+      }
+    },
+    {
+      "stage": "r2-rate600",
+      "target_per_s": 600,
+      "actual_input_per_s": 600.0012533375399,
+      "input_rows": 72000,
+      "input_elapsed_s": 119.99974933301564,
+      "errors": [],
+      "pending": 0,
+      "window_completion_per_s": 333.28902785623865,
+      "lag_first": 530,
+      "lag_last": 39646,
+      "lag_max": 39646,
+      "lag_slope_per_s": 287.50143396549095,
+      "verification": {
+        "source": "synthetic-week6-r2-rate600",
+        "rows": 72000,
+        "unique_ids": 72000,
+        "rejected": 0,
+        "mean_payload_bytes": 399.74569444444444,
+        "latency_p50_p95_s": [
+          59.97673797607422,
+          104.06593918800354
+        ],
+        "min_latency_s": 10.14510202407837,
+        "max_latency_s": 120.93051290512085
+      }
+    }
+  ],
+  "spark_progress": {
+    "addBatch": {
+      "mean_ms": 6791.194444444444,
+      "max_ms": 7891,
+      "samples": 36
+    },
+    "commitOffsets": {
+      "mean_ms": 723.1111111111111,
+      "max_ms": 801,
+      "samples": 36
+    },
+    "getBatch": {
+      "mean_ms": 0.3888888888888889,
+      "max_ms": 1,
+      "samples": 36
+    },
+    "latestOffset": {
+      "mean_ms": 15.805555555555555,
+      "max_ms": 40,
+      "samples": 36
+    },
+    "queryPlanning": {
+      "mean_ms": 19.944444444444443,
+      "max_ms": 47,
+      "samples": 36
+    },
+    "triggerExecution": {
+      "mean_ms": 8395.638888888889,
+      "max_ms": 11310,
+      "samples": 36
+    },
+    "walCommit": {
+      "mean_ms": 841,
+      "max_ms": 2658,
+      "samples": 36
+    }
+  },
+  "batch_components": {
+    "commit_ms": {
+      "mean_ms": 92.36070361119648,
+      "total_ms": 3324.9853300030736,
+      "samples": 36
+    },
+    "metadata_ms": {
+      "mean_ms": 98.23501052782528,
+      "total_ms": 3536.46037900171,
+      "samples": 36
+    },
+    "parquet_write_ms": {
+      "mean_ms": 6077.158350166681,
+      "total_ms": 218777.7006060005,
+      "samples": 36
+    },
+    "transform_count_ms": {
+      "mean_ms": 336.366281305522,
+      "total_ms": 12109.186126998793,
+      "samples": 36
+    }
+  },
+  "load_verification": {
+    "stages": [
+      {
+        "source": "synthetic-week6-r1-rate300",
+        "rows": 36000,
+        "unique_ids": 36000,
+        "rejected": 0,
+        "mean_payload_bytes": 399.5913888888889,
+        "latency_p50_p95_s": [
+          22.756963968276978,
+          36.538275957107544
+        ],
+        "min_latency_s": 7.481429815292358,
+        "max_latency_s": 38.600120067596436
+      },
+      {
+        "source": "synthetic-week6-r1-rate600",
+        "rows": 72000,
+        "unique_ids": 72000,
+        "rejected": 0,
+        "mean_payload_bytes": 399.74569444444444,
+        "latency_p50_p95_s": [
+          61.115209102630615,
+          105.16759014129639
+        ],
+        "min_latency_s": 10.630529165267944,
+        "max_latency_s": 121.8863730430603
+      },
+      {
+        "source": "synthetic-week6-r2-rate100",
+        "rows": 12000,
+        "unique_ids": 12000,
+        "rejected": 0,
+        "mean_payload_bytes": 398.9741666666667,
+        "latency_p50_p95_s": [
+          22.349763870239258,
+          35.98410487174988
+        ],
+        "min_latency_s": 7.169229030609131,
+        "max_latency_s": 38.16986894607544
+      },
+      {
+        "source": "synthetic-week6-r2-rate600",
+        "rows": 72000,
+        "unique_ids": 72000,
+        "rejected": 0,
+        "mean_payload_bytes": 399.74569444444444,
+        "latency_p50_p95_s": [
+          59.97673797607422,
+          104.06593918800354
+        ],
+        "min_latency_s": 10.14510202407837,
+        "max_latency_s": 120.93051290512085
+      },
+      {
+        "source": "synthetic-week6-warmup",
+        "rows": 12000,
+        "unique_ids": 12000,
+        "rejected": 0,
+        "mean_payload_bytes": 390.9741666666667,
+        "latency_p50_p95_s": [
+          20.920804977416992,
+          36.536274909973145
+        ],
+        "min_latency_s": 7.425827980041504,
+        "max_latency_s": 39.38526487350464
+      },
+      {
+        "source": "synthetic-week6-r1-rate100",
+        "rows": 12000,
+        "unique_ids": 12000,
+        "rejected": 0,
+        "mean_payload_bytes": 398.9741666666667,
+        "latency_p50_p95_s": [
+          22.450477123260498,
+          36.280587911605835
+        ],
+        "min_latency_s": 7.089654922485352,
+        "max_latency_s": 38.910706996917725
+      },
+      {
+        "source": "synthetic-week6-r2-rate300",
+        "rows": 36000,
+        "unique_ids": 36000,
+        "rejected": 0,
+        "mean_payload_bytes": 399.5913888888889,
+        "latency_p50_p95_s": [
+          23.029554843902588,
+          36.69564199447632
+        ],
+        "min_latency_s": 6.878676891326904,
+        "max_latency_s": 40.58616781234741
+      }
+    ],
+    "rows": 252000,
+    "distinct_kafka_offsets": 252000,
+    "commits": 42,
+    "missing_ids": 0,
+    "unexpected_ids": 0
+  },
+  "recovery": {
+    "signal": "SIGKILL",
+    "exit_code": 137,
+    "killed_at": 1794055984.545913,
+    "restarted_at": 1794055984.816329,
+    "stream_completed_at": 1794056002.846584,
+    "recovery_s": 18.03025507926941,
+    "uncommitted_objects": 7,
+    "old_publication_preserved": true,
+    "input_rows": 1220,
+    "valid_unique": 1100,
+    "duplicate_input": 100,
+    "rejected_input": 20,
+    "stages": [
+      {
+        "source": null,
+        "rows": 10,
+        "unique_ids": 0,
+        "rejected": 10,
+        "mean_payload_bytes": 13.0,
+        "latency_p50_p95_s": null,
+        "min_latency_s": null,
+        "max_latency_s": null
+      },
+      {
+        "source": "synthetic-week6-baseline",
+        "rows": 100,
+        "unique_ids": 100,
+        "rejected": 0,
+        "mean_payload_bytes": 392.8,
+        "latency_p50_p95_s": [
+          17.77506399154663,
+          18.22820496559143
+        ],
+        "min_latency_s": 17.28819704055786,
+        "max_latency_s": 18.27818202972412
+      },
+      {
+        "source": "synthetic-week6-recovery",
+        "rows": 1110,
+        "unique_ids": 1010,
+        "rejected": 10,
+        "mean_payload_bytes": 393.72522522522524,
+        "latency_p50_p95_s": [
+          35.027294874191284,
+          35.527299880981445
+        ],
+        "min_latency_s": 34.46428894996643,
+        "max_latency_s": 35.58228778839111
+      }
+    ],
+    "rows": 1220,
+    "distinct_kafka_offsets": 1220,
+    "commits": 2,
+    "missing_ids": 0,
+    "unexpected_ids": 0,
+    "published": {
+      "rows": 1100,
+      "unique_ids": 1100,
+      "aggregate_sum": 1100
+    }
+  },
+  "external_notification": "not configured or tested",
+  "extended_faults": null,
+  "last_sampled_lag": 2011,
+  "verified_unstored_input_rows": 0
+}
